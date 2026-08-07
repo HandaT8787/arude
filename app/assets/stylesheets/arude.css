@@ -1,0 +1,77 @@
+:root {
+  --arude-bg: #FFF3D6;
+  --arude-primary: #FF4B5C;
+  --arude-primary-hover: #E23B4B;
+  --arude-secondary: #2EC4B6;
+  --arude-yellow: #FFC93C;
+  --arude-ink: #33261E;
+  --arude-ink-border: rgba(51, 38, 30, 0.2);
+  --arude-danger-bg: #F0997B;
+  --arude-danger-text: #4A1B0C;
+  --arude-success-bg: #2EC4B6;
+  --arude-success-text: #04342C;
+}
+
+.arude-min-vh-90 {
+  min-height: 90vh;
+}
+
+.arude-bg {
+  background-color: var(--arude-bg);
+  font-family: 'Kosugi Maru', sans-serif;
+  color: var(--arude-ink);
+}
+
+.arude-logo-circle {
+  width: 64px;
+  height: 64px;
+  background: var(--arude-primary);
+}
+
+.arude-logo-circle i {
+  color: #fff;
+  font-size: 28px;
+}
+
+.arude-logo-title {
+  font-family: 'Yusei Magic', sans-serif;
+  color: var(--arude-primary);
+}
+
+.arude-catch {
+  background: var(--arude-yellow);
+}
+
+.arude-catch p {
+  font-family: 'Yusei Magic', sans-serif;
+  line-height: 1.6;
+}
+
+.arude-alert-danger {
+  background: var(--arude-danger-bg);
+  color: var(--arude-danger-text);
+}
+
+.arude-alert-success {
+  background: var(--arude-success-bg);
+  color: var(--arude-success-text);
+}
+
+.arude-input {
+  border-color: var(--arude-ink-border);
+}
+
+.arude-btn-primary {
+  background: var(--arude-primary);
+  color: #fff;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.arude-btn-primary:hover {
+  background: var(--arude-primary-hover);
+  color: #fff;
+}
+
+.arude-link-accent {
+  color: var(--arude-secondary);
+}
