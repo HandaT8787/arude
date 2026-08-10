@@ -30,8 +30,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="arude-bg d-flex flex-column min-vh-100">
+    <%= render 'shared/header' %>
+    <main class="flex-grow-1">
+      <%= yield %>
+    </main>
+    <footer class="arude-footer text-center py-3">
+      <p class="mb-0 small">&copy; 2026 アルデー</p>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

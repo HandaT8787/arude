@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9_]+\z/, message: "半角英数字とアンダースコアのみ使用できます" }
   validates :name, presence: true
+  validates :password, presence: true, length: { minimum: 6, allow_blank: true }, if: -> { new_record? || !password.nil? }
+  validates :email_address, presence: true, uniqueness: true
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

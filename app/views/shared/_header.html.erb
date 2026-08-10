@@ -1,0 +1,49 @@
+<header>
+  <nav class="navbar navbar-expand-lg arude-navbar">
+    <div class="container">
+      <%= link_to root_path, class: "navbar-brand arude-logo-badge d-flex align-item-center gap-2 arude-logo-title" do %>
+        <span class="arude-logo-circle-sm rounded-circle d-flex align-item-center justify-content-center">
+          <i class="fa-solid fa-location-dot"></i>
+        </span>
+        <span class="arude-logo-title">アルデー</span>
+      <% end %>
+
+      <button class="navbar-toggler shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <% if authenticated? %>
+            <li class="nav-item">
+              <%= link_to root_path, class: "nav-link" do %>
+                <i class="fa-solid fa-house"></i> 今日のアルデー
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to user_path(Current.user), class: "nav-link" do %>
+                <i class="fa-solid fa-user"></i> プロフィール
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to session_path, class: "nav-link", data: { turbo_method: :delete } do %>
+                <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+              <% end %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to new_session_path, class: "nav-link" do %>
+                <i class="fa-solid fa-right-to-bracket"></i> ログイン
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link_to new_user_path, class: "nav-link" do %>
+                <i class="fa-solid fa-user-plus"></i> 新規登録
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  resource :session
+  root "landing#index"
+  resource :session, path_names: { new: 'login'}
   resources :passwords, param: :token
-  resources :users, only: [:new, :create], path_names: { new: 'sign_up' }
+  resources :users, only: [:new, :create, :index, :show], path_names: { new: 'sign_up' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -13,5 +14,4 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "users#new"
 end

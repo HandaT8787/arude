@@ -1,0 +1,40 @@
+<style>
+  .arude-lp-frame {
+    background-image: url("<%= image_path('city-line.png') %>");
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+      <div class="arude-logo-circle rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2">
+        <i class="fa-solid fa-location-dot"></i>
+      </div>
+      <h1 class="arude-logo-title fs-1 mb-3">アルデー</h1>
+
+      <div class="arude-catch mb-4">
+        <p class="mb-0 fs-5">ちょっとええとこあったで、<br>行ってみ！</p>
+      </div>
+
+      <p class="mb-4">
+        近所のちょっといい場所を共有・記録し、<br class="d-none d-md-inline">時間があるときの外出のきっかけを見つけられる<br class="d-none d-md-inline">コミュニティサイトです。
+      </p>
+
+      <div class="d-flex justify-content-center gap-3 mb-5">
+        <%= link_to "ログイン", new_session_path, class: "btn arude-btn-primary px-4 py-2" %>
+        <%= link_to "新規登録", new_user_path, class: "btn btn-outline-secondary px-4 py-2" %>
+      </div>
+
+      <hr class="my-5">
+
+      <h2 class="fs-4 mb-3">なぜこのサービスを作ったか</h2>
+      <p class="text-center">
+        予定のない休日、行き先が思いつかず家で過ごしてしまうことはありませんか。<br class="d-none d-lg-inline">有名スポットは混雑していたり、行き慣れた場所ばかりで新しい発見がありません。
+      </p>
+      <p class="text-center">
+        アルデーは地元の人だからこそ知っている「ちょっといい場所」を住民同士で共有・記録できるサービスです。<br class="d-none d-lg-inline">日常に新しい変化や外出のきっかけを作るお手伝いをします。
+      </p>
+    </div>
+  </div>
+</div>
+<div class="arude-lp-frame mt-auto"></div>

@@ -4,6 +4,7 @@
   --arude-primary-hover: #E23B4B;
   --arude-secondary: #2EC4B6;
   --arude-yellow: #FFC93C;
+  --arude-green: #8BC34A;
   --arude-ink: #33261E;
   --arude-ink-border: rgba(51, 38, 30, 0.2);
   --arude-danger-bg: #F0997B;
@@ -12,8 +13,22 @@
   --arude-success-text: #04342C;
 }
 
+body {
+  background-color: var(--arude-bg);
+}
+
 .arude-min-vh-90 {
   min-height: 90vh;
+}
+
+.arude-navbar {
+  background-color: var(--arude-green);
+  border-bottom: 2px solid var(--arude-ink-border);
+}
+
+.arude-footer {
+  background-color: var(--arude-green);
+  color: var(--arude-ink);
 }
 
 .arude-bg {
@@ -33,13 +48,50 @@
   font-size: 28px;
 }
 
+.arude-logo-circle-sm {
+  width: 32px;
+  height: 32px;
+  background: var(--arude-primary);
+}
+
+.arude-logo-circle-sm i {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  transform: translateY(10px);
+}
+
+.arude-logo-badge {
+  background-color: var(--arude-bg);
+  border-radius: 999px;
+  padding: 4px 14px 4px 6px;
+  text-decoration: none;
+}
+
+.arude-navbar .nav-link {
+  color: var(--arude-ink);
+}
+
+.arude-navbar .nav-link:hover {
+  color: #fff;
+}
+
 .arude-logo-title {
   font-family: 'Yusei Magic', sans-serif;
   color: var(--arude-primary);
+  text-decoration: none;
 }
 
 .arude-catch {
   background: var(--arude-yellow);
+}
+
+.arude-lp-frame {
+  height: 70px;
+  background-color: var(--arude-bg);
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: auto 70px;
 }
 
 .arude-catch p {
