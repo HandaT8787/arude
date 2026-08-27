@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   root "landing#index"
-  resource :session, path_names: { new: 'login'}
+  resource :session, path: "", path_names: { new: 'sign_in'}
   resources :passwords, param: :token
-  resources :users, only: [:new, :create, :index, :show], path_names: { new: 'sign_up' }
+  resources :users, only: [:create, :index, :show]
+  get "sign_up", to: "users#new", as: :new_user
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
