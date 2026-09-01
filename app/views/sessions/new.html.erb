@@ -28,7 +28,7 @@
         <%= form_with url: session_path do |form| %>
           <div class="input-group mb-3">
             <span class="input-group-text bg-white"><i class="fa-solid fa-user"></i></span>
-            <%= form.text_field :username, required: true, autofocus: true, autocomplete: "username", placeholder: "ユーザーID", class: "form-control arude-input", value: params[:username] %>
+            <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", placeholder: "メールアドレス", class: "form-control arude-input", value: params[:email_address] %>
           </div>
 
           <div class="input-group mb-3">
