@@ -1,41 +1,68 @@
-<h2>新規登録</h2>
+<div class="d-flex align-items-center justify-content-center arude-min-vh-90">
+  <div class="container">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-5">
 
-<%= form_with model: @user, url: users_path do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-        <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+        <div class="text-center mb-3">
+          <div class="arude-logo-circle rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <h1 class="arude-logo-title fs-1">アルデー</h1>
+        </div>
+
+        <div class="arude-catch rounded-3 p-2 px-3 mb-4 text-center">
+          <p class="mb-0 fs-5">まずはあなたのことを<br>教えてください</p>
+        </div>
+
+        <%= form_with model: @user, url: users_path do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, "氏名（非公開）", class: "form-label small" %>
+            <%= f.text_field :name, class: "form-control arude-input #{"is-invalid" if @user.errors[:name].any?}" %>
+            <% @user.errors.full_messages_for(:name).each do |message| %>
+              <div class="invalid-feedback"><%= message %></div>
+            <% end %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :username, "ユーザー名（表示名）", class: "form-label small" %>
+            <%= f.text_field :username, class: "form-control arude-input #{"is-invalid" if @user.errors[:username].any?}" %>
+            <% @user.errors.full_messages_for(:username).each do |message| %>
+              <div class="invalid-feedback"><%= message %></div>
+            <% end %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :email_address, "Eメールアドレス", class: "form-label small" %>
+            <%= f.email_field :email_address, class: "form-control arude-input #{"is-invalid" if @user.errors[:email_address].any?}" %>
+            <% @user.errors.full_messages_for(:email_address).each do |message| %>
+              <div class="invalid-feedback"><%= message %></div>
+            <% end %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password, "パスワード（6文字以上）", class: "form-label small" %>
+            <%= f.password_field :password, class: "form-control arude-input #{"is-invalid" if @user.errors[:password].any?}" %>
+            <% @user.errors.full_messages_for(:password).each do |message| %>
+              <div class="invalid-feedback"><%= message %></div>
+            <% end %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password_confirmation, "パスワード（確認）", class: "form-label small" %>
+            <%= f.password_field :password_confirmation, class: "form-control arude-input #{"is-invalid" if @user.errors[:password_confirmation].any?}" %>
+            <% @user.errors.full_messages_for(:password_confirmation).each do |message| %>
+              <div class="invalid-feedback"><%= message %></div>
+            <% end %>
+          </div>
+
+          <%= f.submit "登録する", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
         <% end %>
-      </ul>
+
+        <div class="text-center mt-3 small">
+          すでにアカウントをお持ちですか？
+          <%= link_to "ログイン", new_session_path, class: "arude-link-accent fw-medium" %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div>
-    <%= f.label :name, "氏名" %>
-    <%= f.text_field :name %>
   </div>
-
-  <div>
-    <%= f.label :username, "ユーザーID（ログインに使用）" %>
-    <%= f.text_field :username %>
-  </div>
-
-  <div>
-    <%= f.label :email_address, "Eメールアドレス" %>
-    <%= f.email_field :email_address %>
-  </div>
-
-  <div>
-    <%= f.label :password, "パスワード" %>
-    <%= f.password_field :password %>
-  </div>
-
-  <div>
-    <%= f.label :password_confirmation, "パスワード（確認）" %>
-    <%= f.password_field :password_confirmation %>
-  </div>
-
-  <%= f.submit "登録する" %>
-
-<% end %>
+</div>

@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def create
     if user = User.authenticate_by(email_address: params[:email_address], password: params[:password])
       start_new_session_for user
-      redirect_to home_url
+      redirect_to home_url, notice: "ログインしました"
     else
       redirect_to new_session_path, alert: " メールアドレスまたはパスワードが違います"
     end
