@@ -28,10 +28,41 @@ class Post < ApplicationRecord
   validates :latitude, presence: true
   validates :longitude, presence: true
 
+  TIME_TAGS = %w[朝 昼 夕方 夜].freeze
+
   def local_badge_for(user)
     return nil unless user&.prefecture.present? && user&.city.present?
     return nil unless prefecture == user.prefecture && city == user.city
 
     "地元歴#{user.local_years}年"
+  end
+
+  # 特徴タグ（自由入力）
+  def tag_names=(names)
+    feature_tags = names.split(",").map(&:strip).reject(&:blank?).map do |name|
+      Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "feature" }
+    end
+    self.tags = feature_tags + time_tag_records
+  end
+
+  def tag_names
+    tags.where(tag_type: "feature").pluck(:name).join(", ")
+  end
+
+  # おすすめ時間帯（チェックボックスで選択、固定タグ一覧から）
+  def time_tag_names=(names)
+    @time_tag_names = Array(names).reject(&:blank?)
+  end
+
+  def time_tag_names
+    tags.where(tag_type: "time").pluck(:name)
+  end
+
+  private
+
+  def time_tag_records
+    Array(@time_tag_names).map do |name|
+      Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "time" }
+    end
   end
 end

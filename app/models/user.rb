@@ -4,10 +4,10 @@ class User < ApplicationRecord
 
   # 投稿・コメント・行ってみたい・行ってみた・通報
   has_many :posts, dependent: :nullify # 退会しても投稿は残す（投稿者情報だけ外れる）
-  has_many :comments, dependent: :destroy
+  has_many :comments, dependent: :nullify # 退会してもコメントは残す
+  has_many :visits, dependent: :nullify # 退会しても訪問記録は残す
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_posts, through: :bookmarks, source: :post
-  has_many :visits, dependent: :destroy
   has_many :reports, dependent: :destroy
 
   # グループ

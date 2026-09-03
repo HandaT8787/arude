@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_03_071335) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_03_165255) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_071335) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.integer "post_id", null: false
     t.text "body", null: false
     t.boolean "is_checked", default: false, null: false
@@ -161,7 +161,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_071335) do
   end
 
   create_table "visits", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.integer "post_id", null: false
     t.text "impression"
     t.datetime "visited_at", null: false
