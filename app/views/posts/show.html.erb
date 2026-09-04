@@ -1,2 +1,92 @@
 <div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <% if @post.photos.attached? %>
+        <div class="swiper post-swiper mb-3">
+          <div class="swiper-wrapper">
+            <% @post.photos.each do |photo| %>
+              <div class="swiper-slide">
+                <%= image_tag photo, class: "d-block w-100 post-carousel-img" %>
+              </div>
+            <% end %>
+          </div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      <% end %>
+
+      <h1 class="fs-3 mb-1"><%= @post.title %></h1>
+      <p class="text-muted small mb-2">
+        <%= @post.category %>
+        <% if @post.congestion.present? %>・<%= @post.congestion %><% end %>
+        <% if @post.price.present? %>・<%= number_to_currency(@post.price, precision: 0) %><% end %>
+      </p>
+      <% if badge = @post.local_badge %>
+        <div class="mb-2">
+          <span class="badge rounded-pill badge-local"><%= badge %></span>
+        </div>
+      <% end %>
+      
+      <div class="mb-3">
+        <% @post.tags.where(tag_type: "feature").each do |tag| %>
+          <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
+        <% end %>
+        <% @post.tags.where(tag_type: "time").each do |tag| %>
+          <span class="badge rounded-pill badge-time"><%= tag.name %></span>
+        <% end %>
+      </div>
+
+      <!-- 投稿者の入力のまま表示するためにsimple_format使用 -->
+      <p><%= simple_format(@post.description) %></p>
+      <% if @post.caution.present? %>
+        <div class="alert arude-alert-danger rounded-3 small"><%= @post.caution %></div>
+      <% end %>
+
+      <div id="post-map" data-lat="<%= @post.latitude %>" data-lng="<%= @post.longitude %>" class="post-map rounded-3 mb-3"></div>
+
+      <!-- ログイン済みであれば行ってみたい、行ってみた機能を表示 -->
+      <div class="d-flex gap-2 mb-4">
+        <% if current_user %>
+          <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
+            <%= button_to "行ってみたい済み", post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary" %>
+          <% else %>
+            <%= button_to "行ってみたい", post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" %>
+          <% end %>
+          <%= link_to "行ってみた", new_post_visit_path(@post), class: "btn arude-btn-primary" %>
+        <% else %>
+          <%= link_to "ログインして行ってみたい登録", new_session_path, class: "btn arude-btn-secondary" %>
+        <% end %>
+      </div>
+      
+      <!-- 投稿者であれば表示 -->
+      <% if current_user && current_user == @post.user %>
+        <div class="mb-4">
+          <%= link_to "編集する", edit_post_path(@post), class: "btn btn-outline-secondary btn-sm" %>
+          <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-outline-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+        </div>
+      <% end %>
+
+      <hr>
+      
+      <!-- コメント機能 -->
+      <h2 class="fs-5 mb-3">みんなのひとこと</h2>
+      <% if current_user %>
+        <%= form_with model: [@post, Comment.new], local: true, class: "mb-3" do |f| %>
+          <div class="mb-2">
+            <%= f.text_area :body, class: "form-control arude-input", rows: 2, placeholder: "コメントを残す（匿名で表示されます）" %>
+          </div>
+          <%= f.submit "投稿する", class: "btn btn-sm arude-btn-primary" %>
+        <% end %>
+      <% end %>
+
+      <% @post.comments.order(created_at: :desc).each do |comment| %>
+        <div class="p-2 mb-2 rounded-3 comment-bubble">
+          <p class="mb-1"><%= comment.body %></p>
+          <p class="text-muted small mb-0"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
 </div>

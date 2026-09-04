@@ -1,0 +1,91 @@
+<%= form_with model: @post, local: true do |f| %>
+  <% if @post.errors.any? %>
+    <div class="alert arude-alert-danger rounded-3">
+      <ul class="mb-0 ps-3">
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :title, "スポット名", class: "form-label small" %>
+    <%= f.text_field :title, class: "form-control arude-input" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, "説明", class: "form-label small" %>
+    <%= f.text_area :description, rows: 4, class: "form-control arude-input" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :category, "カテゴリ", class: "form-label small" %>
+    <%= f.select :category, %w[公園 景色 自然 写真スポット ベンチ 神社・歴史 散歩スポット], { include_blank: "選択してください" }, class: "form-select arude-input" %>
+  </div>
+
+  <div class="mb-3" data-controller="tag-picker"
+     data-tag-picker-all-tags-value="<%= Tag.where(tag_type: "feature").pluck(:name).to_json %>">
+  <%= f.label :tag_names, "タグ", class: "form-label small" %>
+
+  <div class="mb-2" data-tag-picker-target="selectedList">
+    <% @post.tags.where(tag_type: "feature").each do |tag| %>
+      <span class="badge rounded-pill badge-feature me-1" data-tag-picker-target="chip" data-tag-name="<%= tag.name %>">
+        <%= tag.name %>
+        <span class="ms-1" data-action="click->tag-picker#remove" style="cursor:pointer;">×</span>
+      </span>
+    <% end %>
+  </div>
+
+  <div class="position-relative">
+    <%= text_field_tag :tag_input, nil,
+          placeholder: "タグを入力（例：静かさ）",
+          maxlength: 10,
+          class: "form-control arude-input",
+          data: { "tag-picker-target": "input", action: "input->tag-picker#search keydown.enter->tag-picker#addFromInput" } %>
+    <ul class="list-group position-absolute w-100 shadow-sm" style="z-index:10;" data-tag-picker-target="suggestions"></ul>
+  </div>
+
+  <%= f.hidden_field :tag_names, id: "post_tag_names_hidden", data: { "tag-picker-target": "hiddenField" } %>
+</div>
+
+  <div class="mb-3">
+    <div class="form-label small">おすすめ時間帯</div>
+    <% Post::TIME_TAGS.each do |time| %>
+      <div class="form-check form-check-inline">
+        <%= check_box_tag "post[time_tag_names][]", time, @post.time_tag_names.include?(time), id: "time_#{time}", class: "form-check-input" %>
+        <%= label_tag "time_#{time}", time, class: "form-check-label" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :congestion, "混雑情報", class: "form-label small" %>
+    <%= f.number_field :congestion, class: "form-control arude-input", placeholder: "例：平日は空いている" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :price, "料金", class: "form-label small" %>
+    <%= f.number_field :price, class: "form-control arude-input" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :caution, "注意事項", class: "form-label small" %>
+    <%= f.text_area :caution, rows: 2, class: "form-control arude-input" %>
+  </div>
+
+  <div class="mb-3">
+    <div class="form-label">場所（地図から選択してピンを立ててください）</div>
+    <div id="post-map-picker" class="post-map-picker rounded-3 mb-2"></div>
+    <%= f.hidden_field :latitude, id: "post_latitude" %>
+    <%= f.hidden_field :longitude, id: "post_longitude" %>
+    <button type="button" id="use-current-location" class="btn btn-sm arude-btn-secondary">現在地を使う</button>
+  </div>
+
+  <div class="mb-5">
+    <%= f.label :photos, "写真", class: "form-label small" %>
+    <%= f.file_field :photos, multiple: true, class: "form-control arude-input" %>
+  </div>
+
+  <%= f.submit @post.persisted? ? "更新する" : "投稿する", class: "btn w-100 rounded-3 py-2 arude-btn-primary mb-5" %>
+<% end %>
