@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   resource :session, path: "", path_names: { new: 'sign_in'}
   resources :passwords, param: :token
   resources :users, only: [:create, :index, :show]
+  resources :posts do
+    resources :comments, only: %i[create destroy]
+    resources :visits, only: %i[new create]
+    resources :bookmarks, only: %i[create destroy]
+  end
   get "sign_up", to: "users#new", as: :new_user
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

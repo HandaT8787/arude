@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_posts, through: :bookmarks, source: :post
   has_many :reports, dependent: :destroy
+  has_many :residences, dependent: :destroy
 
   # グループ
   has_many :group_memberships, dependent: :destroy
@@ -25,4 +26,12 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
+  def current_residence
+    residences.current.first
+  end
+
+  def move_to!(prefecture:, city:, started_on: Date.current)
+    current_residence&.update!(ended_on: started_on - 1.day)
+    residences.create!(prefecture: prefecture, city: city, started_on: started_on)
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_03_165255) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_04_082107) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -103,6 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_165255) do
     t.string "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "local_years_at_post"
     t.index ["group_id"], name: "index_posts_on_group_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -125,6 +126,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_165255) do
     t.index ["comment_id"], name: "index_reports_on_comment_id"
     t.index ["user_id", "comment_id"], name: "index_reports_on_user_id_and_comment_id", unique: true
     t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
+  create_table "residences", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "prefecture", null: false
+    t.string "city", null: false
+    t.date "started_on", null: false
+    t.date "ended_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_residences_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -152,9 +164,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_165255) do
     t.string "name", default: "", null: false
     t.string "username", default: "", null: false
     t.text "bio"
-    t.string "prefecture"
-    t.string "city"
-    t.integer "local_years"
     t.boolean "is_admin", default: false, null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
@@ -186,6 +195,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_165255) do
   add_foreign_key "ratings", "visits"
   add_foreign_key "reports", "comments"
   add_foreign_key "reports", "users"
+  add_foreign_key "residences", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "visits", "posts"
   add_foreign_key "visits", "users"

@@ -127,3 +127,46 @@ body {
 .arude-link-accent {
   color: var(--arude-secondary);
 }
+
+.badge-local {
+  background: var(--arude-primary);
+  color: #fff;
+}
+
+.badge-feature {
+  background: var(--arude-secondary);
+  color: var(--arude-ink);
+}
+
+.badge-time {
+  background: var(--arude-yellow);
+  color: var(--arude-ink);
+}
+
+.comment-bubble {
+  background: var(--arude-bg);
+  border: 1px solid var(--arude-ink-border);
+}
+
+.post-thumb {
+  height: 160px;
+  object-fit: cover;
+}
+
+.post-thumb-placeholder {
+  height: 160px;
+}
+
+.post-carousel-img {
+  max-height: 320px;
+  object-fit: cover;
+}
+
+.post-map {
+  height: 240px;
+}
+
+.post-map-picker {
+  height: 280px;
+}
+
