@@ -13,6 +13,7 @@ document.addEventListener("turbo:load", function() {
   const map = new google.maps.Map(mapEl, {
     center: { lat: initialLat, lng: initialLng },
     zoom: 15,
+    mapTypeControl: false,
   });
 
   let marker = null;

@@ -46,26 +46,34 @@
       <div id="post-map" data-lat="<%= @post.latitude %>" data-lng="<%= @post.longitude %>" class="post-map rounded-3 mb-3"></div>
 
       <!-- ログイン済みであれば行ってみたい、行ってみた機能を表示 -->
-      <div class="d-flex gap-2 mb-4">
-        <% if current_user %>
-          <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
-            <%= button_to "行ってみたい済み", post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary" %>
+      <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex gap-2">
+          <% if current_user %>
+            <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
+              <%= button_to "行ってみたい済み", post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary" %>
+            <% else %>
+              <%= button_to "行ってみたい", post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" %>
+            <% end %>
+            <%= link_to "行ってみた", new_post_visit_path(@post), class: "btn arude-btn-primary" %>
           <% else %>
-            <%= button_to "行ってみたい", post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" %>
+            <%= link_to "ログインして行ってみたい登録", new_session_path, class: "btn arude-btn-secondary" %>
           <% end %>
-          <%= link_to "行ってみた", new_post_visit_path(@post), class: "btn arude-btn-primary" %>
-        <% else %>
-          <%= link_to "ログインして行ってみたい登録", new_session_path, class: "btn arude-btn-secondary" %>
-        <% end %>
-      </div>
-      
-      <!-- 投稿者であれば表示 -->
-      <% if current_user && current_user == @post.user %>
-        <div class="mb-4">
-          <%= link_to "編集する", edit_post_path(@post), class: "btn btn-outline-secondary btn-sm" %>
-          <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-outline-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
         </div>
-      <% end %>
+      
+        <!-- 投稿者であれば表示 -->
+        <div>
+          <% if current_user && current_user == @post.user %>
+            <div class="d-flex gap-2">
+              <div>
+                <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm" %>
+              </div>
+              <div>
+                <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
 
       <hr>
       

@@ -82,5 +82,6 @@ class Post < ApplicationRecord
 
   def tags_count_within_limit
     if tags.where(tag_type: "feature").size > 10
+    end
   end
 end

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   allow_unauthenticated_access only: [:new, :create]
+
   def new
     @user = User.new
   end
@@ -8,14 +9,52 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       start_new_session_for @user
-      redirect_to root_path, notice: "登録が完了しました。"
+      redirect_to root_path, notice: "登録が完了しました"
     else
       render :new, status: :unprocessable_entity
     end
   end
 
+  def mypage
+    @posts = current_user.posts.order(created_at: :desc)
+    @bookmarked_posts = current_user.bookmarked_posts.order(created_at: :desc)
+  end
+
+  def edit
+  end
+
+  def update
+    if current_user.update(profile_params)
+      update_residence_if_changed
+      redirect_to mypage_path, notice: "プロフィールを更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    current_user.destroy
+    terminate_sessison
+    redirect_to root_path, notice: "退会が完了しました"
+  end
+
   private
   def user_params
     params.require(:user).permit(:email_address, :name, :username, :password, :password_confirmation)
+  end
+
+  def profile_params
+    params.require(:user).permit(:name, :username, :bio)
+  end
+
+  def update_residence_if_changed
+    prefecture = params[:user][:prefecture]
+    city = params[:user][:city]
+    return if prefecture.blank? || city.blank?
+
+    current = current_user.current_residence
+    return if current&.prefecture == prefecture && current&.city == city
+
+    current_user.move_to!(prefecture: prefecture, city: city)
   end
 end
