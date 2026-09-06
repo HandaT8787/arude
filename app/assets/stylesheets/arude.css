@@ -192,7 +192,14 @@ body {
 .post-carousel-img {
   width: 100%;
   height: 320px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: var(--arude-bg);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.post-carousel-img:hover {
+  opacity: 0.85;
 }
 
 .post-map {
@@ -203,3 +210,13 @@ body {
   height: 400px;
 }
 
+.post-photo-modal-content {
+  background: transparent;
+  border: none;
+}
+
+.post-photo-modal-image {
+  width: 100%;
+  object-fit: contain;
+  max-height: 80vh;
+}

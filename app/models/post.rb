@@ -63,6 +63,11 @@ class Post < ApplicationRecord
     tags.where(tag_type: "time").pluck(:name)
   end
 
+  def thumbnail(width, height)
+    return nil unless photos.attached?
+    photos.first.variant(resize_to_limit: [width, height]).processed
+  end
+
   private
 
   def time_tag_records

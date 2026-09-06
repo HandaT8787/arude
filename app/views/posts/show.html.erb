@@ -4,15 +4,27 @@
       <% if @post.photos.attached? %>
         <div class="swiper post-swiper mb-3">
           <div class="swiper-wrapper">
-            <% @post.photos.each do |photo| %>
+            <% @post.photos.each_with_index do |photo, i| %>
               <div class="swiper-slide">
-                <%= image_tag photo, class: "d-block w-100 post-carousel-img" %>
+                <%= image_tag photo.variant(resize_to_limit: [800, 800]),
+                      class: "d-block w-100 post-carousel-img",
+                      data: { bs_toggle: "modal", bs_target: "#photoModal", index: i } %>
               </div>
             <% end %>
           </div>
           <div class="swiper-pagination"></div>
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
+        </div>
+
+        # 拡大表示用
+        <div class="modal fade" id="photoModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centerd modal-lg">
+            <div class="modal-content post-photo-modal-content">
+              <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
+              <img id="photoModalImage" src="" class="post-photo-modal-image">
+            </div>
+          </div>
         </div>
       <% end %>
 
