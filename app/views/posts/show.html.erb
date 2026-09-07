@@ -2,6 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-md-7">
       <% if @post.photos.attached? %>
+      <div class="swiper-area">
         <div class="swiper post-swiper mb-3">
           <div class="swiper-wrapper">
             <% @post.photos.each_with_index do |photo, i| %>
@@ -12,12 +13,12 @@
               </div>
             <% end %>
           </div>
-          <div class="swiper-pagination"></div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
         </div>
+        <div class="swiper-pagination"></div>
+      </div>
 
-        # 拡大表示用
+
+        <!-- 拡大表示用モーダル -->
         <div class="modal fade" id="photoModal" tabindex="-1">
           <div class="modal-dialog modal-dialog-centerd modal-lg">
             <div class="modal-content post-photo-modal-content">
@@ -94,7 +95,7 @@
       <% if current_user %>
         <%= form_with model: [@post, Comment.new], local: true, class: "mb-3" do |f| %>
           <div class="mb-2">
-            <%= f.text_area :body, class: "form-control arude-input", rows: 2, placeholder: "コメントを残す（匿名で表示されます）" %>
+            <%= f.text_area :body, class: "form-control arude-input mb-3", rows: 3, placeholder: "コメントを残す（匿名で表示されます）" %>
           </div>
           <%= f.submit "投稿する", class: "btn btn-sm arude-btn-primary" %>
         <% end %>

@@ -220,3 +220,8 @@ body {
   object-fit: contain;
   max-height: 80vh;
 }
+
+.swiper-area .swiper-pagination {
+  position: static;
+  margin-top: 8px;
+}
