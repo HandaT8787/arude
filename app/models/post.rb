@@ -31,6 +31,9 @@ class Post < ApplicationRecord
   validates :latitude, presence: true
   validates :longitude, presence: true
 
+  # 投稿のタグ数の制限
+  validate :tags_count_within_limit
+
   TIME_TAGS = %w[朝 昼 夕方 夜].freeze
 
   # 地元歴
@@ -60,6 +63,11 @@ class Post < ApplicationRecord
     tags.where(tag_type: "time").pluck(:name)
   end
 
+  def thumbnail(width, height)
+    return nil unless photos.attached?
+    photos.first.variant(resize_to_limit: [width, height]).processed
+  end
+
   private
 
   def time_tag_records
@@ -75,5 +83,10 @@ class Post < ApplicationRecord
     return if residence.nil?
 
     self.local_years_at_post = residence.years_at
+  end
+
+  def tags_count_within_limit
+    if tags.where(tag_type: "feature").size > 10
+    end
   end
 end

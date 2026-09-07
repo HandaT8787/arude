@@ -1,5 +1,5 @@
 :root {
-  --arude-bg: #FFF3D6;
+  --arude-bg: #FFF7E0;
   --arude-primary: #FF4B5C;
   --arude-primary-hover: #E23B4B;
   --arude-secondary: #2EC4B6;
@@ -11,6 +11,7 @@
   --arude-danger-text: #4A1B0C;
   --arude-success-bg: #2EC4B6;
   --arude-success-text: #04342C;
+  --arude-secondary-soft: #CDEEEA;
 }
 
 body {
@@ -22,13 +23,21 @@ body {
 }
 
 .arude-navbar {
-  background-color: var(--arude-green);
-  border-bottom: 2px solid var(--arude-ink-border);
+  background-color: #FFFDF7;
+  border-bottom: 3px solid var(--arude-yellow);
 }
 
 .arude-footer {
-  background-color: var(--arude-green);
-  color: var(--arude-ink);
+  background-color: var(--arude-ink);
+  color: #fff;
+}
+
+.arude-footer a {
+  color: var(--arude-yellow);
+}
+
+.arude-footer a:hover {
+  color: #fff;
 }
 
 .arude-bg {
@@ -52,6 +61,7 @@ body {
   width: 32px;
   height: 32px;
   background: var(--arude-primary);
+  box-shadow: 0 1px 3px rgba(51, 38, 30, 0.25);
 }
 
 .arude-logo-circle-sm i {
@@ -66,6 +76,13 @@ body {
   border-radius: 999px;
   padding: 4px 14px 4px 6px;
   text-decoration: none;
+  box-shadow: 0 2px 6px rgba(51, 38, 30, 0.15);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.arude-logo-badge:hover {
+  box-shadow: 0 4px 10px rgba(51, 38, 30, 0.2);
+  transform: translateY(-1px);
 }
 
 .arude-navbar .nav-link {
@@ -73,7 +90,7 @@ body {
 }
 
 .arude-navbar .nav-link:hover {
-  color: #fff;
+  color: var(--arude-primary);
 }
 
 .arude-logo-title {
@@ -117,11 +134,26 @@ body {
   background: var(--arude-primary);
   color: #fff;
   font-family: 'M PLUS Rounded 1c', sans-serif;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .arude-btn-primary:hover {
   background: var(--arude-primary-hover);
   color: #fff;
+}
+
+.arude-btn-secondary {
+  background: #fff;
+  color: var(--arude-ink);
+  border: 1px solid var(--arude-ink-border);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.arude-btn-secondary:hover {
+  background: var(--arude-secondary);
+  color: #fff;
+  border-color: var(--arude-secondary);
 }
 
 .arude-link-accent {
@@ -144,7 +176,7 @@ body {
 }
 
 .comment-bubble {
-  background: var(--arude-bg);
+  background: #fff; /* ターコイズを薄めたトーン */
   border: 1px solid var(--arude-ink-border);
 }
 
@@ -158,15 +190,38 @@ body {
 }
 
 .post-carousel-img {
-  max-height: 320px;
-  object-fit: cover;
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  background-color: var(--arude-bg);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.post-carousel-img:hover {
+  opacity: 0.85;
 }
 
 .post-map {
-  height: 240px;
+  height: 400px;
 }
 
 .post-map-picker {
-  height: 280px;
+  height: 400px;
 }
 
+.post-photo-modal-content {
+  background: transparent;
+  border: none;
+}
+
+.post-photo-modal-image {
+  width: 100%;
+  object-fit: contain;
+  max-height: 80vh;
+}
+
+.swiper-area .swiper-pagination {
+  position: static;
+  margin-top: 8px;
+}

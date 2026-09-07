@@ -5,8 +5,10 @@
     <% @posts.each do |post| %>
       <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm mb-2">
-          <% if post.photos.attached? %>
-            <%= image_tag post.photos.first, class: "card-img-top post-thumb" %>
+          <% if thumb = post.thumbnail(400, 400) %>
+            <%= link_to post_path(post) do %>
+              <%= image_tag thumb, class: "card-img-top post-thumb" %>
+            <% end %>
           <% else %>
             <div class="bg-light d-flex align-items-center justify-content-center post-thumb-placeholder card-img-top">
               <i class="fa-solid fa-image text-secondary fs-2"></i>
