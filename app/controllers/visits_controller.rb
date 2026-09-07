@@ -1,5 +1,11 @@
 class VisitsController < ApplicationController
+  allow_unauthenticated_access only: %i[index]
+
   before_action :set_post
+
+  def index
+    @visits = @post.visits.order(visited_at: :desc).page(params[:page]).per(5)
+  end
 
   def new
     @visit = @post.visits.build
@@ -26,8 +32,8 @@ class VisitsController < ApplicationController
   end
 
   def visit_params
-    params.requier(:visit).permit(
-      :impression, :visited_at, :photos[],
+    params.require(:visit).permit(
+      :impression, :visited_at, photos: [],
       ratings_attributes: [:category, :score]
     )
   end

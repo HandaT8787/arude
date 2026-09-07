@@ -1,0 +1,70 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <h1 class="fs-3 mb-1"><%= @post.title %></h1>
+      <p class="text-muted small mb-4">行ってみた記録（<%= @visits.total_count %>件）</p>
+
+      <% if @visits.any? %>
+        <% @visits.each do |visit| %>
+          <div class="p-3 mb-3 rounded-3 comment-bubble">
+            <% if visit.photos.count > 1 %>
+              <div class="swiper-area">
+                <div class="swiper visit-swiper mb-3">
+                  <div class="swiper-wrapper">
+                    <% visit.photos.each do |photo| %>
+                      <div class="swiper-slide">
+                        <%= image_tag photo.variant(resize_to_limit: [500, 500]),
+                              class: "visit-photo-thumb js-photo-modal-trigger",
+                              data: { bs_toggle: "modal", bs_target: "#photoModal" } %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-button-next"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+              </div>
+            <% elsif visit.photos.attached? %>
+              <%= image_tag visit.photos.first.variant(resize_to_limit: [300, 300]), 
+                    class: "visit-photo-thumb js-photo-modal-trigger mb-2",
+                    data: { bs_toggle: "modal", bs_target: "#photoModal" } %>
+            <% end %>
+
+            <p class="mb-3 text-center"><%= visit.impression %></p>
+
+            <% if visit.ratings.any? %>
+              <div class="row g-2 mb-3">
+                <% visit.ratings.each do |rating| %>
+                  <div class="col-4 text-center">
+                    <div class="small text-muted mb-0"><%= rating.category %></div>
+                    <div class="rating-star-readonly" data-score="<%= rating.score %>"></div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+
+            <p class="text-muted small mb-0"><%= visit.visited_at&.strftime("%Y/%m/%d %H:%M") %>に訪問</p>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-muted">まだ行ってみた記録がありません</p>
+      <% end %>
+
+      <div class="d-flex justify-content-center mb-4">
+        <%= paginate @visits %>
+      </div>
+
+      <!-- 拡大表示用モーダル -->
+        <div class="modal fade" id="photoModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content post-photo-modal-content">
+              <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
+              <img id="photoModalImage" src="" class="post-photo-modal-image">
+            </div>
+          </div>
+        </div>
+        
+      <%= link_to "投稿詳細に戻る", post_path(@post), class: "btn arude-btn-tertiary btn-sm" %>
+    </div>
+  </div>
+</div>
