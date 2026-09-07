@@ -7,5 +7,5 @@ class Visit < ApplicationRecord
 
   validates: visited_at, presence: true
 
-  accepts_nested_attributes_for :ratings
+  accepts_nested_attributes_for :ratings, reject_if: ->(attrs) { attrs["score"].blank? }
 end
