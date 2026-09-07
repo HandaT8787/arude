@@ -156,6 +156,20 @@ body {
   border-color: var(--arude-secondary);
 }
 
+.arude-btn-secondary-active {
+  background: var(--arude-secondary);
+  color: #fff;
+  border: 1px solid var(--arude-ink-border);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.arude-btn-secondary-active:hover {
+  background: #26B0A3;
+  color: #fff;
+  border-color: #26B0A3;
+}
+
 .arude-link-accent {
   color: var(--arude-secondary);
 }

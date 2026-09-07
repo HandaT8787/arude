@@ -63,13 +63,19 @@
         <div class="d-flex gap-2">
           <% if current_user %>
             <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
-              <%= button_to "行ってみたい済み", post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary" %>
+              <%= button_to post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary-active" do %>
+                <i class="fa-solid fa-bookmark"></i> 行きたい済
+              <% end %>
             <% else %>
-              <%= button_to "行ってみたい", post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" %>
+              <%= button_to post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" do %>
+                <i class="fa-regular fa-bookmark"></i> 行きたい
+              <% end %>
             <% end %>
-            <%= link_to "行ってみた", new_post_visit_path(@post), class: "btn arude-btn-primary" %>
+            <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary" do %>
+              <i class="fa-solid fa-person-running"></i> 行ってみた
+            <% end %>
           <% else %>
-            <%= link_to "ログインして行ってみたい登録", new_session_path, class: "btn arude-btn-secondary" %>
+            <%= link_to "ログインして行きたい登録", new_session_path, class: "btn arude-btn-secondary" %>
           <% end %>
         </div>
       
