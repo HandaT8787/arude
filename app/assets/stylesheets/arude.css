@@ -309,6 +309,27 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
+.group-member-table td,
+.group-member-table th {
+  border-bottom: 1px solid var(--arude-ink-border);
+}
+
+.group-member-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+th.group-member-table-header {
+  background-color: var(--arude-secondary-soft);
+  color: var(--arude-ink);
+}
+
+.group-table-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(51, 38, 30, 0.08);
+}
+
 @media (min-width: 768px) {
   .swiper-button-prev,
   .swiper-button-next {

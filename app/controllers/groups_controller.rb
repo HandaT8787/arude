@@ -7,6 +7,7 @@ class GroupsController < ApplicationController
   end
 
   def show
+    @my_membership = @group.group_memberships.find_by(user: current_user)
   end
 
   def new
