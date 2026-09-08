@@ -1,8 +1,8 @@
-<%= form_with model: @post, local: true do |f| %>
-  <% if @post.errors.any? %>
+<%= form_with model: post, local: true do |f| %>
+  <% if post.errors.any? %>
     <div class="alert arude-alert-danger rounded-3">
       <ul class="mb-0 ps-3">
-        <% @post.errors.full_messages.each do |message| %>
+        <% post.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -29,7 +29,7 @@
   <%= f.label :tag_names, "タグ", class: "form-label small" %>
 
   <div class="mb-2" data-tag-picker-target="selectedList">
-    <% @post.tags.where(tag_type: "feature").each do |tag| %>
+    <% post.tags.where(tag_type: "feature").each do |tag| %>
       <span class="badge rounded-pill badge-feature me-1" data-tag-picker-target="chip" data-tag-name="<%= tag.name %>">
         <%= tag.name %>
         <span class="ms-1" data-action="click->tag-picker#remove" style="cursor:pointer;">×</span>
@@ -53,7 +53,7 @@
     <div class="form-label small">おすすめ時間帯</div>
     <% Post::TIME_TAGS.each do |time| %>
       <div class="form-check form-check-inline">
-        <%= check_box_tag "post[time_tag_names][]", time, @post.time_tag_names.include?(time), id: "time_#{time}", class: "form-check-input" %>
+        <%= check_box_tag "post[time_tag_names][]", time, post.time_tag_names.include?(time), id: "time_#{time}", class: "form-check-input" %>
         <%= label_tag "time_#{time}", time, class: "form-check-label" %>
       </div>
     <% end %>
@@ -87,5 +87,5 @@
     <%= f.file_field :photos, multiple: true, class: "form-control arude-input" %>
   </div>
 
-  <%= f.submit @post.persisted? ? "更新する" : "投稿する", class: "btn w-100 rounded-3 py-2 arude-btn-primary mb-5" %>
+  <%= f.submit post.persisted? ? "更新する" : "投稿する", class: "btn w-100 rounded-3 py-2 arude-btn-primary mb-5" %>
 <% end %>
