@@ -1,0 +1,65 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 class="fs-3 mb-1">
+        <i class="fa-solid fa-person-running"></i>
+        行ってみたを記録する
+      </h1>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted small"><%= @post.title %></span>
+        <%= link_to "投稿詳細に戻る", post_path(@post), class: "btn btn-sm arude-btn-tertiary" %>
+      </div>
+
+      <%= form_with model: [@post, @visit], local: true do |f| %>
+        <% if @visit.errors.any? %>
+          <div class="alert arude-alert-danger rounded-3">
+            <ul class="mb-0 ps-3">
+              <% @visit.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="visit-form-section mb-3">
+          <div class="visit-form-label mb-2">
+            <i class="fa-solid fa-calendar-days"></i> 訪問日時
+          </div>
+          <%= f.datetime_field :visited_at, class: "form-control arude-input" %>
+        </div>
+
+        <div class="visit-form-section mb-3">
+          <div class="visit-form-label mb-2">
+            <i class="fa-solid fa-pen"></i> 感想
+          </div>
+          <%= f.text_area :impression, rows: 5, class: "form-control arude-input", placeholder: "行ってみてどうでしたか？" %>
+        </div>
+
+        <div class="visit-form-section mb-4">
+          <div class="visit-form-label mb-2">
+            <i class="fa-solid fa-camera"></i> 写真
+          </div>
+          <%= f.file_field :photos, multiple: true, class: "form-control arude-input" %>
+        </div>
+
+        <div class="visit-form-section mb-4">
+          <div class="visit-form-label">
+            <i class="fa-solid fa-star"></i> 項目別評価（任意）
+          </div>
+          <%= f.fields_for :ratings do |rating_form| %>
+            <div class="visit-rating-row d-flex align-items-center justify-content-between">
+              <%= rating_form.hidden_field :category %>
+              <span class="small fw-medium"><%= rating_form.object.category %></span>
+              <div class="rating-star" data-score-field="rating_<%= rating_form.index %>_score"></div>
+              <%= rating_form.hidden_field :score, id: "rating_#{rating_form.index}_score", class: "rating-score-input" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="text-center">
+          <%= f.submit "記録する", class: "btn w-50 rounded-3 py-2 arude-btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

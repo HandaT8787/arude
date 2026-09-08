@@ -2,32 +2,33 @@
   <div class="row justify-content-center">
     <div class="col-md-7">
       <% if @post.photos.attached? %>
-      <div class="swiper-area">
-        <div class="swiper post-swiper mb-3">
-          <div class="swiper-wrapper">
-            <% @post.photos.each_with_index do |photo, i| %>
-              <div class="swiper-slide">
-                <%= image_tag photo.variant(resize_to_limit: [800, 800]),
-                      class: "d-block w-100 post-carousel-img",
-                      data: { bs_toggle: "modal", bs_target: "#photoModal", index: i } %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-      </div>
-
-
-        <!-- 拡大表示用モーダル -->
-        <div class="modal fade" id="photoModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centerd modal-lg">
-            <div class="modal-content post-photo-modal-content">
-              <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
-              <img id="photoModalImage" src="" class="post-photo-modal-image">
+        <div class="swiper-area">
+          <div class="swiper post-swiper mb-3">
+            <div class="swiper-wrapper">
+              <% @post.photos.each do |photo| %>
+                <div class="swiper-slide">
+                  <%= image_tag photo.variant(resize_to_limit: [800, 800]),
+                        class: "d-block w-100 post-carousel-img js-photo-modal-trigger",
+                        data: { bs_toggle: "modal", bs_target: "#photoModal" } %>
+                </div>
+              <% end %>
             </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
           </div>
         </div>
       <% end %>
+
+      <!-- 拡大表示用モーダル -->
+      <div class="modal fade" id="photoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content post-photo-modal-content">
+            <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
+            <img id="photoModalImage" src="" class="post-photo-modal-image">
+          </div>
+        </div>
+      </div>
 
       <h1 class="fs-3 mb-1"><%= @post.title %></h1>
       <p class="text-muted small mb-2">
@@ -56,11 +57,23 @@
         <div class="alert arude-alert-danger rounded-3 small"><%= @post.caution %></div>
       <% end %>
 
+      <!-- 投稿者であれば表示 -->
+      <% if current_user && current_user == @post.user %>
+        <div class="d-flex gap-2 mb-3">
+          <div>
+            <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm" %>
+          </div>
+          <div>
+            <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+          </div>
+        </div>
+      <% end %>
+
       <div id="post-map" data-lat="<%= @post.latitude %>" data-lng="<%= @post.longitude %>" class="post-map rounded-3 mb-3"></div>
 
       <!-- ログイン済みであれば行ってみたい、行ってみた機能を表示 -->
-      <div class="d-flex justify-content-between mb-3">
-        <div class="d-flex gap-2">
+      <div class="mb-3">
+        <div class="d-flex gap-4 mb-3 justify-content-around">
           <% if current_user %>
             <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
               <%= button_to post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary-active" do %>
@@ -74,22 +87,11 @@
             <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary" do %>
               <i class="fa-solid fa-person-running"></i> 行ってみた
             <% end %>
+            <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary" do %>
+              <i class="fa-solid fa-address-book"></i> 行ってみた一覧
+            <% end %>
           <% else %>
             <%= link_to "ログインして行きたい登録", new_session_path, class: "btn arude-btn-secondary" %>
-          <% end %>
-        </div>
-      
-        <!-- 投稿者であれば表示 -->
-        <div>
-          <% if current_user && current_user == @post.user %>
-            <div class="d-flex gap-2">
-              <div>
-                <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm" %>
-              </div>
-              <div>
-                <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
-              </div>
-            </div>
           <% end %>
         </div>
       </div>
@@ -108,9 +110,16 @@
       <% end %>
 
       <% @post.comments.order(created_at: :desc).each do |comment| %>
-        <div class="p-2 mb-2 rounded-3 comment-bubble">
-          <p class="mb-1"><%= comment.body %></p>
-          <p class="text-muted small mb-0"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+        <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded-3 comment-bubble">
+          <div>
+            <p class="mb-1"><%= comment.body %></p>
+            <p class="text-muted small mb-0"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+          </div>
+          <% if current_user && (current_user.is_admin? || current_user == comment.user) %>
+            <div>
+              <%= button_to "削除する", post_comment_path(@post, comment), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+            </div>
+          <% end %>
         </div>
       <% end %>
 

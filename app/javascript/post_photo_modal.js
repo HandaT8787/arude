@@ -4,7 +4,7 @@ document.addEventListener("turbo:load", function() {
 
   const modalImage = document.getElementById("photoModalImage");
 
-  document.querySelectorAll(".post-carousel-img").forEach((img) => {
+  document.querySelectorAll(".js-photo-modal-trigger").forEach((img) => {
     img.addEventListener("click", function() {
       modalImage.src = img.src;
     });

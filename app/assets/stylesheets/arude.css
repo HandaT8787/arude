@@ -12,6 +12,7 @@
   --arude-success-bg: #2EC4B6;
   --arude-success-text: #04342C;
   --arude-secondary-soft: #CDEEEA;
+  --arude-secondary-hover: #26B0A3;
 }
 
 body {
@@ -165,9 +166,22 @@ body {
 }
 
 .arude-btn-secondary-active:hover {
-  background: #26B0A3;
+  background: var(--arude-secondary-hover);
   color: #fff;
-  border-color: #26B0A3;
+  border-color: var(--arude-secondary-hover);
+}
+
+.arude-btn-tertiary {
+  background: #fff;
+  color: var(--arude-ink);
+  border: 1px solid var(--arude-yellow);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.arude-btn-tertiary:hover {
+  background: var(--arude-yellow);
+  color: var(--arude-ink);
 }
 
 .arude-link-accent {
@@ -190,7 +204,7 @@ body {
 }
 
 .comment-bubble {
-  background: #fff; /* ターコイズを薄めたトーン */
+  background: #fff;
   border: 1px solid var(--arude-ink-border);
 }
 
@@ -235,7 +249,73 @@ body {
   max-height: 80vh;
 }
 
+.swiper-area .swiper {
+  --swiper-pagination-color: var(--arude-primary);
+}
+
 .swiper-area .swiper-pagination {
   position: static;
   margin-top: 8px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: none;
+}
+
+.visit-photo-thumb {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.visit-form-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 4px rgba(51, 38, 30, 0.08);
+}
+
+.visit-form-label {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 13px;
+  color: var(--arude-primary);
+  font-weight: 700;
+}
+
+.visit-form-label i {
+  margin-right: 4px;
+}
+
+.visit-rating-row {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--arude-ink-border);
+}
+
+.visit-rating-row:last-child {
+  border-bottom: none;
+}
+
+.arude-input[type="file"] {
+  font-size: 14px;
+}
+
+.arude-input[type="file"]::file-selector-button {
+  background: var(--arude-secondary);
+  color: #fff;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+@media (min-width: 768px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    color: var(--arude-primary);
+    --swiper-navigation-size: 16px;
+  }
 }

@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   resources :posts do
     resources :comments, only: %i[create destroy]
-    resources :visits, only: %i[new create]
+    resources :visits, only: %i[index new create]
     resources :bookmarks, only: %i[create destroy]
   end
   get "home", to: "homes#top", as: :home
