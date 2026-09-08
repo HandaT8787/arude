@@ -15,7 +15,7 @@
             </div>
           <% end %>
           <div class="card-body">
-            <h2 class="fs-6 mb-1"><%= link_to post.title, post_path(post), class: "text-decoration-non text-dark" %></h2>
+            <h2 class="fs-6 mb-1"><%= link_to post.title, post_path(post), class: "text-decoration-none text-dark" %></h2>
             <p class="text-muted small mb-2"><%= post.category %></p>
             <% if badge = post.local_badge %>
               <span class="badge rounded-pill badge-local fw-normal"><%= badge %></span>

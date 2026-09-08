@@ -2,8 +2,8 @@ class GroupMembership < ApplicationRecord
   belongs_to :user
   belongs_to :group
 
-  ROLES = %w[owner member].freeze
+  enum :role, { member: "member", owner: "owner" } 
 
-  validates :role, presence: true, inclusion: { in: ROLES }
+  validates :role, presence: true
   validates :user_id, uniqueness: { scope: :group_id }
 end
