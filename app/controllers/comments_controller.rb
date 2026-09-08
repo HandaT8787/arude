@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_post
+  before_action :require_comment_owner!, only: %i[destroy]
 
   def create
     @comment = @post.comments.build(comment_params)
@@ -13,13 +14,8 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    comment = @post.comments.find(params[:id])
-    if comment.user == current_user
-      comment.destroy
-      redirect_to @post, notice: "コメントを削除しました"
-    else
-      redirect_to @post, alert: "この操作はコメント投稿者のみ行えます"
-    end
+    @comment.destroy
+    redirect_to @post, notice: "コメントを削除しました"
   end
 
   private
@@ -30,5 +26,10 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def require_comment_owner!
+    @comment = @post.comments.find(params[:id])
+    redirect_to @post, alert: "この操作はコメント投稿者のみ行えます" unless @comment.user == current_user || current_user.is_admin?
   end
 end
