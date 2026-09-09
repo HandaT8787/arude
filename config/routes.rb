@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     resources :bookmarks, only: %i[create destroy]
   end
 
+  resources :searches, only: %i[index]
+
   resources :groups do
     resources :group_memberships, only: %i[create update destroy]
   end
