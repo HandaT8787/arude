@@ -13,6 +13,7 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    @my_groups = current_user.groups
   end
 
   def create
@@ -20,11 +21,13 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to @post, notice: "投稿しました"
     else
+      @my_groups = current_user.groups
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    @my_groups = current_user.groups
   end
 
   def update

@@ -87,5 +87,10 @@
     <%= f.file_field :photos, multiple: true, class: "form-control arude-input" %>
   </div>
 
+  <div class="mb-5">
+    <%= f.label :group_id, "投稿先", class: "form-label small" %>
+    <%= f.collection_select :group_id, @my_groups, :id, :name, { include_blank: "全体公開" }, class: "form-select arude-input" %>
+  </div>
+
   <%= f.submit post.persisted? ? "更新する" : "投稿する", class: "btn w-100 rounded-3 py-2 arude-btn-primary mb-5" %>
 <% end %>
