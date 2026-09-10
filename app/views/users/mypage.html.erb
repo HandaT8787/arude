@@ -1,0 +1,31 @@
+<p>名前: <%= current_user.name %></p>
+<p>ユーザー名: <%= current_user.username %></p>
+<p>自己紹介: <%= current_user.bio %></p>
+<% if current_user.groups.any? %>
+  <% current_user.groups.each do |group| %>
+    <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature" %>
+  <% end %>
+<% else %>
+  <span class="text-muted">どのグループにも参加していないようです</span>
+<% end %>
+
+<% if my_residence = current_user.current_residence %>
+  <div class="d-flex align-items-center gap-2">
+    <i class="fa-solid fa-location-dot"></i>
+    <span>
+      <%= my_residence.prefecture %> <%= my_residence.city %>
+    </span>
+    <span class="badge rounded-pill badge-local">近所歴:<%= my_residence.years_at %>年</span>
+  </div>
+  <% @past_residences.each do |residence| %>
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-location-dot"></i>
+      <span>
+        <%= residence.prefecture %> <%= residence.city %>
+      </span>
+      <span>
+        （<%= residence.started_on.strftime("%Y年%m月") %>～<%= residence.ended_on.strftime("%Y年%m月") %>）
+      </span>
+    </div>
+  <% end %>
+<% end %>

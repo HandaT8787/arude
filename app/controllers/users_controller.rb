@@ -16,8 +16,22 @@ class UsersController < ApplicationController
   end
 
   def mypage
-    @posts = current_user.posts.order(created_at: :desc)
-    @bookmarked_posts = current_user.bookmarked_posts.order(created_at: :desc)
+    @posts_count = current_user.posts.count
+    @bookmarked_posts_count = current_user.bookmarked_posts.count
+    @visits_count = current_user.visits.count
+    @past_residences = current_user.residences.past.order(started_on: :desc)
+  end
+
+  def posts
+    @posts = current_user.posts.order(created_at: :desc).page(params[:page]).per(12)
+  end
+
+  def bookmarks
+    @bookmarked_posts = current_user.bookmarked_posts.order(created_at: :desc).page(params[:page]).per(12)
+  end
+
+  def visits
+    @visits = current_user.visits.order(visited_at: :desc).page(params[:page]).per(12)
   end
 
   def edit

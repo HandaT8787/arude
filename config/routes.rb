@@ -6,9 +6,12 @@ Rails.application.routes.draw do
   resources :users, only: [:create]
   get "mypage", to: "users#mypage"
   get "mypage/edit", to: "users#edit", as: :edit_mypage
+  get "mypage/posts", to: "users#posts", as: :mypage_posts
+  get "mypage/bookmarks", to: "users#bookmarks", as: :mypage_bookmarks
+  get "mypage/visits", to: "users#visits", as: :mypage_visits
+  get "sign_up", to: "users#new", as: :new_user
   patch "mypage", to: "users#update"
   delete "mypage", to: "users#destroy"
-  get "sign_up", to: "users#new", as: :new_user
 
   resources :posts do
     resources :comments, only: %i[create destroy]
