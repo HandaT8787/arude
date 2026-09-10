@@ -100,6 +100,10 @@ body {
   text-decoration: none;
 }
 
+.arude-description {
+  font-family: 'Yusei Magic', sans-serif;
+}
+
 .arude-catch {
   background: var(--arude-yellow);
 }

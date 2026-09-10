@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h1 class="fs-3 mb-4 arude-logo-title">みんなのアルデー</h1>
+  <h1 class="fs-3 mb-4 arude-logo-title">検索結果のアルデー</h1>
   <%= form_with url: searches_path, method: :get, class: "d-flex gap-3 mb-3 justify-content-end" do %>
     <div>
       <%= text_field_tag :keyword, params[:keyword], placeholder: "検索キーワード", class: "form-control arude-input" %>
@@ -15,11 +15,11 @@
     </div>
   <% end %>
   <div class="row mb-3">
-    <% @posts.each do |post| %>
+    <% @results.each do |result| %>
       <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm mb-2">
-          <% if thumb = post.thumbnail(400, 400) %>
-            <%= link_to post_path(post) do %>
+          <% if thumb = result.thumbnail(400, 400) %>
+            <%= link_to post_path(result) do %>
               <%= image_tag thumb, class: "card-img-top post-thumb" %>
             <% end %>
           <% else %>
@@ -28,13 +28,13 @@
             </div>
           <% end %>
           <div class="card-body">
-            <h2 class="fs-6 mb-1"><%= link_to post.title, post_path(post), class: "text-decoration-none text-dark" %></h2>
-            <p class="text-muted small mb-2"><%= post.category %></p>
-            <% if badge = post.local_badge %>
+            <h2 class="fs-6 mb-1"><%= link_to result.title, post_path(result), class: "text-decoration-none text-dark" %></h2>
+            <p class="text-muted small mb-2"><%= result.category %></p>
+            <% if badge = result.local_badge %>
               <span class="badge rounded-pill badge-local fw-normal"><%= badge %></span>
             <% end %>
             <div class="mt-2">
-              <% post.tags.where(tag_type: "feature").each do |tag| %>
+              <% result.tags.where(tag_type: "feature").each do |tag| %>
                 <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
               <% end %>
             </div>
@@ -45,6 +45,6 @@
   </div>
 
   <div class="mt-4 d-flex justify-content-center">
-    <%= paginate @posts %>
+    <%= paginate @results %>
   </div>
 </div>
