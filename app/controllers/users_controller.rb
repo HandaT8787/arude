@@ -34,6 +34,18 @@ class UsersController < ApplicationController
     @visits = current_user.visits.order(visited_at: :desc).page(params[:page]).per(12)
   end
 
+  def show
+    @target_user = User.find(params[:id])
+    if @target_user == current_user
+      redirect_to mypage_path
+    else
+      @shared_groups = current_user.groups & @target_user.groups
+      if @shared_groups.any?
+        @shared_posts = @target_user.posts.where(group: @shared_groups)
+      end
+    end
+  end
+
   def edit
   end
 

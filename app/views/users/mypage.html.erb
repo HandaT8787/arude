@@ -1,31 +1,92 @@
-<p>名前: <%= current_user.name %></p>
-<p>ユーザー名: <%= current_user.username %></p>
-<p>自己紹介: <%= current_user.bio %></p>
-<% if current_user.groups.any? %>
-  <% current_user.groups.each do |group| %>
-    <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature" %>
-  <% end %>
-<% else %>
-  <span class="text-muted">どのグループにも参加していないようです</span>
-<% end %>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <h1 class="fs-3 mb-4">マイページ</h1>
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="mb-2">
+          <span>名前: </span>
+          <span><%= current_user.name %></span>
+        </div>
+        <div>
+          <%= link_to "プロフィール編集", edit_mypage_path, class: "btn arude-btn-secondary btn-sm" %>
+        </div>
+      </div>
+      <div class="mb-2">
+        <span>ユーザー名: </span>
+        <span><%= current_user.username %></span>
+      </div>
+      <div class="mb-2">
+        <span>自己紹介: </span>
+        <span><%= current_user.bio %></span>
+      </div>
 
-<% if my_residence = current_user.current_residence %>
-  <div class="d-flex align-items-center gap-2">
-    <i class="fa-solid fa-location-dot"></i>
-    <span>
-      <%= my_residence.prefecture %> <%= my_residence.city %>
-    </span>
-    <span class="badge rounded-pill badge-local">近所歴:<%= my_residence.years_at %>年</span>
-  </div>
-  <% @past_residences.each do |residence| %>
-    <div class="d-flex align-items-center gap-2">
-      <i class="fa-solid fa-location-dot"></i>
-      <span>
-        <%= residence.prefecture %> <%= residence.city %>
-      </span>
-      <span>
-        （<%= residence.started_on.strftime("%Y年%m月") %>～<%= residence.ended_on.strftime("%Y年%m月") %>）
-      </span>
+      <% if current_user.groups.any? %>
+        <div class="mb-2">
+          <span>所属グループ: </span>
+          <% current_user.groups.each do |group| %>
+            <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature mb-3 text-decoration-none" %>
+          <% end %>
+        </div>
+      <% else %>
+          <span class="text-muted mb-2">どのグループにも参加していないようです</span>
+      <% end %>
+
+
+
+
+      <% if my_residence = current_user.current_residence %>
+        <div class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>
+            <%= my_residence.prefecture %> <%= my_residence.city %>
+          </span>
+          <span class="badge rounded-pill badge-local">近所歴:<%= my_residence.years_at %>年</span>
+        </div>
+        <% @past_residences.each do |residence| %>
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>
+              <%= residence.prefecture %> <%= residence.city %>
+            </span>
+            <span>
+              （<%= residence.started_on.strftime("%Y年%m月") %>～<%= residence.ended_on.strftime("%Y年%m月") %>）
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+
+      <div class="row text-center g-2 mb-4">
+        <div class="col-4">
+          <%= link_to mypage_posts_path, class: "text-decoration-none text-dark" do %>
+            <div class="p-3 rounded-3 comment-bubble">
+              <i class="fa-solid fa-book fs-4"></i>
+              <div class="small mt-1">投稿</div>
+              <div class="fw-bold"><%= @posts_count %>件</div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-4">
+          <%= link_to mypage_bookmarks_path, class: "text-decoration-none text-dark" do %>
+            <div class="p-3 rounded-3 comment-bubble">
+              <i class="fa-regular fa-bookmark fs-4"></i>
+              <div class="small mt-1">行きたい</div>
+              <div class="fw-bold"><%= @bookmarked_posts_count %>件</div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-4">
+          <%= link_to mypage_visits_path, class: "text-decoration-none text-dark" do %>
+            <div class="p-3 rounded-3 comment-bubble">
+              <i class="fa-solid fa-person-running fs-4"></i>
+              <div class="small mt-1">行ってみた</div>
+              <div class="fw-bold"><%= @visits_count %>件</div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="text-center">
+        <%= button_to "退会する", mypage_path, method: :delete, class: "btn btn-outline-danger btn-sm", data: { turbo_confirm: "本当に退会しますか？この操作は取り消せません" } %>
+      </div>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>

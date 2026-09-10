@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resource :session, path: "", path_names: { new: 'sign_in'}
   resources :passwords, param: :token
 
-  resources :users, only: [:create]
+  resources :users, only: %i[create show]
   get "mypage", to: "users#mypage"
   get "mypage/edit", to: "users#edit", as: :edit_mypage
   get "mypage/posts", to: "users#posts", as: :mypage_posts
