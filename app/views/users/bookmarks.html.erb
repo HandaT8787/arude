@@ -1,0 +1,17 @@
+<div class="container py-4">
+  <h1 class="fs-3 mb-1 arude-logo-title">行ってみたいアルデー</h1>
+  <% if @bookmarked_posts.any? %>
+    <p class="text-muted fs-6 mb-4 arude-description">気になるとこ多すぎて迷うなぁ！</p>
+  <% else %>
+    <p class="text-muted fs-6 mb-4 arude-description">行ってみたいとこある？</p>
+    <p class="text-muted">まだ行ってみた記録がありません</p>
+  <% end %>
+
+  <div class="row mb-3">
+    <%= render partial: "posts/post_card", collection: @bookmarked_posts, as: :post %>
+  </div>
+  
+  <div class="mt-4 d-flex justify-content-center">
+    <%= paginate @bookmarked_posts %>
+  </div>
+</div>

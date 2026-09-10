@@ -1,12 +1,12 @@
 <div class="container py-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
-      <h1 class="fs-3 mb-1"><%= @post.title %></h1>
-      <p class="text-muted small mb-4">行ってみた記録（<%= @visits.total_count %>件）</p>
-
+      <h1 class="fs-3 mb-1 arude-logo-title">行ってみたアルデー</h1>
       <% if @visits.any? %>
-        <%= render partial: "visit_card", collection: @visits, as: :visit %>
+        <p class="text-muted fs-6 mb-4 arude-description">そこ行ったんや！ええなぁ！</p>
+        <%= render partial: "visits/visit_card", collection: @visits, as: :visit %>
       <% else %>
+        <p class="text-muted fs-6 mb-4 arude-description">どこから攻める？</p>
         <p class="text-muted">まだ行ってみた記録がありません</p>
       <% end %>
 
@@ -23,8 +23,9 @@
             </div>
           </div>
         </div>
-        
-      <%= link_to "投稿詳細に戻る", post_path(@post), class: "btn arude-btn-tertiary btn-sm", data: { turbo: false } %>
     </div>
+  </div>
+  <div class="mt-4 d-flex justify-content-center">
+    <%= paginate @visits %>
   </div>
 </div>
