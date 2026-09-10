@@ -1,25 +1,32 @@
 <div class="container py-4">
   <h1 class="fs-3 mb-4 arude-logo-title">みんなのアルデー</h1>
-  <%= form_with url: searches_path, method: :get, class: "d-flex gap-3 mb-3 justify-content-end" do %>
-    <div>
-      <%= text_field_tag :keyword, params[:keyword], placeholder: "検索キーワード", class: "form-control arude-input" %>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="mb-3">
+      <% if current_user %>
+        <%= link_to "アルデー作成", new_post_path, class: "btn arude-btn-primary", data: { turbo: false } %>
+      <% end %>
     </div>
-    <div>
-      <%= select_tag :category, options_for_select(["公園", "景色", "自然", "写真スポット", "ベンチ", "神社・歴史", "散歩スポット"], params[:category]), include_blank: "検索カテゴリ", class: "form-select arude-input" %>
-    </div>
-    <div>
-      <%= text_field_tag :tag_name, params[:tag_name], placeholder: "検索タグ", class: "form-control arude-input" %>
-    </div>
-    <div>
-      <%= submit_tag "検索", class: "btn arude-btn-secondary" %>
-    </div>
-  <% end %>
+    <%= form_with url: searches_path, method: :get, class: "d-flex gap-3 mb-3 justify-content-end" do %>
+      <div>
+        <%= text_field_tag :keyword, params[:keyword], placeholder: "検索キーワード", class: "form-control arude-input" %>
+      </div>
+      <div>
+        <%= select_tag :category, options_for_select(["公園", "景色", "自然", "写真スポット", "ベンチ", "神社・歴史", "散歩スポット"], params[:category]), include_blank: "検索カテゴリ", class: "form-select arude-input" %>
+      </div>
+      <div>
+        <%= text_field_tag :tag_name, params[:tag_name], placeholder: "検索タグ", class: "form-control arude-input" %>
+      </div>
+      <div>
+        <%= submit_tag "検索", class: "btn arude-btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
   <div class="row mb-3">
     <% @posts.each do |post| %>
       <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm mb-2">
           <% if thumb = post.thumbnail(400, 400) %>
-            <%= link_to post_path(post) do %>
+            <%= link_to post_path(post), data: { turbo: false } do %>
               <%= image_tag thumb, class: "card-img-top post-thumb" %>
             <% end %>
           <% else %>
@@ -28,7 +35,7 @@
             </div>
           <% end %>
           <div class="card-body">
-            <h2 class="fs-6 mb-1"><%= link_to post.title, post_path(post), class: "text-decoration-none text-dark" %></h2>
+            <h2 class="fs-6 mb-1"><%= link_to post.title, post_path(post), class: "text-decoration-none text-dark", data: { turbo: false } %></h2>
             <p class="text-muted small mb-2"><%= post.category %></p>
             <% if badge = post.local_badge %>
               <span class="badge rounded-pill badge-local fw-normal"><%= badge %></span>
