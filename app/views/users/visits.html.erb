@@ -1,0 +1,28 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <h1 class="fs-3 mb-1 arude-logo-title">行ってみたアルデー</h1>
+      <% if @visits.any? %>
+        <p class="text-muted fs-6 mb-4 arude-description">そこ行ったんや！ええなぁ！</p>
+        <%= render partial: "visits/visit_card", collection: @visits, as: :visit %>
+      <% else %>
+        <p class="text-muted fs-6 mb-4 arude-description">どこから攻める？</p>
+        <p class="text-muted">まだ行ってみた記録がありません</p>
+      <% end %>
+
+      <div class="d-flex justify-content-center mb-4">
+        <%= paginate @visits %>
+      </div>
+
+      <!-- 拡大表示用モーダル -->
+      <div class="modal fade" id="photoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content post-photo-modal-content">
+            <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
+            <img id="photoModalImage" src="" class="post-photo-modal-image">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

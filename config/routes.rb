@@ -3,12 +3,15 @@ Rails.application.routes.draw do
   resource :session, path: "", path_names: { new: 'sign_in'}
   resources :passwords, param: :token
 
-  resources :users, only: [:create]
+  resources :users, only: %i[create show]
   get "mypage", to: "users#mypage"
   get "mypage/edit", to: "users#edit", as: :edit_mypage
+  get "mypage/posts", to: "users#posts", as: :mypage_posts
+  get "mypage/bookmarks", to: "users#bookmarks", as: :mypage_bookmarks
+  get "mypage/visits", to: "users#visits", as: :mypage_visits
+  get "sign_up", to: "users#new", as: :new_user
   patch "mypage", to: "users#update"
   delete "mypage", to: "users#destroy"
-  get "sign_up", to: "users#new", as: :new_user
 
   resources :posts do
     resources :comments, only: %i[create destroy]

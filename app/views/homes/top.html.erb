@@ -3,32 +3,6 @@
   <p class="text-muted fs-6 mb-4 arude-description">ちょっとええとこ、見つかったで！</p>
 
   <div class="row mb-3">
-    <% @today_posts.each do |post| %>
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm mb-2">
-          <% if thumb = post.thumbnail(400, 400) %>
-            <%= link_to post_path(post), data: { turbo: false } do %>
-              <%= image_tag thumb, class: "card-img-top post-thumb" %>
-            <% end %>
-          <% else %>
-            <div class="bg-light d-flex align-items-center justify-content-center post-thumb-placeholder card-img-top">
-              <i class="fa-solid fa-image text-secondary fs-2"></i>
-            </div>
-          <% end %>
-          <div class="card-body">
-            <h2 class="fs-6 mb-1"><%= link_to post.title, post_path(post), class: "text-decoration-none text-dark", data: { turbo: false } %></h2>
-            <p class="text-muted small mb-2"><%= post.category %></p>
-            <% if badge = post.local_badge %>
-              <span class="badge rounded-pill badge-local fw-normal"><%= badge %></span>
-            <% end %>
-            <div class="mt-2">
-              <% post.tags.where(tag_type: "feature").each do |tag| %>
-                <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%= render partial: "posts/post_card", collection: @today_posts, as: :post %>
   </div>
 </div>

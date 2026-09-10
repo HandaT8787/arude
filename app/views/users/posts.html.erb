@@ -1,0 +1,16 @@
+<div class="container py-4">
+  <h1 class="fs-3 mb-1 arude-logo-title">あなたのアルデー</h1>
+  <% if @posts.any? %>
+    <p class="text-muted fs-6 mb-4 arude-description">ええとこ知ってるやん！</p>
+  <% else %>
+    <p class="text-muted fs-6 mb-4 arude-description">これからええとこ、探していこな！</p>
+  <% end %>
+
+  <div class="row mb-3">
+    <%= render partial: "posts/post_card", collection: @posts, as: :post %>
+  </div>
+
+  <div class="mt-4 d-flex justify-content-center">
+    <%= paginate @posts %>
+  </div>
+</div>
