@@ -15,17 +15,14 @@
       </div>
 
       <!-- 拡大表示用モーダル -->
-        <div class="modal fade" id="photoModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content post-photo-modal-content">
-              <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
-              <img id="photoModalImage" src="" class="post-photo-modal-image">
-            </div>
+      <div class="modal fade" id="photoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content post-photo-modal-content">
+            <button type="button" class="btn-close btn-close-white ms-auto me-2 mt-2" data-bs-dismiss="modal"></button>
+            <img id="photoModalImage" src="" class="post-photo-modal-image">
           </div>
         </div>
+      </div>
     </div>
-  </div>
-  <div class="mt-4 d-flex justify-content-center">
-    <%= paginate @visits %>
   </div>
 </div>
