@@ -68,6 +68,15 @@ class Post < ApplicationRecord
     photos.first.variant(resize_to_limit: [width, height]).processed
   end
 
+  def author_name
+    return nil if group.nil?
+    if user.present?
+      user.username
+    else
+      "退会済みユーザー"
+    end
+  end
+
   private
 
   def time_tag_records
@@ -81,7 +90,6 @@ class Post < ApplicationRecord
 
     residence = user.residences.find_by(prefecture: prefecture, city: city)
     return if residence.nil?
-
     self.local_years_at_post = residence.years_at
   end
 

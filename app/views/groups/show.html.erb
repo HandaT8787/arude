@@ -1,0 +1,57 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+
+      <h1 class="fs-3 mb-1"><%= @group.name %></h1>
+      <p class="text-muted small mb-2">
+        <%= @group.description %>
+      </p>
+
+      <!-- ログイン済みで参加・退会ボタン表示 -->
+      <% if @my_membership.present? %>
+        <div class="text-end mb-3">
+          <%= button_to group_group_membership_path(@group, @my_membership), method: :delete, class: "btn btn-danger btn-sm" do %>
+            <i class="fa-solid fa-users-slash"></i> 退会する
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-end mb-3">
+          <%= button_to group_group_memberships_path(@group), method: :post, class: "btn btn-secondary btn-sm" do %>
+            <i class="fa-solid fa-users"></i> 参加する
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- ログイン済みでオーナーであれば、オーナー譲渡ボタン表示 -->
+        <div class="group-table-section">
+          <table class="table group-member-table">
+            <thead>
+              <tr>
+                <th class="group-member-table-header">ユーザー名</th>
+                <th class="group-member-table-header">役職</th>
+                <th class="group-member-table-header"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @group.group_memberships.each do |membership| %>
+                <tr>
+                  <td><%= membership.user.username %></td>
+                  <td>
+                    <%if membership.owner? %>
+                      <span class="badge rounded-pill badge-time">オーナー</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if @my_membership.present? && @my_membership.owner? && membership != @my_membership && membership.member? %>
+                      <%= button_to "オーナーにする", group_group_membership_path(@group, membership), method: :patch, class: "btn arude-btn-primary" %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+    </div>
+  </div>
+</div>

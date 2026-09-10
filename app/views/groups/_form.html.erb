@@ -1,0 +1,23 @@
+<%= form_with model: group, local: true do |f| %>
+  <% if group.errors.any? %>
+    <div class="alert arude-alert-danger rounded-3">
+      <ul class="mb-0 ps-3">
+        <% group.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "グループ名", class: "form-label small" %>
+    <%= f.text_field :name, class: "form-control arude-input" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :description, "説明", class: "form-label small" %>
+    <%= f.text_area :description, rows: 4, class: "form-control arude-input" %>
+  </div>
+
+  <%= f.submit group.persisted? ? "更新する" : "作成する", class: "btn w-100 rounded-3 py-2 arude-btn-primary mb-5" %>
+<% end %>

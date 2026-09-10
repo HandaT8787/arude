@@ -41,6 +41,11 @@
           <span class="badge rounded-pill badge-local"><%= badge %></span>
         </div>
       <% end %>
+      <% if name = @post.author_name %>
+        <div class="mb-2">
+          <%= name %>
+        </div>
+      <% end %>
       
       <div class="mb-3">
         <% @post.tags.where(tag_type: "feature").each do |tag| %>
@@ -111,9 +116,16 @@
 
       <% @post.comments.order(created_at: :desc).each do |comment| %>
         <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded-3 comment-bubble">
-          <div>
-            <p class="mb-1"><%= comment.body %></p>
-            <p class="text-muted small mb-0"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+          <div class= "d-flex justify-content-between align-items-center">
+            <div>
+              <p class="mb-1"><%= comment.body %></p>
+              <p class="text-muted small mb-0"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+            </div>
+            <% if name = comment.author_name %>
+              <div>
+                <%= name %>
+              </div>
+            <% end %>
           </div>
           <% if current_user && (current_user.is_admin? || current_user == comment.user) %>
             <div>

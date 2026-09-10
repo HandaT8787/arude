@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     resources :visits, only: %i[index new create]
     resources :bookmarks, only: %i[create destroy]
   end
+
+  resources :groups do
+    resources :group_memberships, only: %i[create update destroy]
+  end
   get "home", to: "homes#top", as: :home
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
