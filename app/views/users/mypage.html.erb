@@ -28,7 +28,9 @@
           <% end %>
         </div>
       <% else %>
-          <span class="text-muted mb-2">どのグループにも参加していないようです</span>
+          <div class="mb-3">
+            <span class="text-muted">どのグループにも参加していないようです</span>
+          </div>
       <% end %>
 
       <% if my_residence = current_user.current_residence %>
