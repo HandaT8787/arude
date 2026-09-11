@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   end
 
   resources :searches, only: %i[index]
+  resources :map_searches, only: %i[index]
 
   resources :groups do
     resources :group_memberships, only: %i[create update destroy]

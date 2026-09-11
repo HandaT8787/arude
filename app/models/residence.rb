@@ -1,4 +1,5 @@
 class Residence < ApplicationRecord
+  after_validation :geocode, if: -> { prefecture_changed? || city_changed? }
   belongs_to :user
 
   validates :prefecture, presence: true
@@ -13,5 +14,16 @@ class Residence < ApplicationRecord
   def years_at(date = Date.current)
     end_date = ended_on || date
     ((end_date - started_on).to_i / 365.25).floor
+  end
+
+  def full_address
+    "#{prefecture}#{city}"
+  end
+
+  geocoded_by :full_address do |residence, results|
+    if geo = results.first
+      residence.latitude = geo.latitude
+      residence.longitude = geo.longitude
+    end
   end
 end

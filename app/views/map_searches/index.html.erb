@@ -1,0 +1,11 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div id="map-search"
+        data-posts="<%= @posts.to_json(only: [:id, :title, :latitude, :longitude]) %>"
+        data-center-lat="<%= @center_lat %>" 
+        data-center-lng="<%= @center_lng %>"
+        class="map-search rounded-3"></div>
+    </div>
+  </div>
+</div>

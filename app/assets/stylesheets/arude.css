@@ -334,6 +334,10 @@ th.group-member-table-header {
   box-shadow: 0 1px 4px rgba(51, 38, 30, 0.08);
 }
 
+.map-search {
+  height: 600px;
+}
+
 @media (min-width: 768px) {
   .swiper-button-prev,
   .swiper-button-next {
