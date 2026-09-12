@@ -1,6 +1,9 @@
 <div class="container py-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
+
+      <%= render "shared/flash" %>
+
       <% if @post.photos.attached? %>
         <div class="swiper-area">
           <div class="swiper post-swiper mb-3">
@@ -63,7 +66,7 @@
       <% end %>
 
       <!-- 投稿者であれば表示 -->
-      <% if current_user && current_user == @post.user %>
+      <% if current_user == @post.user %>
         <div class="d-flex gap-2 mb-3">
           <div>
             <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm", data: { turbo: false } %>
@@ -79,24 +82,20 @@
       <!-- ログイン済みであれば行ってみたい、行ってみた機能を表示 -->
       <div class="mb-3">
         <div class="d-flex gap-4 mb-3 justify-content-around">
-          <% if current_user %>
-            <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
-              <%= button_to post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary-active" do %>
-                <i class="fa-solid fa-bookmark"></i> 行きたい済
-              <% end %>
-            <% else %>
-              <%= button_to post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" do %>
-                <i class="fa-regular fa-bookmark"></i> 行きたい
-              <% end %>
-            <% end %>
-            <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary" do %>
-              <i class="fa-solid fa-person-running"></i> 行ってみた
-            <% end %>
-            <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary" do %>
-              <i class="fa-solid fa-address-book"></i> 行ってみた一覧
+          <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
+            <%= button_to post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary-active" do %>
+              <i class="fa-solid fa-bookmark"></i> 行きたい済
             <% end %>
           <% else %>
-            <%= link_to "ログインして行きたい登録", new_session_path, class: "btn arude-btn-secondary" %>
+            <%= button_to post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary" do %>
+              <i class="fa-regular fa-bookmark"></i> 行きたい
+            <% end %>
+          <% end %>
+          <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary" do %>
+            <i class="fa-solid fa-person-running"></i> 行ってみた
+          <% end %>
+          <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary" do %>
+            <i class="fa-solid fa-address-book"></i> 行ってみた一覧
           <% end %>
         </div>
       </div>
@@ -105,13 +104,11 @@
       
       <!-- コメント機能 -->
       <h2 class="fs-5 mb-3">みんなのひとこと</h2>
-      <% if current_user %>
-        <%= form_with model: [@post, Comment.new], local: true, class: "mb-3" do |f| %>
-          <div class="mb-2">
-            <%= f.text_area :body, class: "form-control arude-input mb-3", rows: 3, placeholder: "コメントを残す（匿名で表示されます）" %>
-          </div>
-          <%= f.submit "投稿する", class: "btn btn-sm arude-btn-primary" %>
-        <% end %>
+      <%= form_with model: [@post, Comment.new], local: true, class: "mb-3" do |f| %>
+        <div class="mb-2">
+          <%= f.text_area :body, class: "form-control arude-input mb-3", rows: 3, placeholder: "コメントを残す（匿名で表示されます）" %>
+        </div>
+        <%= f.submit "投稿する", class: "btn btn-sm arude-btn-primary" %>
       <% end %>
 
       <% @post.comments.order(created_at: :desc).each do |comment| %>
@@ -127,7 +124,7 @@
               </div>
             <% end %>
           </div>
-          <% if current_user && (current_user.is_admin? || current_user == comment.user) %>
+          <% if current_user.is_admin? || current_user == comment.user %>
             <div>
               <%= button_to "削除する", post_comment_path(@post, comment), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
             </div>

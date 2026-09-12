@@ -1,9 +1,26 @@
-<h1>Update your password</h1>
+<div class="d-flex align-items-center justify-content-center arude-min-vh-90">
+  <div class="container">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-5">
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+        <%= render "shared/flash" %>
+        
+        <h1 class="arude-logo-title fs-1">パスワード再設定</h1>
 
-<%= form_with url: password_path(params[:token]), method: :put do |form| %>
-  <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72 %><br>
-  <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72 %><br>
-  <%= form.submit "Save" %>
-<% end %>
+      <%= form_with url: password_path(params[:token]), method: :put do |form| %>
+        <div class="input-group mb-3">
+          <span class="input-group-text bg-white"><i class="fa-solid fa-lock"></i></span>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "新しいパスワード", maxlength: 72, class: "form-control arude-input" %>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text bg-white"><i class="fa-solid fa-lock"></i></span>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "新しいパスワード（確認用）", maxlength: 72, class: "form-control arude-input" %>
+        </div>
+        <%= form.submit "パスワード再設定", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
+      <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -21,7 +21,7 @@ class User < ApplicationRecord
     password_salt&.last(10)
   end
 
-  validates :username, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9_]+\z/, message: "半角英数字とアンダースコアのみ使用できます" }
+  validates :username, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9_ぁ-んァ-ヶ一-龥ー]+\z/, message: "ひらがな、カタカナ、漢字、半角英数字とアンダースコアのみ使用できます" }
   validates :name, presence: true
   validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -33,5 +33,14 @@ class User < ApplicationRecord
   def move_to!(prefecture:, city:, started_on: Date.current)
     current_residence&.update!(ended_on: started_on - 1.day)
     residences.create!(prefecture: prefecture, city: city, started_on: started_on)
+  end
+
+  def self.guest
+    find_or_create_by!(email_address: "guest@example.com") do |user|
+      user.password = SecureRandom.alphanumeric(10)
+      user.name = "ゲスト"
+      user.username = "ゲストユーザー"
+      user.is_guest = true
+    end
   end
 end
