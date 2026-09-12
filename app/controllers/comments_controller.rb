@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_post
   before_action :require_comment_owner!, only: %i[destroy]
+  before_action :require_user!, only: %i[create]
 
   def create
     @comment = @post.comments.build(comment_params)
@@ -31,5 +32,9 @@ class CommentsController < ApplicationController
   def require_comment_owner!
     @comment = @post.comments.find(params[:id])
     redirect_to @post, alert: "この操作はコメント投稿者のみ行えます" unless @comment.user == current_user || current_user.is_admin?
+  end
+
+  def require_user!
+    redirect_to @post, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 end

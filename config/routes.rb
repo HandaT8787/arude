@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root "landing#index"
   resource :session, path: "", path_names: { new: 'sign_in'}
+  get "guest_sign_in", to: "sessions#guest", as: :guest_session
   resources :passwords, param: :token
 
   resources :users, only: %i[create show]

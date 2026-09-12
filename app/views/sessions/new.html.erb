@@ -3,6 +3,8 @@
     <div class="row justify-content-center w-100">
       <div class="col-md-5">
 
+        <%= render "shared/flash" %>
+        
         <div class="text-center mb-3">
           <div class="arude-logo-circle rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2">
             <i class="fa-solid fa-location-dot"></i>
@@ -13,17 +15,6 @@
         <div class="arude-catch rounded-3 p-2 px-3 mb-4 text-center">
           <p class="mb-0 fs-5">ちょっとええとこあったで！<br>行ってみ！</p>
         </div>
-
-        <% if flash[:alert] %>
-          <div class="alert arude-alert-danger rounded-3">
-            <%= flash[:alert] %>
-          </div>
-        <% end %>
-        <% if flash[:notice] %>
-          <div class="alert arude-alert-success rounded-3">
-            <%= flash[:notice] %>
-          </div>
-        <% end %>
 
         <%= form_with url: session_path do |form| %>
           <div class="input-group mb-3">
@@ -39,7 +30,8 @@
           <%= form.submit "ログイン", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
         <% end %>
         <br>
-        <div class="text-center mt-3 small">
+        <div class="d-flex justify-content-center align-items-center gap-4 mt-3 small">
+          <%= link_to "ゲストとして始める", guest_session_path, class: "btn arude-btn-secondary btn-sm" %>
           <%= link_to "パスワードをお忘れですか？", new_password_path, class: "arude-link-accent fw-medium" %>
         </div>
       </div>
