@@ -1,0 +1,45 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 class="fs-3 mb-4">プロフィールを編集する</h1>
+      <%= form_with model: @user, url: mypage_path, method: :patch, local: true do |f| %>
+        <% if @user.errors.any? %>
+          <div class="alert arude-alert-danger rounded-3">
+            <ul class="mb-0 ps-3">
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= f.label :name, "名前", class: "form-label small" %>
+          <%= f.text_field :name, class: "form-control arude-input" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :username, "ユーザー名", class: "form-label small" %>
+          <%= f.text_field :username, class: "form-control arude-input" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :bio, "自己紹介", class: "form-label small" %>
+          <%= f.text_area :bio, class: "form-control arude-input" %>
+        </div>
+
+        <div class="mb-3">
+          <%= label_tag "user_prefecture", "都道府県", class: "form-label small" %>
+          <%= text_field_tag "user[prefecture]", @user.current_residence&.prefecture, class: "form-control arude-input" %>
+        </div>
+
+        <div class="mb-5">
+          <%= label_tag "user_city", "市区郡", class: "form-label small" %>
+          <%= text_field_tag "user[city]", @user.current_residence&.city, class: "form-control arude-input" %>
+        </div>
+
+        <%= f.submit "更新する", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

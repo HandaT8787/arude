@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       start_new_session_for @user
-      redirect_to root_path, notice: "登録が完了しました"
+      redirect_to homes_path, notice: "登録が完了しました"
     else
       render :new, status: :unprocessable_entity
     end
@@ -47,6 +47,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = current_user
   end
 
   def update

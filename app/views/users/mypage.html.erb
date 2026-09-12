@@ -1,7 +1,7 @@
 <div class="container py-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
-      <h1 class="fs-3 mb-4 arude-logo-title">マイページ</h1>
+      <h1 class="fs-3 mb-4">マイページ</h1>
       <div class="d-flex justify-content-between align-items-center">
         <div class="mb-2">
           <span>名前: </span>
@@ -21,21 +21,20 @@
       </div>
 
       <% if current_user.groups.any? %>
-        <div class="mb-2">
+        <div class="mb-3">
           <span>所属グループ: </span>
           <% current_user.groups.each do |group| %>
-            <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature mb-3 text-decoration-none" %>
+            <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature text-decoration-none" %>
           <% end %>
         </div>
       <% else %>
-          <span class="text-muted mb-2">どのグループにも参加していないようです</span>
+          <div class="mb-3">
+            <span class="text-muted">どのグループにも参加していないようです</span>
+          </div>
       <% end %>
 
-
-
-
       <% if my_residence = current_user.current_residence %>
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2 mb-3">
           <i class="fa-solid fa-location-dot"></i>
           <span>
             <%= my_residence.prefecture %> <%= my_residence.city %>

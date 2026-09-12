@@ -1,0 +1,35 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <% if @shared_groups.present? %>
+        <h1 class="fs-3 mb-4"><%= @target_user.username %>のページ</h1>
+        <div class="mb-2">
+          <span>ユーザー名: </span>
+          <span><%= @target_user.username %></span>
+        </div>
+        <div class="mb-2">
+          <span>自己紹介: </span>
+          <span><%= @target_user.bio %></span>
+        </div>
+
+        <div class="mb-3">
+          <span>所属グループ: </span>
+          <% @shared_groups.each do |group| %>
+            <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature text-decoration-none" %>
+          <% end %>
+        </div>
+
+        <div class="row text-center g-2 mb-4">
+          <% if @shared_posts.any? %>
+            <%= render partial: "posts/post_card", collection: @shared_posts, as: :post %>
+          <% else %>
+            <p class="text-muted">同じグループでのアルデーはまだ無いみたいやね</p>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted mt-4">この人とはつながりがないみたいやね</p>
+      <% end %>
+
+    </div>
+  </div>
+</div>
