@@ -19,7 +19,7 @@
           <% end %>
         </div>
 
-        <div class="row text-center g-2 mb-4">
+        <div class="row g-2 mb-4">
           <% if @shared_posts.any? %>
             <%= render partial: "posts/post_card", collection: @shared_posts, as: :post %>
           <% else %>

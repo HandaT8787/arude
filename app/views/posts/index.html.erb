@@ -1,26 +1,23 @@
 <div class="container py-4">
-  <h1 class="fs-3 mb-4 arude-logo-title">みんなのアルデー</h1>
-  <div class="d-flex justify-content-between align-items-center">
-    <div class="mb-3">
-      <% if current_user %>
-        <%= link_to "アルデー作成", new_post_path, class: "btn arude-btn-primary", data: { turbo: false } %>
-      <% end %>
-    </div>
-    <%= form_with url: searches_path, method: :get, class: "d-flex gap-3 mb-3 justify-content-end" do %>
-      <div>
-        <%= text_field_tag :keyword, params[:keyword], placeholder: "検索キーワード", class: "form-control arude-input" %>
-      </div>
-      <div>
-        <%= select_tag :category, options_for_select(["公園", "景色", "自然", "写真スポット", "ベンチ", "神社・歴史", "散歩スポット"], params[:category]), include_blank: "検索カテゴリ", class: "form-select arude-input" %>
-      </div>
-      <div>
-        <%= text_field_tag :tag_name, params[:tag_name], placeholder: "検索タグ", class: "form-control arude-input" %>
-      </div>
-      <div>
-        <%= submit_tag "検索", class: "btn arude-btn-secondary" %>
-      </div>
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <h1 class="fs-3 arude-logo-title">みんなのアルデー</h1>
+    <%= link_to map_searches_path, class: "btn arude-btn-secondary btn-sm", data: { turbo: false } do %>
+      <i class="fa-solid fa-map-location-dot"></i> 地図で探す
     <% end %>
   </div>
+
+  <p class="text-muted fs-6 mb-4 arude-description">みんなええとこ知ってんなぁ！</p>
+
+  <div class="mb-3">
+    <%= render "search_form" %>
+  </div>
+
+  <div class="mb-3">
+    <% if current_user %>
+      <%= link_to "アルデー作成", new_post_path, class: "btn arude-btn-primary", data: { turbo: false } %>
+    <% end %>
+  </div>
+
   <div class="row mb-3">
     <%= render partial: "post_card", collection: @posts, as: :post %>
   </div>

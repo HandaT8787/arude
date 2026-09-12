@@ -1,0 +1,14 @@
+<%= form_with url: searches_path, method: :get, class: "d-flex gap-3 justify-content-end" do %>
+  <div>
+    <%= text_field_tag :keyword, params[:keyword], placeholder: "検索キーワード", class: "form-control arude-input" %>
+  </div>
+  <div>
+    <%= select_tag :category, options_for_select(["公園", "景色", "自然", "写真スポット", "ベンチ", "神社・歴史", "散歩スポット"], params[:category]), include_blank: "検索カテゴリ", class: "form-select arude-input" %>
+  </div>
+  <div>
+    <%= text_field_tag :tag_name, params[:tag_name], placeholder: "検索タグ", class: "form-control arude-input" %>
+  </div>
+  <div>
+    <%= submit_tag "検索", class: "btn arude-btn-secondary" %>
+  </div>
+<% end %>

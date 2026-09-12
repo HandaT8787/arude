@@ -35,7 +35,15 @@
             <tbody>
               <% @group.group_memberships.each do |membership| %>
                 <tr>
-                  <td><%= membership.user.username %></td>
+                  <td>
+                    <% if membership != @my_membership %>
+                      <%= link_to user_path(membership.user), class: "arude-link-accent" do %>
+                        <%= membership.user.username %>
+                      <% end %>
+                    <% else %>
+                      <%= membership.user.username %>
+                    <% end %>
+                  </td>
                   <td>
                     <%if membership.owner? %>
                       <span class="badge rounded-pill badge-time">オーナー</span>

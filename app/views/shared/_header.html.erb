@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-lg arude-navbar">
     <div class="container">
-      <%= link_to root_path, class: "navbar-brand arude-logo-badge d-flex align-item-center gap-2 arude-logo-title" do %>
+      <%= link_to authenticated? ? home_path : root_path, class: "navbar-brand arude-logo-badge d-flex align-item-center gap-2 arude-logo-title" do %>
         <span class="arude-logo-circle-sm rounded-circle d-flex align-item-center justify-content-center">
           <i class="fa-solid fa-location-dot"></i>
         </span>
@@ -22,7 +22,7 @@
             </li>
             <li class="nav-item">
               <%= link_to posts_path, class: "nav-link" do %>
-                <i class="fa-solid fa-book"></i> 投稿一覧
+                <i class="fa-solid fa-book"></i> みんなのアルデー
               <% end %>
             </li>
             <li class="nav-item">
@@ -48,7 +48,7 @@
             </li>
             <li class="nav-item">
               <%= link_to posts_path, class: "nav-link" do %>
-                <i class="fa-solid fa-book"></i> 投稿一覧
+                <i class="fa-solid fa-book"></i> みんなのアルデー
               <% end %>
             </li>
           <% end %>
