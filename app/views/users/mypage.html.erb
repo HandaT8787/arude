@@ -20,18 +20,21 @@
         <span><%= current_user.bio %></span>
       </div>
 
-      <% if current_user.groups.any? %>
-        <div class="mb-3">
-          <span>所属グループ: </span>
-          <% current_user.groups.each do |group| %>
-            <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature text-decoration-none" %>
-          <% end %>
-        </div>
-      <% else %>
-          <div class="mb-3">
-            <span class="text-muted">どのグループにも参加していないようです</span>
+      <span>所属グループ: </span>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <% if current_user.groups.any? %>
+          <div>
+            <% current_user.groups.each do |group| %>
+              <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature text-decoration-none" %>
+            <% end %>
           </div>
-      <% end %>
+        <% else %>
+            <div>
+              <span class="text-muted">どのグループにも参加していないようです</span>
+            </div>
+        <% end %>
+        <%= link_to "グループを探す", groups_path, class: "btn arude-btn-primary btn-sm" %>
+      </div>
 
       <% if my_residence = current_user.current_residence %>
         <div class="d-flex align-items-center gap-2 mb-3">

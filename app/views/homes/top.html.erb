@@ -1,5 +1,10 @@
 <div class="container py-4">
-  <h1 class="fs-3 mb-1 arude-logo-title">今日のアルデー</h1>
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <h1 class="fs-3 arude-logo-title">今日のアルデー</h1>
+    <%= link_to map_searches_path, class: "btn arude-btn-secondary btn-sm", data: { turbo: false } do %>
+      <i class="fa-solid fa-map-location-dot"></i> 地図で探す
+    <% end %>
+  </div>
   <p class="text-muted fs-6 mb-4 arude-description">ちょっとええとこ、見つかったで！</p>
 
   <div class="row mb-3">
