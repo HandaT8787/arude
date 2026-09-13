@@ -35,7 +35,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @group.group_memberships.each do |membership| %>
+              <% @members.each do |membership| %>
                 <tr>
                   <td>
                     <% if membership != @my_membership %>
@@ -53,7 +53,7 @@
                   </td>
                   <td>
                     <% if @my_membership.present? && @my_membership.owner? && membership != @my_membership && membership.member? %>
-                      <%= button_to "オーナーにする", group_group_membership_path(@group, membership), method: :patch, class: "btn arude-btn-primary" %>
+                      <%= button_to "オーナーにする", group_group_membership_path(@group, membership), method: :patch, class: "btn arude-btn-primary btn-sm" %>
                     <% end %>
                   </td>
                 </tr>

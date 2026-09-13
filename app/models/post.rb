@@ -70,7 +70,8 @@ class Post < ApplicationRecord
 
   def author_name
     return nil if group.nil?
-    if user.present?
+
+    if user.present? && user.active?
       user.username
     else
       "退会済みユーザー"

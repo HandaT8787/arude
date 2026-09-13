@@ -1,0 +1,34 @@
+<div class="container py-4">
+  <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">グループ一覧</h2>
+
+  <table class="table border border-start-0 border-end-0 mx-4">
+    <thead>
+      <tr>
+        <th class="bg-light">グループID</th>
+        <th class="bg-light">グループ名</th>
+        <th class="bg-light">説明文</th>
+        <th class="bg-light">メンバー数</th>
+        <th class="bg-light"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @groups.each do |group| %>
+        <tr>
+          <td class="align-middle"><%= group.id %></td>
+          <td class="align-middle"><%= group.name %></td>
+          <td class="align-middle"><%= group.description %></td>
+          <td class="align-middle"><%= group.group_memberships.count %></td>
+          <td class="align-middle">
+            <div class="d-flex gap-3">
+              <%= link_to "編集する", edit_admin_group_path(group), class: "btn arude-btn-secondary btn-sm" %>
+              <%= button_to "削除する", admin_group_path(group), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @groups %>
+  </div>
+</div>

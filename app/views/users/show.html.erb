@@ -1,7 +1,9 @@
 <div class="container py-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
-      <% if @shared_groups.present? %>
+      <% if @user_status == "withdrawn" %>
+        <p class="text-muted mt-4">退会してしまったみたいやね</p>
+      <% elsif @shared_groups.present? %>
         <h1 class="fs-3 mb-4"><%= @target_user.username %>のページ</h1>
         <div class="mb-2">
           <span>ユーザー名: </span>
@@ -29,7 +31,6 @@
       <% else %>
         <p class="text-muted mt-4">この人とはつながりがないみたいやね</p>
       <% end %>
-
     </div>
   </div>
 </div>

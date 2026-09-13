@@ -113,16 +113,18 @@
 
       <% @post.comments.order(created_at: :desc).each do |comment| %>
         <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded-3 comment-bubble">
-          <div class= "d-flex justify-content-between align-items-center">
-            <div>
-              <p class="mb-1"><%= comment.body %></p>
-              <p class="text-muted small mb-0"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></p>
-            </div>
-            <% if name = comment.author_name %>
+          <div>
+            <p class="mb-1"><%= comment.body %></p>
+            <div class="d-flex justify-content-between align-items-center gap-4">
               <div>
-                <%= name %>
+                <span class="text-muted small"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></span>
               </div>
-            <% end %>
+              <% if name = comment.author_name %>
+                <div>
+                  <%= name %>
+                </div>
+              <% end %>
+            </div>
           </div>
           <% if current_user.is_admin? || current_user == comment.user %>
             <div>

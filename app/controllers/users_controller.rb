@@ -36,8 +36,10 @@ class UsersController < ApplicationController
 
   def show
     @target_user = User.find(params[:id])
-    if @target_user == current_user
-      redirect_to mypage_path
+    if @target_user.withdrawn?
+        @user_status = "withdrawn"
+    elsif @target_user == current_user
+        redirect_to mypage_path
     else
       @shared_groups = current_user.groups & @target_user.groups
       if @shared_groups.any?
@@ -60,8 +62,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    current_user.destroy
-    terminate_sessison
+    current_user.update!(status: "withdrawn")
+    terminate_session
     redirect_to root_path, notice: "退会が完了しました"
   end
 

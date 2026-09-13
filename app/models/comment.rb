@@ -8,7 +8,8 @@ class Comment < ApplicationRecord
 
   def author_name
     return nil if post.group.nil?
-    if user.present?
+
+    if user.present? && user.active?
       user.username
     else
       "退会済みユーザー"
