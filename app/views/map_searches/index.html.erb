@@ -7,7 +7,16 @@
         data-posts="<%= @posts.to_json(only: [:id, :title, :latitude, :longitude]) %>"
         data-center-lat="<%= @center_lat %>" 
         data-center-lng="<%= @center_lng %>"
-        class="map-search rounded-3"></div>
+        class="map-search rounded-3 mb-3"></div>
+      <%= form_with url: map_searches_path, method: :get do %>
+        <div class="d-flex justify-content-start align-items-center gap-3">
+          <%= label_tag :radius, "検索半径(km)", class: "form-label" %>
+          <%= select_tag :radius, options_for_select([3, 5, 10, 20, 30], @radius), class: "form-select arude-input w-25" %>
+          <%= hidden_field_tag :lat, @center_lat, id: "map-search-lat" %>
+          <%= hidden_field_tag :lng, @center_lng, id: "map-search-lng" %>
+          <button type="button" id="search-here-button" class="btn arude-btn-secondary">この位置で探す</button>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
