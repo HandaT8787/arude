@@ -9,7 +9,11 @@ class SessionsController < ApplicationController
     if user = User.authenticate_by(email_address: params[:email_address], password: params[:password])
       if user.active?
         start_new_session_for user
-        redirect_to home_path, notice: "ログインしました"
+        if user.is_admin?
+          redirect_to admin_users_path, notice: "管理者ログインしました"
+        else
+          redirect_to home_path, notice: "ログインしました"
+        end
       else
         redirect_to new_session_path, alert: "このユーザーは退会済みです"
       end

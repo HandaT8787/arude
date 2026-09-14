@@ -1,0 +1,50 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+
+      <%= render "shared/flash" %>
+
+      <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4"><%= @group.name %>の詳細画面</h2>
+      <p class="text-muted small mb-2">
+        <%= @group.description %>
+      </p>
+
+      <div class="group-table-section">
+        <table class="table group-member-table">
+          <thead>
+            <tr>
+              <th class="group-member-table-header">ユーザー名</th>
+              <th class="group-member-table-header">役職</th>
+              <th class="group-member-table-header">ステータス</th>
+              <th class="group-member-table-header"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @members.each do |membership| %>
+              <tr>
+                <td>
+                  <%= membership.user.username %>
+                </td>
+                <td>
+                  <%if membership.owner? %>
+                    <span class="badge rounded-pill badge-time">オーナー</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if membership.user.withdrawn? %>
+                    <span class="text-muted">退会済み</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if !membership.owner? && membership.user.active? %>
+                    <%= button_to "オーナーにする", admin_group_group_membership_path(@group, membership), method: :patch, class: "btn arude-btn-primary btn-sm" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

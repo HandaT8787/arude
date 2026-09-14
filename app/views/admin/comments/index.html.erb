@@ -1,0 +1,32 @@
+<div class="container py-4">
+
+  <%= render "shared/flash" %>
+  
+  <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">コメント一覧</h2>
+
+  <table class="table border border-start-0 border-end-0 mx-4">
+    <thead>
+      <tr>
+        <th class="bg-light">本文</th>
+        <th class="bg-light">投稿者</th>
+        <th class="bg-light">投稿先</th>
+        <th class="bg-light"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @comments.each do |comment| %>
+        <tr>
+          <td class="align-middle"><%= comment.body %></td>
+          <td class="align-middle"><%= comment.user&.username || "退会済み" %></td>
+          <td class="align-middle"><%= comment.post.title %></td>
+          <td class="align-middle">
+            <%= button_to "削除", admin_comment_path(comment), method: :delete, data: { turbo_confirm: "削除しますか？" }, class: "btn arude-btn-primary btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @comments %>
+  </div>
+</div>

@@ -348,3 +348,12 @@ th.group-member-table-header {
     --swiper-navigation-size: 16px;
   }
 }
+
+@media (max-width: 768px) {
+  .btn-compact {
+    font-size: 0.7rem;
+  }
+  .btn-mini {
+    font-size: 0.6rem;
+  }
+}

@@ -1,0 +1,38 @@
+<div class="container py-4">
+
+  <%= render "shared/flash" %>
+  
+  <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">投稿一覧</h2>
+
+  <table class="table border border-start-0 border-end-0 mx-2">
+    <thead>
+      <tr>
+        <th class="bg-light">タイトル</th>
+        <th class="bg-light">説明</th>
+        <th class="bg-light">投稿者</th>
+        <th class="bg-light">タグ</th>
+        <th class="bg-light"></th>
+      </tr>
+    </thead>
+    <tbody class="small">
+      <% @posts.each do |post| %>
+        <tr>
+          <td class="align-middle"><%= post.title %></td>
+          <td class="align-middle"><%= post.description %></td>
+          <td class="align-middle"><%= post.user&.username || "退会済み" %></td>
+          <td class="align-middle">
+            <% post.tags.where(tag_type: "feature").each do |tag| %>
+              <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
+            <% end %>
+          </td>
+          <td class="align-middle">
+            <%= button_to "削除", admin_post_path(post), method: :delete, class: "btn arude-btn-primary btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @posts %>
+  </div>
+</div>

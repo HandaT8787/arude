@@ -1,4 +1,7 @@
 <div class="container py-4">
+
+  <%= render "shared/flash" %>
+  
   <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">グループ一覧</h2>
 
   <table class="table border border-start-0 border-end-0 mx-4">
@@ -15,7 +18,14 @@
       <% @groups.each do |group| %>
         <tr>
           <td class="align-middle"><%= group.id %></td>
-          <td class="align-middle"><%= group.name %></td>
+          <td class="align-middle">
+            <%= link_to admin_group_path(group), class: "text-decoration-none text-dark" do %>
+              <%= group.name %>
+            <% end %>
+            <% unless group.owner %>
+              <span class="badge rounded-pill badge-local">オーナー不在</span>
+            <% end %>
+          </td>
           <td class="align-middle"><%= group.description %></td>
           <td class="align-middle"><%= group.group_memberships.count %></td>
           <td class="align-middle">

@@ -1,9 +1,12 @@
 <div class="container">
+
+  <%= render "shared/flash" %>
+
   <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-5 d-inline-block fs-4">
     <%= @user.name %>さんの会員情報編集
   </h2>
 
-  <div class="row">
+  <div class="row justify-content-center">
     <div class="col-lg-7">
       <%= form_with model: @user, url: admin_user_path(@user), method: :patch do |f| %>
         <% if @user.errors.any? %>
