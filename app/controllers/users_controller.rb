@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   allow_unauthenticated_access only: [:new, :create]
 
+  before_action :require_user!, only: %i[edit update destroy]
+  
   def new
     @user = User.new
   end
@@ -74,6 +76,10 @@ class UsersController < ApplicationController
 
   def profile_params
     params.require(:user).permit(:name, :username, :bio)
+  end
+
+  def require_user!
+    redirect_to mypage_path, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 
   def update_residence_if_changed
