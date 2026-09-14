@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: %i[show edit update destroy]
   before_action :require_group_owner!, only: %i[edit update destroy]
+  before_action :require_user!, only: %i[create]
 
   def index
     @groups = Group.all.page(params[:page]).per(15)
@@ -48,6 +49,10 @@ class GroupsController < ApplicationController
 
   def require_group_owner!
     redirect_to @group, alert: "この操作はグループオーナーのみ行えます" unless @group.owner == current_user || current_user.is_admin?
+  end
+
+  def require_user!
+    redirect_to groups_path, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 
   def group_params

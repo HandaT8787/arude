@@ -1,5 +1,6 @@
 class BookmarksController < ApplicationController
   before_action :set_post
+  before_action :require_user!, only: %i[create]
 
   def create
     @bookmark = @post.bookmarks.build(user: current_user)
@@ -24,5 +25,9 @@ class BookmarksController < ApplicationController
 
   def set_post
     @post = Post.find(params[:post_id])
+  end
+
+  def require_user!
+    redirect_to @post, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 end

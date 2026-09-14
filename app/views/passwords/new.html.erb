@@ -1,8 +1,21 @@
-<h1>Forgot your password?</h1>
+<div class="d-flex align-items-center justify-content-center arude-min-vh-90">
+  <div class="container">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-5">
 
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+        <%= render "shared/flash" %>
+        
+        <h1 class="arude-logo-title fs-1">パスワードをお忘れですか？</h1>
 
-<%= form_with url: passwords_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.submit "Email reset instructions" %>
-<% end %>
+        <%= form_with url: passwords_path do |form| %>
+          <div class="input-group mb-3">
+            <span class="input-group-text bg-white"><i class="fa-solid fa-envelope"></i></span>
+            <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "メールアドレス", value: params[:email_address], class: "form-control arude-input" %>
+          </div>
+          <%= form.submit "パスワードリセット", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

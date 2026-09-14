@@ -1,7 +1,6 @@
 class VisitsController < ApplicationController
-  allow_unauthenticated_access only: %i[index]
-
   before_action :set_post
+  before_action :require_user!, only: %i[create]
 
   def index
     @visits = @post.visits.order(visited_at: :desc).page(params[:page]).per(5)
@@ -16,12 +15,12 @@ class VisitsController < ApplicationController
 
   def create
     @visit = @post.visits.build(visit_params)
-    @visit.user == current_user
+    @visit.user = current_user
 
     if @visit.save
       redirect_to @post, notice: "行ってみたを記録しました"
     else
-      redirect_to new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -36,5 +35,9 @@ class VisitsController < ApplicationController
       :impression, :visited_at, photos: [],
       ratings_attributes: [:category, :score]
     )
+  end
+
+  def require_user!
+    redirect_to @post, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 end

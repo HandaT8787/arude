@@ -1,8 +1,7 @@
 class PostsController < ApplicationController
-  allow_unauthenticated_access only: %i[index show]
-
   before_action :set_post, only: %i[show edit update destroy]
   before_action :require_owner!, only: %i[edit update destroy]
+  before_action :require_user!, only: %i[create]
 
   def index
     @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
@@ -51,6 +50,10 @@ class PostsController < ApplicationController
 
   def require_owner!
     redirect_to post_path(@post), alert: "この操作は投稿者のみ行えます" unless @post.user == current_user
+  end
+
+  def require_user!
+    redirect_to posts_path, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 
   def post_params

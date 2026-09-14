@@ -2,6 +2,7 @@ class GroupMembershipsController < ApplicationController
   before_action :set_group
   before_action :require_group_membership_owner!, only: %i[destroy]
   before_action :require_group_owner!, only: %i[update]
+  before_action :require_user!, only: %i[create]
 
   def create
     @group_membership = @group.group_memberships.build
@@ -47,5 +48,9 @@ class GroupMembershipsController < ApplicationController
   def require_group_membership_owner!
     @group_membership = @group.group_memberships.find(params[:id])
     redirect_to @group, alert: "この操作は本人のみ行えます" unless @group_membership.user == current_user || current_user.is_admin?
+  end
+
+  def require_user!
+    redirect_to @group, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
   end
 end
