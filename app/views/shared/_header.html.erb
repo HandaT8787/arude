@@ -1,7 +1,14 @@
 <header>
   <nav class="navbar navbar-expand-lg arude-navbar">
     <div class="container">
-      <%= link_to authenticated? ? home_path : root_path, class: "navbar-brand arude-logo-badge d-flex align-item-center gap-2 arude-logo-title" do %>
+      <% logo_link = if current_user&.is_admin?
+        admin_users_path
+      elsif authenticated?
+        home_path
+      else
+        root_path
+      end %>
+      <%= link_to logo_link, class: "navbar-brand arude-logo-badge d-flex align-item-center gap-2 arude-logo-title" do %>
         <span class="arude-logo-circle-sm rounded-circle d-flex align-item-center justify-content-center">
           <i class="fa-solid fa-location-dot"></i>
         </span>
@@ -15,26 +22,44 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
           <% if authenticated? %>
-            <li class="nav-item">
-              <%= link_to home_path, class: "nav-link" do %>
-                <i class="fa-solid fa-house"></i> 今日のアルデー
-              <% end %>
-            </li>
-            <li class="nav-item">
-              <%= link_to posts_path, class: "nav-link" do %>
-                <i class="fa-solid fa-book"></i> みんなのアルデー
-              <% end %>
-            </li>
-            <li class="nav-item">
-              <%= link_to mypage_path, class: "nav-link" do %>
-                <i class="fa-solid fa-user"></i> マイページ
-              <% end %>
-            </li>
-            <li class="nav-item">
-              <%= link_to session_path, class: "nav-link", data: { turbo_method: :delete } do %>
-                <i class="fa-solid fa-right-from-bracket"></i> ログアウト
-              <% end %>
-            </li>
+            <% if current_user.is_admin? %>
+              <li class="nav-item">
+                <%= link_to "会員一覧", admin_users_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "投稿一覧", admin_posts_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "コメント一覧", admin_comments_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "グループ一覧", admin_groups_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "ログアウト", session_path, class: "nav-link", data: { turbo_method: :delete } %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to home_path, class: "nav-link" do %>
+                  <i class="fa-solid fa-house"></i> 今日のアルデー
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to posts_path, class: "nav-link" do %>
+                  <i class="fa-solid fa-book"></i> みんなのアルデー
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to mypage_path, class: "nav-link" do %>
+                  <i class="fa-solid fa-user"></i> マイページ
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to session_path, class: "nav-link", data: { turbo_method: :delete } do %>
+                  <i class="fa-solid fa-right-from-bracket"></i> ログアウト
+                <% end %>
+              </li>
+            <% end %>
           <% else %>
             <li class="nav-item">
               <%= link_to new_session_path, class: "nav-link" do %>

@@ -26,6 +26,9 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
+  enum :status, { active: "active", withdrawn: "withdrawn" } 
+
+
   def current_residence
     residences.current.first
   end

@@ -30,7 +30,11 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    post_attrs = post_params
+    if post_attrs[:photos].reject(&:blank?).empty?
+      post_attrs.delete(:photos)
+    end
+    if @post.update(post_attrs)
       redirect_to @post, notice: "投稿を更新しました"
     else
       render :edit, status: :unprocessable_entity

@@ -35,6 +35,11 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users, only: %i[index show edit update]
+    resources :posts, only: %i[index destroy]
+    resources :comments, only: %i[index destroy]
+    resources :groups, only: %i[index show edit update destroy] do
+      resources :group_memberships, only: %i[update]
+    end
   end
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)

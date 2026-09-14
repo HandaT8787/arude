@@ -9,6 +9,7 @@ class GroupsController < ApplicationController
 
   def show
     @my_membership = @group.group_memberships.find_by(user: current_user)
+    @members = @group.group_memberships.joins(:user).where(users: { status: "active" })
   end
 
   def new

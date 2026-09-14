@@ -1,0 +1,60 @@
+<div class="container">
+
+  <%= render "shared/flash" %>
+
+  <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-5 d-inline-block fs-4">
+    <%= @user.name %>さんの会員情報編集
+  </h2>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <%= form_with model: @user, url: admin_user_path(@user), method: :patch do |f| %>
+        <% if @user.errors.any? %>
+          <div class="text-danger mb-2">
+            <% @user.errors.full_messages.each do |msg| %>
+              <ul>
+                <li class="mb-2"><%= msg %></li>
+              </ul>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="row mb-3 align-items-center">
+          <%= f.label :id, "会員ID", class: "col-3 col-form-label" %>
+          <div class="col-3"><%= @user.id %></div> 
+        </div>
+
+        <div class="row mb-3 align-items-center">
+          <%= f.label :name, "氏名", class: "col-3 col-form-label" %>
+          <div class="col-3">
+            <%= f.text_field :name, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+          <%= f.label :username, "ユーザー名", class: "col-3 col-form-label" %>
+          <div class="col-3">
+            <%= f.text_field :username, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+          <%= f.label :status, "会員ステータス", class: "col-3 col-form-label" %>
+          <div class="col-6">
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :status, "active", class: "form-check-input" %>
+              <%= f.label :status, "有効", value: "active", class: "form-check-label" %>
+            </div>
+            <div class="form-check form-check-inline">
+              <%= f.radio_button :status, "withdrawn", class: "form-check-input" %>
+              <%= f.label :status, "退会", value: "withdrawn", class: "form-check-label" %>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-4">
+          <%= f.submit "変更を保存", class: "btn btn-success px-2 col-6 col-md-3 col-lg-3" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -5,9 +5,9 @@
   <h1 class="fs-3 mb-4">グループ一覧</h1>
   <%= link_to "グループ作成", new_group_path, class: "btn arude-btn-primary btn-sm mb-3" %>
 
-  <div class="row mb-3">
+  <div class="row">
     <% @groups.each do |group| %>
-      <div class="col-md-4">
+      <div class="col-md-4 mb-3">
         <div class="card h-100 border-0 shadow-sm mb-2">
           <div class="card-body">
             <%= link_to group_path(group), class: "text-decoration-none text-dark" do %>

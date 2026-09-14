@@ -6,6 +6,6 @@ class Group < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   def owner
-    group_memberships.find_by(role: "owner")&.user
+    group_memberships.joins(:user).find_by(role: "owner", users: { status: "active" })&.user
   end
 end
