@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def create
     if user = User.authenticate_by(email_address: params[:email_address], password: params[:password])
       if user.active?
-        start_new_session_for user
+        start_new_session_for user, remember_me: params[:remember_me] == "1"
         if user.is_admin?
           redirect_to admin_users_path, notice: "管理者ログインしました"
         else

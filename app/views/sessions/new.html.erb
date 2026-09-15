@@ -27,6 +27,11 @@
             <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "パスワード", class: "form-control arude-input", maxlength: 72 %>
           </div>
 
+          <div class="form-check mb-3">
+            <%= check_box_tag :remember_me, "1", false, class: "form-check-input" %>
+            <%= label_tag :remember_me, "ログイン状態を保持する", class: "from-check-label" %>
+          </div>
+
           <%= form.submit "ログイン", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
         <% end %>
         <br>
