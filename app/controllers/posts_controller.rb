@@ -37,6 +37,7 @@ class PostsController < ApplicationController
     if @post.update(post_attrs)
       redirect_to @post, notice: "投稿を更新しました"
     else
+      @my_groups = current_user.groups
       render :edit, status: :unprocessable_entity
     end
   end
