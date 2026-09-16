@@ -5,13 +5,14 @@ class HomesController < ApplicationController
     if my_residence = current_user.current_residence
       nearby_posts = Post.where.not(latitude: nil, longitude: nil)
         .near([my_residence.latitude, my_residence.longitude], 10)
+        .to_a
       
-      if nearby_posts.count < 3
+      if nearby_posts.size < 3
         nearby_posts = Post.where.not(latitude: nil, longitude: nil)
         .near([my_residence.latitude, my_residence.longitude], 20)
       end
 
-      if nearby_posts.count < 3
+      if nearby_posts.size < 3
         @today_posts = Post.order(random_order).limit(3)
       else
         @today_posts = nearby_posts.order(random_order).limit(3)
