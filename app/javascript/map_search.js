@@ -28,9 +28,20 @@ document.addEventListener("turbo:load", function() {
     };
     
     postsData.forEach(function(post) {
-      new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: { lat: post.latitude, lng: post.longitude },
         map: map,
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<div style="max-width:200px;">
+          <strong>${post.title}</strong><br>
+          <a href="/posts/${post.id}">詳細を見る</a>
+        </div>`,
+      });
+
+      marker.addListener("click", function () {
+        infoWindow.open(map, marker);
       });
     });
   }
