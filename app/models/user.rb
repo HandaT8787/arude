@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
 
-  # 投稿・コメント・行ってみたい・行ってみた・通報
+  # 投稿・コメント・行ってみたい・行ってみた
   has_many :posts, dependent: :nullify # 退会しても投稿は残す（投稿者情報だけ外れる）
   has_many :comments, dependent: :nullify # 退会してもコメントは残す
   has_many :visits, dependent: :nullify # 退会しても訪問記録は残す
