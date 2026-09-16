@@ -21,7 +21,7 @@ class User < ApplicationRecord
     password_salt&.last(10)
   end
 
-  validates :username, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9_ぁ-んァ-ヶ一-龥ー]+\z/, message: "ひらがな、カタカナ、漢字、半角英数字とアンダースコアのみ使用できます" }
+  validates :username, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9_ぁ-んァ-ヶ一-龥ー]+\z/, message: "はひらがな、カタカナ、漢字、半角英数字とアンダースコアのみ使用できます" }
   validates :name, presence: true
   validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }

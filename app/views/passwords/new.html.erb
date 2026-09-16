@@ -1,14 +1,14 @@
-<div class="d-flex align-items-center justify-content-center arude-min-vh-90">
+<div class="d-flex justify-content-center arude-min-vh-90">
   <div class="container">
     <div class="row justify-content-center w-100">
-      <div class="col-md-5">
+      <div class="col-md-5 py-5">
 
         <%= render "shared/flash" %>
         
-        <h1 class="arude-logo-title fs-1">パスワードをお忘れですか？</h1>
+        <h1 class="arude-logo-title fs-1 mb-4">パスワードをお忘れですか？</h1>
 
         <%= form_with url: passwords_path do |form| %>
-          <div class="input-group mb-3">
+          <div class="input-group mb-4">
             <span class="input-group-text bg-white"><i class="fa-solid fa-envelope"></i></span>
             <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "メールアドレス", value: params[:email_address], class: "form-control arude-input" %>
           </div>

@@ -1,18 +1,18 @@
-<div class="d-flex align-items-center justify-content-center arude-min-vh-90">
+<div class="d-flex justify-content-center arude-min-vh-90">
   <div class="container">
     <div class="row justify-content-center w-100">
-      <div class="col-md-5">
+      <div class="col-md-5 py-5">
 
         <%= render "shared/flash" %>
         
-        <h1 class="arude-logo-title fs-1">パスワード再設定</h1>
+        <h1 class="arude-logo-title fs-1 mb-4">パスワード再設定</h1>
 
       <%= form_with url: password_path(params[:token]), method: :put do |form| %>
         <div class="input-group mb-3">
           <span class="input-group-text bg-white"><i class="fa-solid fa-lock"></i></span>
           <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "新しいパスワード", maxlength: 72, class: "form-control arude-input" %>
         </div>
-        <div class="input-group mb-3">
+        <div class="input-group mb-4">
           <span class="input-group-text bg-white"><i class="fa-solid fa-lock"></i></span>
           <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "新しいパスワード（確認用）", maxlength: 72, class: "form-control arude-input" %>
         </div>
