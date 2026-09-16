@@ -17,7 +17,9 @@
     <tbody class="small">
       <% @posts.each do |post| %>
         <tr>
-          <td class="align-middle"><%= post.title %></td>
+          <td class="align-middle">
+            <%= link_to post.title, post_path(post), class: "text-decoration-none text-dark", data: { turbo: false } %>
+          </td>
           <td class="align-middle"><%= post.description %></td>
           <td class="align-middle"><%= post.user&.username || "退会済み" %></td>
           <td class="align-middle">
