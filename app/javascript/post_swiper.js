@@ -7,7 +7,6 @@ document.addEventListener("turbo:load", function(){
   new Swiper(".post-swiper", {
     autoplay: { delay: 4000, disableOnInteraction: false, waitForTransition: false },
     loop: slideCount >= 3,
-    loopAdditionalSlides: 1,
     pagination: { el: ".swiper-pagination", clickable: true },
     navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
   });
