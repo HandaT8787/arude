@@ -1,6 +1,7 @@
 class Post < ApplicationRecord
   after_validation :reverse_geocode, if: ->(post) { post.latitude.present? && post.longitude.present? }
   after_validation :snapshot_local_years, on: :create
+  before_save :sync_tags
 
   # ユーザー・グループ
   belongs_to :user, optional: true # 退会後の投稿はuser_idがnullになるため
@@ -44,10 +45,7 @@ class Post < ApplicationRecord
 
   # 特徴タグ（自由入力）
   def tag_names=(names)
-    feature_tags = names.split(",").map(&:strip).reject(&:blank?).map do |name|
-      Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "feature" }
-    end
-    self.tags = feature_tags + time_tag_records
+    @tag_names = names
   end
 
   def tag_names
@@ -97,5 +95,14 @@ class Post < ApplicationRecord
   def tags_count_within_limit
     if tags.where(tag_type: "feature").size > 10
     end
+  end
+
+  def sync_tags
+    return if @tag_names.nil? && @time_tag_names.nil?
+
+    feature_tags = @tag_names.to_s.split(",").map(&:strip).reject(&.blunk?).map do |name|
+      Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "feature" }
+    end
+    self.tags = feature_tags + time_tag_names
   end
 end
