@@ -19,6 +19,9 @@
         <% post.tags.where(tag_type: "feature").each do |tag| %>
           <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
         <% end %>
+        <% post.tags.where(tag_type: "time").each do |tag| %>
+          <span class="badge rounded-pill badge-time"><%= tag.name %></span>
+        <% end %>
       </div>
     </div>
   </div>

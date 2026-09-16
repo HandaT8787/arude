@@ -100,7 +100,7 @@ class Post < ApplicationRecord
   def sync_tags
     return if @tag_names.nil? && @time_tag_names.nil?
 
-    feature_tags = @tag_names.to_s.split(",").map(&:strip).reject(&:blunk?).map do |name|
+    feature_tags = @tag_names.to_s.split(",").map(&:strip).reject(&:blank?).map do |name|
       Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "feature" }
     end
     self.tags = feature_tags + time_tag_records
