@@ -59,6 +59,7 @@ class UsersController < ApplicationController
       update_residence_if_changed
       redirect_to mypage_path, notice: "プロフィールを更新しました"
     else
+      @user = current_user
       render :edit, status: :unprocessable_entity
     end
   end
