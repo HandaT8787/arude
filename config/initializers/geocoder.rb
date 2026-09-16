@@ -28,6 +28,7 @@ Geocoder.configure(
   lookup: :google,
   api_key: ENV["GOOGLE_MAPS_API_KEY"],
   language: :ja,
-  units: :km
+  units: :km,
+  distances: :linear
   # Maps JavaScript API & Geocording API
 )
