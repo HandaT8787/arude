@@ -18,7 +18,7 @@ class VisitsController < ApplicationController
     @visit.user = current_user
 
     if @visit.save
-      redirect_to @post, notice: "行ってみたを記録しました"
+      redirect_to post_visits_path(@post), notice: "行ってみたを記録しました"
     else
       render :new, status: :unprocessable_entity
     end
