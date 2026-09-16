@@ -9,6 +9,10 @@
         <%= @group.description %>
       </p>
 
+      <% if @my_membership.present? && @my_membership.owner? %>
+        <%= link_to "編集する", edit_group_path(@group), class: "btn arude-btn-secondary btn-sm" %>
+      <% end %>
+
       <!-- ログイン済みで参加・退会ボタン表示 -->
       <% if @my_membership.present? %>
         <div class="text-end mb-3">
