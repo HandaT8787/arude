@@ -29,43 +29,49 @@
       <% end %>
 
       <!-- ログイン済みでオーナーであれば、オーナー譲渡ボタン表示 -->
-        <div class="group-table-section">
-          <table class="table group-member-table">
-            <thead>
+      <div class="group-table-section">
+        <table class="table group-member-table">
+          <thead>
+            <tr>
+              <th class="group-member-table-header">ユーザー名</th>
+              <th class="group-member-table-header">役職</th>
+              <th class="group-member-table-header"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @members.each do |membership| %>
               <tr>
-                <th class="group-member-table-header">ユーザー名</th>
-                <th class="group-member-table-header">役職</th>
-                <th class="group-member-table-header"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @members.each do |membership| %>
-                <tr>
-                  <td>
-                    <% if membership != @my_membership %>
-                      <%= link_to user_path(membership.user), class: "arude-link-accent" do %>
-                        <%= membership.user.username %>
-                      <% end %>
-                    <% else %>
+                <td>
+                  <% if membership != @my_membership %>
+                    <%= link_to user_path(membership.user), class: "arude-link-accent" do %>
                       <%= membership.user.username %>
                     <% end %>
-                  </td>
-                  <td>
-                    <%if membership.owner? %>
-                      <span class="badge rounded-pill badge-time">オーナー</span>
-                    <% end %>
-                  </td>
-                  <td>
-                    <% if @my_membership.present? && @my_membership.owner? && membership != @my_membership && membership.member? %>
-                      <%= button_to "オーナーにする", group_group_membership_path(@group, membership), method: :patch, class: "btn arude-btn-primary btn-sm" %>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-
+                  <% else %>
+                    <%= membership.user.username %>
+                  <% end %>
+                </td>
+                <td>
+                  <%if membership.owner? %>
+                    <span class="badge rounded-pill badge-time">オーナー</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if @my_membership.present? && @my_membership.owner? && membership != @my_membership && membership.member? %>
+                    <%= button_to "オーナーにする", group_group_membership_path(@group, membership), method: :patch, class: "btn arude-btn-primary btn-sm" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="row mb-3">
+        <% if @group.posts.any? %>
+          <%= render partial: "posts/post_card", collection: @group.posts, as: :post %>
+        <% else %>
+          <p class="text-muted">まだこのグループへのアルデーはないみたいやね</p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

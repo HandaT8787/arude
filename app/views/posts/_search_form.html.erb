@@ -1,4 +1,4 @@
-<%= form_with url: searches_path, method: :get, class: "d-flex gap-3 justify-content-end" do %>
+<%= form_with url: searches_path, method: :get, class: "d-flex flex-column flex-md-row gap-3 justify-content-end" do %>
   <div>
     <%= text_field_tag :keyword, params[:keyword], placeholder: "検索キーワード", class: "form-control arude-input" %>
   </div>
@@ -8,7 +8,7 @@
   <div>
     <%= text_field_tag :tag_name, params[:tag_name], placeholder: "検索タグ", class: "form-control arude-input" %>
   </div>
-  <div>
+  <div class="text-center text-md-start">
     <%= submit_tag "検索", class: "btn arude-btn-secondary" %>
   </div>
 <% end %>

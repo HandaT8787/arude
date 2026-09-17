@@ -45,17 +45,22 @@
         </div>
       <% end %>
       <% if name = @post.author_name %>
-        <div class="mb-2">
-          <%= name %>
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div>
+            <%= name %>
+          </div>
+          <div>
+            <%= link_to @post.group.name, group_path(@post.group), class: "badge rounded-pill badge-group text-decoration-none" %>
+          </div>
         </div>
       <% end %>
       
       <div class="mb-3">
         <% @post.tags.where(tag_type: "feature").each do |tag| %>
-          <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
+          <%= link_to tag.name, searches_path(tag_name: tag.name), class: "badge rounded-pill badge-feature text-decoration-none" %>
         <% end %>
         <% @post.tags.where(tag_type: "time").each do |tag| %>
-          <span class="badge rounded-pill badge-time"><%= tag.name %></span>
+          <%= link_to tag.name, searches_path(tag_name: tag.name), class: "badge rounded-pill badge-time text-decoration-none" %>
         <% end %>
       </div>
 

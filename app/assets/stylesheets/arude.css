@@ -207,6 +207,11 @@ body {
   color: var(--arude-ink);
 }
 
+.badge-group {
+  background: #A8E063;
+  color: var(--arude-ink);
+}
+
 .comment-bubble {
   background: #fff;
   border: 1px solid var(--arude-ink-border);
@@ -350,6 +355,9 @@ th.group-member-table-header {
 }
 
 @media (max-width: 768px) {
+  .font-medium {
+    font-size: 0.8rem;
+  }
   .btn-compact {
     font-size: 0.7rem;
   }

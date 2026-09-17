@@ -28,7 +28,7 @@
         <% if current_user.groups.any? %>
           <div>
             <% current_user.groups.each do |group| %>
-              <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-feature text-decoration-none" %>
+              <%= link_to group.name, group_path(group), class: "badge rounded-pill badge-group text-decoration-none" %>
             <% end %>
           </div>
         <% else %>
