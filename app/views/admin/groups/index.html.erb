@@ -4,7 +4,7 @@
   
   <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">グループ一覧</h2>
 
-  <table class="table border border-start-0 border-end-0 mx-4">
+  <table class="table border border-start-0 border-end-0">
     <thead>
       <tr>
         <th class="bg-light">グループID</th>
@@ -19,7 +19,7 @@
         <tr>
           <td class="align-middle"><%= group.id %></td>
           <td class="align-middle">
-            <%= link_to admin_group_path(group), class: "text-decoration-none text-dark" do %>
+            <%= link_to admin_group_path(group), class: "arude-link-accent" do %>
               <%= group.name %>
             <% end %>
             <% unless group.owner %>
@@ -30,8 +30,8 @@
           <td class="align-middle"><%= group.group_memberships.count %></td>
           <td class="align-middle">
             <div class="d-flex gap-3">
-              <%= link_to "編集する", edit_admin_group_path(group), class: "btn arude-btn-secondary btn-sm" %>
-              <%= button_to "削除する", admin_group_path(group), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
+              <%= link_to "編集", edit_admin_group_path(group), class: "btn arude-btn-secondary btn-sm" %>
+              <%= button_to "削除", admin_group_path(group), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
             </div>
           </td>
         </tr>

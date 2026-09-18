@@ -4,7 +4,7 @@
   
   <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">投稿一覧</h2>
 
-  <table class="table border border-start-0 border-end-0 mx-2">
+  <table class="table border border-start-0 border-end-0">
     <thead>
       <tr>
         <th class="bg-light">タイトル</th>
@@ -18,13 +18,16 @@
       <% @posts.each do |post| %>
         <tr>
           <td class="align-middle">
-            <%= link_to post.title, post_path(post), class: "text-decoration-none text-dark", data: { turbo: false } %>
+            <%= link_to post.title, post_path(post), class: "arude-link-accent", data: { turbo: false } %>
           </td>
           <td class="align-middle"><%= post.description %></td>
           <td class="align-middle"><%= post.user&.username || "退会済み" %></td>
           <td class="align-middle">
             <% post.tags.where(tag_type: "feature").each do |tag| %>
               <span class="badge rounded-pill badge-feature"><%= tag.name %></span>
+            <% end %>
+            <% post.tags.where(tag_type: "time").each do |tag| %>
+              <span class="badge rounded-pill badge-time"><%= tag.name %></span>
             <% end %>
           </td>
           <td class="align-middle">

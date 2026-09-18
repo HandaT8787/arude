@@ -4,7 +4,7 @@
   
   <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">コメント一覧</h2>
 
-  <table class="table border border-start-0 border-end-0 mx-4">
+  <table class="table border border-start-0 border-end-0">
     <thead>
       <tr>
         <th class="bg-light">本文</th>
@@ -18,7 +18,7 @@
         <tr>
           <td class="align-middle"><%= comment.body %></td>
           <td class="align-middle"><%= comment.user&.username || "退会済み" %></td>
-          <td class="align-middle"><%= comment.post.title %></td>
+          <td class="align-middle"><%= link_to comment.post.title, post_path(comment), class: "arude-link-accent" %></td>
           <td class="align-middle">
             <%= button_to "削除", admin_comment_path(comment), method: :delete, data: { turbo_confirm: "削除しますか？" }, class: "btn arude-btn-primary btn-sm" %>
           </td>

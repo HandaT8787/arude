@@ -4,7 +4,7 @@
   
   <h2 class="bg-body-secondary rounded-0 px-3 py-1 mt-3 mb-3 d-inline-block fs-4">会員一覧</h2>
 
-  <table class="table border border-start-0 border-end-0 mx-4">
+  <table class="table border border-start-0 border-end-0">
     <thead>
       <tr>
         <th class="bg-light">会員ID</th>
@@ -18,7 +18,7 @@
       <% @users.each do |user| %>
         <tr>
           <td class="align-middle"><%= user.id %></td>
-          <td class="align-middle"><%= link_to "#{user.name}", admin_user_path(user), class: "text-black" %></td>
+          <td class="align-middle"><%= link_to "#{user.name}", admin_user_path(user), class: "arude-link-accent" %></td>
           <td class="align-middle"><%= user.username %></td>
           <td class="align-middle"><%= user.email_address %></td>
           <td class="align-middle">
