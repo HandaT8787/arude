@@ -18,7 +18,7 @@
         <tr>
           <td class="align-middle"><%= comment.body %></td>
           <td class="align-middle"><%= comment.user&.username || "退会済み" %></td>
-          <td class="align-middle"><%= link_to comment.post.title, post_path(comment), class: "arude-link-accent" %></td>
+          <td class="align-middle"><%= link_to comment.post.title, post_path(comment.post), class: "arude-link-accent" %></td>
           <td class="align-middle">
             <%= button_to "削除", admin_comment_path(comment), method: :delete, data: { turbo_confirm: "削除しますか？" }, class: "btn arude-btn-primary btn-sm" %>
           </td>
