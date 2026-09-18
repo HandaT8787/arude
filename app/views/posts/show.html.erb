@@ -100,7 +100,7 @@
             <i class="fa-solid fa-person-running"></i> 行ってみた
           <% end %>
           <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary btn-sm btn-mini" do %>
-            <i class="fa-solid fa-address-book"></i> 行ってみた一覧
+            <i class="fa-solid fa-address-book"></i> 行ってみた一覧(<%= @post.visits.count %>件)
           <% end %>
         </div>
       </div>
