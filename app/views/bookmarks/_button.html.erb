@@ -1,0 +1,11 @@
+<%= turbo_frame_tag "bookmark_button_#{post.id}" do %>
+  <% if bookmark = current_user.bookmarks.find_by(post: post) %>
+    <%= button_to post_bookmark_path(post, bookmark), method: :delete, class: "btn arude-btn-secondary-active btn-sm btn-compact" do %>
+      <i class="fa-solid fa-bookmark"></i> 行きたい済
+    <% end %>
+  <% else %>
+    <%= button_to post_bookmarks_path(post), method: :post, class: "btn arude-btn-secondary btn-sm btn-compact" do %>
+      <i class="fa-regular fa-bookmark"></i> 行きたい
+    <% end %>
+  <% end %>
+<% end %>

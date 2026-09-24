@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "comment_form" do %>
+  <%= form_with model: [post, Comment.new], local: true, class: "mb-3" do |f| %>
+    <div class="mb-2">
+      <%= f.text_area :body, class: "form-control arude-input mb-3", rows: 3, placeholder: "コメントを残す（匿名で表示されます）" %>
+    </div>
+    <%= f.submit "投稿する", class: "btn btn-sm arude-btn-primary" %>
+  <% end %>
+<% end %>

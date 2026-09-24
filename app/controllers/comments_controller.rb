@@ -8,7 +8,10 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @post, notice: "コメントを投稿しました"
+      respond_to do |format|
+        format.html { redirect_to @post, notice: "コメントを投稿しました" }
+        format.turbo_stream
+      end
     else
       redirect_to @post, alert: "コメントの投稿に失敗しました"
     end
@@ -16,7 +19,10 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
-    redirect_to @post, notice: "コメントを削除しました"
+    respond_to do |format|
+      format.html { redirect_to @post, notice: "コメントを削除しました" }
+      format.turbo_stream
+    end
   end
 
   private

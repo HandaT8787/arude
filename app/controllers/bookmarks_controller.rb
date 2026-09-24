@@ -5,7 +5,10 @@ class BookmarksController < ApplicationController
   def create
     @bookmark = @post.bookmarks.build(user: current_user)
     if @bookmark.save
-      redirect_to @post, notice: "行きたいに保存しました"
+      respond_to do |format|
+        format.html { redirect_to @post, notice: "行きたいに保存しました" }
+        format.turbo_stream
+      end
     else
       redirect_to @post, alert: "追加できませんでした"
     end
@@ -15,7 +18,10 @@ class BookmarksController < ApplicationController
     bookmark = @post.bookmarks.find(params[:id])
     if bookmark.user == current_user
       bookmark.destroy
-      redirect_to @post, notice: "行きたいを削除しました"
+      respond_to do |format|
+        format.html { redirect_to @post, notice: "行きたいを削除しました" }
+        format.turbo_stream
+      end
     else
       redirect_to @post, alert: "この操作はできません"
     end

@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center justify-content-center arude-min-vh-90">
   <div class="container">
-    <div class="row justify-content-center w-100">
+    <div class="row justify-content-center">
       <div class="col-md-5">
 
         <%= render "shared/flash" %>
@@ -35,7 +35,7 @@
           <%= form.submit "ログイン", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
         <% end %>
         <br>
-        <div class="d-flex justify-content-center align-items-center gap-4 mt-3 small">
+        <div class="d-flex justify-content-center align-items-center gap-4 small">
           <%= link_to guest_session_path, class: "btn arude-btn-secondary btn-sm" do %>
             ゲストで<br class="d-md-none">始める
           <% end %>

@@ -86,21 +86,15 @@
 
       <!-- ログイン済みであれば行ってみたい、行ってみた機能を表示 -->
       <div class="mb-3">
-        <div class="d-flex gap-2 mb-3 justify-content-around">
-          <% if bookmark = current_user.bookmarks.find_by(post: @post) %>
-            <%= button_to post_bookmark_path(@post, bookmark), method: :delete, class: "btn arude-btn-secondary-active btn-sm btn-compact" do %>
-              <i class="fa-solid fa-bookmark"></i> 行きたい済
-            <% end %>
-          <% else %>
-            <%= button_to post_bookmarks_path(@post), method: :post, class: "btn arude-btn-secondary btn-sm btn-compact" do %>
-              <i class="fa-regular fa-bookmark"></i> 行きたい
-            <% end %>
-          <% end %>
+        <div class="d-flex gap-2 mb-3 justify-content-around align-items-center">
+          
+          <%= render "bookmarks/button", post: @post %>
+
           <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary btn-sm btn-compact" do %>
             <i class="fa-solid fa-person-running"></i> 行ってみた
           <% end %>
           <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary btn-sm btn-mini" do %>
-            <i class="fa-solid fa-address-book"></i> 行ってみた一覧(<%= @post.visits.count %>件)
+            <i class="fa-solid fa-address-book"></i> 行ってみた一覧<br>(<%= @post.visits.count %>件)
           <% end %>
         </div>
       </div>
@@ -109,35 +103,11 @@
       
       <!-- コメント機能 -->
       <h2 class="fs-5 mb-3">みんなのひとこと</h2>
-      <%= form_with model: [@post, Comment.new], local: true, class: "mb-3" do |f| %>
-        <div class="mb-2">
-          <%= f.text_area :body, class: "form-control arude-input mb-3", rows: 3, placeholder: "コメントを残す（匿名で表示されます）" %>
-        </div>
-        <%= f.submit "投稿する", class: "btn btn-sm arude-btn-primary" %>
-      <% end %>
-
-      <% @post.comments.order(created_at: :desc).each do |comment| %>
-        <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded-3 comment-bubble">
-          <div>
-            <p class="mb-1"><%= comment.body %></p>
-            <div class="d-flex justify-content-between align-items-center gap-2">
-              <div>
-                <span class="text-muted small"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></span>
-              </div>
-              <% if name = comment.author_name %>
-                <div>
-                  <%= name %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <% if current_user.is_admin? || current_user == comment.user %>
-            <div>
-              <%= button_to "削除", post_comment_path(@post, comment), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+      <%= render "comments/form", post: @post %>
+      
+      <div id="comments_list">
+        <%= render partial: "comments/comment", collection: @post.comments.order(created_at: :desc), as: :comment, locals: { post: @post } %>
+      </div>
 
     </div>
   </div>

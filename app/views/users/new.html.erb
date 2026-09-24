@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center justify-content-center arude-min-vh-90">
-  <div class="container">
-    <div class="row justify-content-center w-100">
+  <div class="container pt-3">
+    <div class="row justify-content-center">
       <div class="col-md-5">
 
         <div class="text-center mb-3">
@@ -47,7 +47,7 @@
             <% end %>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-4">
             <%= f.label :password_confirmation, "パスワード（確認）", class: "form-label small" %>
             <%= f.password_field :password_confirmation, class: "form-control arude-input #{"is-invalid" if @user.errors[:password_confirmation].any?}" %>
             <% @user.errors.full_messages_for(:password_confirmation).each do |message| %>
@@ -55,7 +55,9 @@
             <% end %>
           </div>
 
-          <%= f.submit "登録する", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
+          <div class="text-center">
+            <%= f.submit "登録する", class: "btn w-100 rounded-3 py-2 arude-btn-primary" %>
+          </div>
         <% end %>
 
         <div class="text-center my-3 small">

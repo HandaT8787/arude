@@ -82,12 +82,12 @@
     <button type="button" id="use-current-location" class="btn btn-sm arude-btn-secondary">現在地を使う</button>
   </div>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <%= f.label :photos, "写真", class: "form-label small" %>
     <%= f.file_field :photos, multiple: true, class: "form-control arude-input" %>
   </div>
 
-  <div class="mb-5">
+  <div class="mb-4">
     <%= f.label :group_id, "投稿先", class: "form-label small" %>
     <%= f.collection_select :group_id, @my_groups, :id, :name, { include_blank: "全体公開" }, class: "form-select arude-input" %>
   </div>
