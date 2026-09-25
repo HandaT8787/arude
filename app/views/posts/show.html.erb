@@ -47,7 +47,7 @@
       <% if name = @post.author_name %>
         <div class="d-flex align-items-center gap-3 mb-2">
           <div>
-            <%= name %>
+            <%= link_to name, user_path(@post.user), class: "arude-link-accent" %>
           </div>
           <div>
             <%= link_to @post.group.name, group_path(@post.group), class: "badge rounded-pill badge-group text-decoration-none" %>
