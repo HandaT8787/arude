@@ -42,7 +42,7 @@ class User < ApplicationRecord
     find_or_create_by!(email_address: "guest@example.com") do |user|
       user.password = SecureRandom.alphanumeric(10)
       user.name = "ゲスト"
-      user.username = "ゲストユーザー"
+      user.username = "ゲスト"
       user.is_guest = true
     end
   end
