@@ -16,7 +16,8 @@
           <%= select_tag :radius, options_for_select([3, 5, 10, 20, 30], @radius), class: "form-select arude-input w-25" %>
           <%= hidden_field_tag :lat, @center_lat, id: "map-search-lat" %>
           <%= hidden_field_tag :lng, @center_lng, id: "map-search-lng" %>
-          <button type="button" id="search-here-button" class="btn arude-btn-secondary font-medium">この位置で探す</button>
+          <button type="button" id="search-here-button" class="btn arude-btn-primary font-medium">この位置で探す</button>
+          <button type="button" id="use-current-location" class="btn btn-sm arude-btn-secondary">現在地で探す</button>
         </div>
       <% end %>
     </div>
