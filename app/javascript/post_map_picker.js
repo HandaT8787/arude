@@ -7,9 +7,12 @@ document.addEventListener("turbo:load", function() {
     const lngField = document.getElementById("post_longitude");
     const locationButton = document.getElementById("use-current-location");
 
-    // 既存の値があればそこを初期位置にする、なければ東京駅付近をデフォルトにする
-    const initialLat = parseFloat(latField.value) || 35.68
-    const initialLng = parseFloat(lngField.value) || 139.7673
+    // 居住地があれば居住地、既存の値があれば既存地を初期位置にする、なければ東京駅付近をデフォルトにする
+    const residenceLat = parseFloat(mapEl.dataset.residenceLat);
+    const residenceLng = parseFloat(mapEl.dataset.residenceLng);
+
+    const initialLat = parseFloat(latField.value) || residenceLat || 35.68;
+    const initialLng = parseFloat(lngField.value) || residenceLng || 139.7673;
 
     const map = new google.maps.Map(mapEl, {
       center: { lat: initialLat, lng: initialLng },

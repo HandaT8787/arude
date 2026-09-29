@@ -76,7 +76,10 @@
 
   <div class="mb-3">
     <div class="form-label">場所（地図から選択してピンを立ててください）</div>
-    <div id="post-map-picker" class="post-map-picker rounded-3 mb-2"></div>
+    <div id="post-map-picker" class="post-map-picker rounded-3 mb-2"
+      data-residence-lat="<%= current_user.current_residence&.latitude %>"
+      data-residence-lng="<%= current_user.current_residence&.longitude %>">
+    </div>
     <%= f.hidden_field :latitude, id: "post_latitude" %>
     <%= f.hidden_field :longitude, id: "post_longitude" %>
     <button type="button" id="use-current-location" class="btn btn-sm arude-btn-secondary">現在地を使う</button>
