@@ -23,6 +23,7 @@
           <%= link_to tag.name, searches_path(tag_name: tag.name), class: "badge rounded-pill badge-time text-decoration-none" %>
         <% end %>
       </div>
+      <p class="text-muted small mb-2"><%= post.created_at %></p>
     </div>
   </div>
 </div>
