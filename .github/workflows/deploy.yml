@@ -1,0 +1,39 @@
+name: AWS CI/CD
+
+on: workflow_dispatch
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ap-northeast-1
+      
+      - run: aws sts get-caller-identity
+
+      - run: |
+          CMD_ID=$(aws ssm send-command \
+           --instance-ids ${{ vars.INSTANCE_ID_1 }} \
+           --document-name AWS-RunShellScript \
+           --parameters 'commands=["hostname"]' \
+           --query Command.CommandId --output text)
+          aws ssm wait command-executed --command-id "$CMD_ID" --instance-id ${{ vars.INSTANCE_ID_1 }}
+          aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id ${{ vars.INSTANCE_ID_1 }} --query StandardOutputContent --output text
+
+      - run: |
+          CMD_ID=$(aws ssm send-command \
+           --instance-ids ${{ vars.INSTANCE_ID_2 }} \
+           --document-name AWS-RunShellScript \
+           --parameters 'commands=["hostname"]' \
+           --query Command.CommandId --output text)
+          aws ssm wait command-executed --command-id "$CMD_ID" --instance-id ${{ vars.INSTANCE_ID_2 }}
+          aws ssm get-command-invocation --command-id "$CMD_ID" --instance-id ${{ vars.INSTANCE_ID_2 }} --query StandardOutputContent --output text
