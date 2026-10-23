@@ -1,5 +1,6 @@
 class Residence < ApplicationRecord
   after_validation :geocode, if: -> { prefecture_changed? || city_changed? }
+  after_validation :reverse_geocode, if: -> { (prefecture_changed? || city_changed?) && latitude.present? && longitude.present? }
   belongs_to :user
 
   validates :prefecture, presence: true
@@ -10,6 +11,13 @@ class Residence < ApplicationRecord
   scope :current, -> { where(ended_on: nil) }
   # 過去の住所
   scope :past, -> { where.not(ended_on: nil) }
+
+  reverse_geocoded_by :latitude, :longitude do |residence, results|
+    if geo = results.find { |r| r.country_code == "JP" && r.state.present? && r.city.present? }
+      residence.prefecture = geo.state
+      residence.city = geo.city
+    end
+  end
 
   def self.days_to_years(days)
     (days / 365.25).floor
