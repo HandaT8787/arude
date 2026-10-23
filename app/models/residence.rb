@@ -1,11 +1,13 @@
 class Residence < ApplicationRecord
   after_validation :geocode, if: -> { prefecture_changed? || city_changed? }
   after_validation :reverse_geocode, if: -> { (prefecture_changed? || city_changed?) && latitude.present? && longitude.present? }
+
   belongs_to :user
 
   validates :prefecture, presence: true
   validates :city, presence: true
   validates :started_on, presence: true
+  validate :validate_ended_on
 
   # 現住所
   scope :current, -> { where(ended_on: nil) }
@@ -48,6 +50,14 @@ class Residence < ApplicationRecord
     if geo = results.first
       residence.latitude = geo.latitude
       residence.longitude = geo.longitude
+    end
+  end
+
+  private
+  def validate_ended_on
+    return if ended_on.nil? || started_on.nil?
+    if ended_on < started_on
+      errors.add(:ended_on, "開始日以降の日付にしてください")
     end
   end
 end
