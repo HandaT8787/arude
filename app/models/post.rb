@@ -1,6 +1,6 @@
 class Post < ApplicationRecord
   after_validation :reverse_geocode, if: ->(post) { post.latitude.present? && post.longitude.present? }
-  after_validation :snapshot_local_years, on: :create
+  before_create :snapshot_local_years
   before_save :sync_tags
 
   # ユーザー・グループ
@@ -21,7 +21,7 @@ class Post < ApplicationRecord
 
   # 緯度、経度から住所を逆算
   reverse_geocoded_by :latitude, :longitude do |post, results|
-    if geo = results.first
+    if geo = results.find { |r| r.country_code == "JP" && r.state.present? && r.city.present? }
       post.prefecture = geo.state
       post.city = geo.city
     end
@@ -40,7 +40,7 @@ class Post < ApplicationRecord
   # 地元歴
   def local_badge
     return nil if local_years_at_post.nil?
-    "近所歴#{local_years_at_post}年"
+    "近所歴#{Residence.years_to_str(local_years_at_post)}"
   end
 
   # 特徴タグ（自由入力）
@@ -87,9 +87,10 @@ class Post < ApplicationRecord
   def snapshot_local_years
     return if user.nil?
 
-    residence = user.residences.find_by(prefecture: prefecture, city: city)
-    return if residence.nil?
-    self.local_years_at_post = residence.years_at
+    residences = user.residences.where(prefecture: prefecture, city: city)
+    return if residences.empty?
+    days = residences.sum { |r| r.days_at }
+    self.local_years_at_post = Residence.days_to_years(days)
   end
 
   def tags_count_within_limit
