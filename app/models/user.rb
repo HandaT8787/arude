@@ -28,14 +28,22 @@ class User < ApplicationRecord
 
   enum :status, { active: "active", withdrawn: "withdrawn" } 
 
-
   def current_residence
     residences.current.first
   end
 
   def move_to!(prefecture:, city:, started_on: Date.current)
-    current_residence&.update!(ended_on: started_on - 1.day)
-    residences.create!(prefecture: prefecture, city: city, started_on: started_on)
+    transaction do
+      current = current_residence
+      if current.present?
+        if current.started_on >= started_on
+          current.destroy!
+        else
+          current.update!(ended_on: started_on - 1.day)
+        end
+      end
+      residences.create!(prefecture: prefecture, city: city, started_on: started_on)
+    end
   end
 
   def self.guest
