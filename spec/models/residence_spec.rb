@@ -18,4 +18,18 @@ RSpec.describe Residence, type: :model do
       expect(Residence.days_to_years(800)).to eq(2)
     end
   end
+  
+  describe ".years_to_str" do
+    it "0年は1年未満になる" do
+      expect(Residence.years_to_str(0)).to eq("1年未満")
+    end
+
+    it "1年は1年になる" do
+      expect(Residence.years_to_str(1)).to eq("1年")
+    end
+
+    it "5年は5年になる" do
+      expect(Residence.years_to_str(5)).to eq("5年")
+    end
+  end
 end
