@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :residence do
-    user { nil }
-    prefecture { "MyString" }
-    city { "MyString" }
-    started_on { "2026-09-04" }
-    ended_on { "2026-09-04" }
+    user
+    prefecture { "東京都" }
+    city { "江東区" }
+    started_on { Date.new(2026, 9, 4) }
+    ended_on { nil }
   end
 end
