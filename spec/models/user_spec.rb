@@ -32,5 +32,12 @@ RSpec.describe User, type: :model do
       expect(user.residences.count).to eq(1)
       expect(user.current_residence.city).to eq("名古屋市")
     end
+
+    it "登録に失敗したら、前の居住地は変更されない" do
+      previous = create(:residence, user: user, started_on: Date.new(2020, 4, 1))
+      expect { user.move_to!(prefecture: "", city: "名古屋市", started_on: Date.new(2026, 9, 1)) }.to raise_error(ActiveRecord::RecordInvalid)
+      expect(previous.reload.ended_on).to be_nil
+      expect(user.residences.count).to eq(1)
+    end
   end
 end
