@@ -30,5 +30,38 @@ RSpec.describe Post, type: :model do
       post = create(:post, user: user)
       expect(post.local_years_at_post).to be_nil
     end
+
+    it "居住地が一致して居住歴が3年なら" do
+      travel_to(Date.new(2026, 9, 4)) do
+        create(:residence, user: user, prefecture: "愛知県", city: "名古屋市", started_on: Date.new(2023, 1, 1))
+        post = create(:post, user: user)
+        expect(post.local_years_at_post).to eq(3)
+      end
+    end
+
+    it "同じ居住地が2つ以上あれば居住歴を合算する" do
+      travel_to(Date.new(2026, 9, 4)) do
+        create(:residence, user: user, prefecture: "愛知県", city: "名古屋市", started_on: Date.new(2020, 1, 1), ended_on: Date.new(2021, 6, 30))
+        create(:residence, user: user, prefecture: "愛知県", city: "名古屋市", started_on: Date.new(2025, 2, 1), ended_on: nil)
+        post = create(:post, user: user)
+        expect(post.local_years_at_post).to eq(3)
+      end
+    end
+
+    it "居住歴が1年未満なら0" do
+      travel_to(Date.new(2026, 9, 4)) do
+        create(:residence, user: user, prefecture: "愛知県", city: "名古屋市", started_on: Date.new(2026, 2, 1), ended_on: nil)
+        post = create(:post, user: user)
+        expect(post.local_years_at_post).to eq(0)
+      end
+    end
+
+    it "過去の居住地のみ一致するなら居住歴表示" do
+      travel_to(Date.new(2026, 9, 4)) do
+        create(:residence, user: user, prefecture: "愛知県", city: "名古屋市", started_on: Date.new(2023, 1, 1), ended_on: Date.new(2025, 1, 30))
+        post = create(:post, user: user)
+        expect(post.local_years_at_post).to eq(2)
+      end
+    end
   end
 end
