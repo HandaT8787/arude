@@ -109,4 +109,23 @@ RSpec.describe Post, type: :model do
       expect(post.city).to eq("江東区")
     end
   end
+
+  describe "タグ数制限" do
+    it "タグが10個なら成功" do
+      tag_names = (1..10).map { |i| "タグ#{i}" }.join(",")
+      post = build(:post, tag_names: tag_names)
+      expect(post.valid?).to eq(true)
+    end
+
+    it "タグが11個ならエラー" do
+      tag_names = (1..11).map { |i| "タグ#{i}" }.join(",")
+      post = build(:post, tag_names: tag_names)
+      expect(post.valid?).to eq(false)
+      expect(post.errors[:tag_names]).to be_present
+    end
+
+    it "タグ数が未指定なら成功" do
+      expect(build(:post).valid?).to eq(true)
+    end
+  end
 end
