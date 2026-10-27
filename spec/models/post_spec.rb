@@ -159,4 +159,5 @@ RSpec.describe Post, type: :model do
       expect(Post.visible_to(admin)).to contain_exactly(public_post, post_a, post_b)
     end
   end
+
 end

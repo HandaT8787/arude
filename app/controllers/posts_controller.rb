@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   before_action :require_user!, only: %i[create]
 
   def index
-    @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(12)
+    @posts = Post.visible_to(current_user).includes(:user).order(created_at: :desc).page(params[:page]).per(12)
   end
 
   def show
