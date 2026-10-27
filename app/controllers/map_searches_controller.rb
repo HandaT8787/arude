@@ -16,6 +16,6 @@ class MapSearchesController < ApplicationController
       end
     end
 
-    @posts = Post.where.not(latitude: nil, longitude: nil).near([@center_lat, @center_lng], @radius)
+    @posts = Post.visible_to(current_user).where.not(latitude: nil, longitude: nil).near([@center_lat, @center_lng], @radius)
   end
 end
