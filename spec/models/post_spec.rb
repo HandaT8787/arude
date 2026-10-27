@@ -128,4 +128,35 @@ RSpec.describe Post, type: :model do
       expect(build(:post).valid?).to eq(true)
     end
   end
+
+  describe ".visible_to" do
+    let(:group_a) { create(:group) }
+    let(:group_b) { create(:group) }
+    let(:member) { create(:user) }
+    let(:outsider) { create(:user) }
+    let(:admin) { create(:user, is_admin: true) }
+    let!(:public_post) { create(:post) }
+    let!(:post_a) { create(:post, group: group_a) }
+    let!(:post_b) { create(:post, group: group_b) }
+
+    before do
+      create(:group_membership, user: member, group: group_a)
+    end
+
+    it "未ログインなら全体公開のみ" do
+      expect(Post.visible_to(nil)).to contain_exactly(public_post)
+    end
+
+    it "メンバーなら全体公開と所属グループ" do
+      expect(Post.visible_to(member)).to contain_exactly(public_post, post_a)
+    end
+
+    it "メンバーでないなら全体公開のみ" do
+      expect(Post.visible_to(outsider)).to contain_exactly(public_post)
+    end
+
+    it "管理者なら全ての投稿" do
+      expect(Post.visible_to(admin)).to contain_exactly(public_post, post_a, post_b)
+    end
+  end
 end

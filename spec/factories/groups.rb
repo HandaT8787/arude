@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :group do
-    name { "MyString" }
-    description { "MyText" }
+    sequence(:name) { |n| "group#{n}" }
   end
 end

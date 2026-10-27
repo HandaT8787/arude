@@ -76,6 +76,13 @@ class Post < ApplicationRecord
     end
   end
 
+  def self.visible_to(user)
+    return where(group_id: nil) if user.nil?
+    return all if user.is_admin?
+    
+    where(group_id: nil).or (where(group_id: user.group_ids))
+  end
+
   private
 
   def time_tag_records
@@ -94,7 +101,12 @@ class Post < ApplicationRecord
   end
 
   def tags_count_within_limit
-    if tags.where(tag_type: "feature").size > 10
+    return if @tag_names.nil?
+
+    names = @tag_names.to_s.split(",").map(&:strip).reject(&:blank?)
+
+    if names.size > 10
+      errors.add(:tag_names, "タグは10個以下にしてください")
     end
   end
 
