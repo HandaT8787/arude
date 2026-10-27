@@ -1,7 +1,7 @@
 class SearchesController < ApplicationController
   def index
     # 全投稿取得
-    @results = Post.all
+    @results = Post.visible_to(current_user)
 
     # キーワード検索絞り込み
     @results = @results.where("title LIKE :keyword OR description LIKE :keyword", keyword: "%#{params[:keyword]}%") if params[:keyword].present?

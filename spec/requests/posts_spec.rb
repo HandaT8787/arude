@@ -1,17 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
-  let(:group) { create(:group) }
-  let(:member) { create(:user) }
-  let(:outsider) { create(:user) }
-  let(:author) { create(:user) }
-  let!(:public_post) { create(:post, title: "public_post", user: author) }
-  let!(:group_post) { create(:post, title: "group_only", group: group, user: author) }
+  include_context "グループ投稿のデータ"
   
-  before do
-    create(:group_membership, user: member, group: group)
-  end
-
   describe "GET /posts/:id" do
     it "メンバーはグループ投稿が表示される" do
       sign_in(member)
