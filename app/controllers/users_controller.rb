@@ -29,7 +29,7 @@ class UsersController < ApplicationController
   end
 
   def bookmarks
-    @bookmarked_posts = current_user.bookmarked_posts.order(created_at: :desc).page(params[:page]).per(12)
+    @bookmarked_posts = current_user.bookmarked_posts.visible_to(current_user).order(created_at: :desc).page(params[:page]).per(12)
   end
 
   def visits
