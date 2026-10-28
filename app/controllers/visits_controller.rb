@@ -27,7 +27,7 @@ class VisitsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:post_id])
+    @post = Post.visible_to(current_user).find(params[:post_id])
   end
 
   def visit_params
