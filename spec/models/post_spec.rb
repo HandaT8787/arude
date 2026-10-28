@@ -20,6 +20,7 @@ RSpec.describe Post, type: :model do
 
   describe "#snapshot_local_years" do
     let(:user) { create(:user) }
+
     it "投稿者がいないなら表示されない" do
       post = create(:post, user: nil)
       expect(post.local_years_at_post).to be_nil
@@ -130,14 +131,14 @@ RSpec.describe Post, type: :model do
   end
 
   describe ".visible_to" do
-    let(:group_a) { create(:group) }
-    let(:group_b) { create(:group) }
     let(:member) { create(:user) }
     let(:outsider) { create(:user) }
+    let(:group_a) { create(:group) }
+    let(:group_b) { create(:group) }
     let(:admin) { create(:user, is_admin: true) }
-    let!(:public_post) { create(:post) }
     let!(:post_a) { create(:post, group: group_a) }
     let!(:post_b) { create(:post, group: group_b) }
+    let!(:public_post) { create(:post) }
 
     before do
       create(:group_membership, user: member, group: group_a)
@@ -157,6 +158,37 @@ RSpec.describe Post, type: :model do
 
     it "管理者なら全ての投稿" do
       expect(Post.visible_to(admin)).to contain_exactly(public_post, post_a, post_b)
+    end
+  end
+
+  describe "グループ所属の検証" do
+    let(:group) { create(:group) }
+    let(:member) { create(:user) }
+    let(:outsider) { create(:user) }
+
+    before do
+      create(:group_membership, user: member, group: group)
+    end
+
+    it "所属グループへの投稿は出来る" do
+      group_post = build(:post, user: member, group: group)
+      expect(group_post.valid?).to eq(true)
+    end
+
+    it "所属していないグループへの投稿は出来ない" do
+      group_post = build(:post, user: outsider, group: group)
+      expect(group_post.valid?).to eq(false)
+      expect(group_post.errors[:group_id]).to be_present
+    end
+
+    it "全体公開は出来る" do
+      public_post = build(:post, user: outsider, group: nil)
+      expect(public_post.valid?).to eq(true)
+    end
+
+    it "投稿者無しは出来る" do
+      no_user_post = build(:post, user: nil, group: group)
+      expect(no_user_post.valid?).to eq(true)
     end
   end
 

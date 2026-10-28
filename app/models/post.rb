@@ -35,6 +35,9 @@ class Post < ApplicationRecord
   # 投稿のタグ数の制限
   validate :tags_count_within_limit
 
+  # グループ設定・変更時、検証
+  validate :group_membership_required, if: :group_id_changed?
+
   TIME_TAGS = %w[朝 昼 夕方 夜].freeze
 
   # 地元歴
@@ -107,6 +110,13 @@ class Post < ApplicationRecord
 
     if names.size > 10
       errors.add(:tag_names, "タグは10個以下にしてください")
+    end
+  end
+
+  def group_membership_required
+    return if group_id.blank? || user.nil?
+    unless user.group_ids.include?(group_id)
+      errors.add(:group_id, "所属していないグループには投稿できません")
     end
   end
 
