@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   def mypage
     @posts_count = current_user.posts.count
     @bookmarked_posts_count = current_user.visible_bookmarked_posts.count
-    @visits_count = current_user.visits.count
+    @visits_count = current_user.visible_visits.count
     @past_residences = current_user.residences.past.order(started_on: :desc)
   end
 
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   end
 
   def visits
-    @visits = current_user.visits.where(post: Post.visible_to(current_user)).order(visited_at: :desc).page(params[:page]).per(12)
+    @visits = current_user.visible_visits.order(visited_at: :desc).page(params[:page]).per(12)
   end
 
   def show

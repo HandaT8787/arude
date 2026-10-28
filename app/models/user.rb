@@ -54,4 +54,12 @@ class User < ApplicationRecord
       user.is_guest = true
     end
   end
+
+  def visible_bookmarked_posts
+    bookmarked_posts.visible_to(self)
+  end
+
+  def visible_visits
+    visits.where(post: Post.visible_to(self))
+  end
 end
