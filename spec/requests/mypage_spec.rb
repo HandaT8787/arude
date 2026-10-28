@@ -21,4 +21,23 @@ RSpec.describe "Mypage", type: :request do
       expect(response.body).not_to include("group_only")
     end
   end
+
+  describe "GET /mypage/visits" do
+    before do
+      create(:visit, user: member, post: group_post)
+    end
+
+    it "メンバーなら行ってみた一覧に出る" do
+      sign_in(member)
+      get mypage_visits_path
+      expect(response.body).to include("group_only")
+    end
+
+    it "グループを抜けたら行ってみた一覧に出ない" do
+      sign_in(member)
+      GroupMembership.find_by(user: member, group: group).destroy
+      get mypage_visits_path
+      expect(response.body).not_to include("group_only")
+    end
+  end
 end
