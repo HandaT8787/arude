@@ -172,7 +172,7 @@ RSpec.describe Post, type: :model do
 
     it "所属グループへの投稿は出来る" do
       group_post = build(:post, user: member, group: group)
-      expect(group_post.valid?).to eq(false) # test
+      expect(group_post.valid?).to eq(true)
     end
 
     it "所属していないグループへの投稿は出来ない" do
