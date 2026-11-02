@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/handaT8787/arude/actions/workflows/deploy.yml/badge.svg?branch=main)
 
-設計の工夫・苦労した点は[こちら](https://docs.google.com/document/d/1zQrvkytPM5tAz25vKC73gKkE9R7OE7DZ/edit?usp=sharing)
+設計の工夫・苦労した点は[こちら](https://drive.google.com/file/d/1j2HxBpwhe-h77MnMDHfqRED26XTPzz7z/view?usp=sharing)
 
 サイト: https://arude.net
 ゲストログインがあるので、会員登録なしで『ゲストログイン』からお試しいただけます。
