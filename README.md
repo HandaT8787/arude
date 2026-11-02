@@ -1,5 +1,12 @@
 # アルデー
 
+![CI](https://github.com/handaT8787/arude/actions/workflows/deploy.yml/badge.svg?branch=main)
+
+設計の工夫・苦労した点は[こちら](https://docs.google.com/document/d/1zQrvkytPM5tAz25vKC73gKkE9R7OE7DZ/edit?usp=sharing)
+
+サイト: https://arude.net
+ゲストログインがあるので、会員登録なしで『ゲストログイン』からお試しいただけます。
+
 ## サイト概要
 ### サイトテーマ
 近所の穴場やちょっといい場所を住民同士で共有・記録し、時間があるときの外出のきっかけを見つけられるコミュニティサイトです。
@@ -25,17 +32,20 @@
 - 転居先や旅行先で、観光情報誌には掲載されていない地元ならではのスポットを知りたい時
 
 ## 開発環境
-- OS：Windows
+- 作業PC：Windows
+- 開発サーバー：AWS EC2(ubuntu)に、VSCodeのRemote-SSHで接続して開発
 - 言語：HTML, CSS, JavaScript, Ruby, SQL
 - フレームワーク：Ruby on Rails
 - データベース：SQLite（開発環境）
 - IDE：Visual Studio Code（VSCode）
 
 ## 本番環境
-- インフラ：AWS（EC2, ALB, Route53, Certificate Manager）
+- インフラ：AWS（EC2×2を2つのAZに配置, ALB, RDS, S3, Route53, Certificate Manager）
+- データベース：RDS (MySQL)
+- 画像保存：S3(Active Storage)
+- 監視：CloudWatchアラーム(EC2の異常で自動再起動とメール通知)
 - Webサーバー：Nginx
 - アプリケーションサーバー：Puma
-- データベース：MySQL
 
 ## 主な使用技術
 - 認証：Rails標準のhas_secure_password
@@ -45,12 +55,15 @@
 - 地図表示：Google Maps JavaScript API
 - 画像カルーセル：Swiper
 - 評価UI：Raty.js
+- テスト：RSpec, FactoryBot
+- CI/CD：GitHub Actions(OIDCでAWSに接続)
+- フロントエンド：Turbo, Bootstrap 5
 
 ## 実装済み機能
 
 ### 投稿・記録
 - 投稿の作成・編集・削除(タイトル、説明、カテゴリ、位置情報、複数枚の写真)
-- タグ機能(自由入力の特徴タグ、選択式のおすすめ時間帯タグ)
+- タグ機能(自由入力の特徴タグ<1投稿10個まで>、選択式のおすすめ時間帯タグ)
 - 「行きたい」「行ってみた」の記録、項目別評価
 - 近所歴バッジ(居住年数に応じた表示、引っ越し後も過去の投稿には当時のバッジを表示)
 - コメント機能(匿名投稿)
@@ -63,7 +76,7 @@
 ### グループ機能
 - グループの作成・編集・削除
 - グループへの参加・退会、オーナー権限の譲渡
-- グループ限定投稿
+- グループ限定投稿(参加者のみに表示。URLを直接開いても見えない)
 
 ### アカウント
 - 会員登録・ログイン・ログアウト
@@ -81,6 +94,31 @@
 - 投稿写真の一部差し替え機能（特定の1枚だけを選んで削除・差し替えできるようにする）
 - コメントの通報・未確認タブによる管理機能
 - 投稿の「思い出化」機能：建物が別のものに変わってしまった投稿を投稿者が地図・検索・一覧などの公開の場から外し、マイページのアルバムとしてのみ残せるようにする（コメントや「行ってみた」の記録は削除せず、訪問した人にとっても思い出として残る）。また、建物が変わっていることを誰でも報告できる機能もあわせて実装予定
+- アルバム機能：居住地や投稿日ごとに投稿をまとめ、思い出として見返せるようにする。投稿することの意味を持たせる狙い。
+
+## テストとCI/CD
+- RSpec(モデルとリクエストで64件)
+- pushとPRのたびに自動で実行
+- mainにマージすると、テストが通った時だけ自動デプロイ
+- mainはブランチ保護(プルリクエスト必須、テストが通らないとマージ不可)
+
+## ローカルでの動かし方
+```bash
+bundle install
+bin/rails db:setup
+bin/rails server
+```
+- テストは`bundle exec rspec`
+- 必要な環境変数
+
+| 変数名 | 内容 |
+|---|---|
+| `GOOGLE_MAPS_API_KEY` | Google Maps/GeocodingのAPIキー |
+
+本番環境では別途 `DB_HOST`などが必要
+
+## インフラ構成
+- ALB -> EC2×2(2つのAZ) -> RDS(MySQL), 画像はS3
 
 ## 使用素材
 - テストデータ：Faker gemを使用し、氏名・自己紹介文・投稿の緯度経度などをランダムに生成しています
