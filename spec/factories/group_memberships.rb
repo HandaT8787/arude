@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :group_membership do
     user
     group
+    role { "member" }
     trait :owner do
       role { "owner" }
     end
