@@ -1,6 +1,10 @@
 FactoryBot.define do
   factory :tag do
-    name { "MyString" }
-    tag_type { "MyString" }
+    sequence(:name) { |n| "tag#{n}" }
+    tag_type { "feature" }
+
+    trait :time do
+      tag_type { "time" }
+    end
   end
 end
