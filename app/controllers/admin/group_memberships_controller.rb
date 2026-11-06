@@ -3,7 +3,8 @@ class Admin::GroupMembershipsController < ApplicationController
 
   # オーナー退会時操作
   def update
-    @group_membership = Group.find(params[:group_id]).group_memberships.find(params[:id])
+    @group = Group.find(params[:group_id])
+    @group_membership = @group.group_memberships.find(params[:id])
     old_owner_membership = @group.group_memberships.joins(:user).find_by(role: "owner", users: { status: "withdrawn" })
     old_owner_membership&.update(role: "member")
 
