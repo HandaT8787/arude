@@ -15,5 +15,9 @@ FactoryBot.define do
       is_admin { true }
     end
 
+    trait :guest do
+      is_guest { true }
+    end
+
   end
 end
