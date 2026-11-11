@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
   before_action :require_owner!, only: %i[edit update destroy]
+  before_action :require_editable!, only: %i[edit update]
   before_action :require_user!, only: %i[create]
 
   def index
@@ -50,7 +51,7 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.visible_to(current_user).find(params[:id])
+    @post = Post.own_or_visible_to(current_user).find(params[:id])
   end
 
   def require_owner!
@@ -59,6 +60,10 @@ class PostsController < ApplicationController
 
   def require_user!
     redirect_to posts_path, alert: "この操作はゲストユーザーではできません" if current_user.is_guest?
+  end
+
+  def require_editable!
+    redirect_to post_path(@post), alert: "退会したグループの投稿は編集できません" unless @post.editable_by?(current_user)
   end
 
   def post_params

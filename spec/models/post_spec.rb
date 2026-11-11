@@ -228,4 +228,73 @@ RSpec.describe Post, type: :model do
     end
   end
 
+  describe "#group_info_visible_to?" do
+    include_context "グループ投稿のデータ"
+    let(:leaver) { create(:user) }
+
+    it "全体公開の投稿なら、誰にでも true" do
+      expect(public_post.group_info_visible_to?(outsider)).to be true
+      expect(public_post.group_info_visible_to?(nil)).to be true
+    end
+
+    it "グループの参加者なら true" do
+      expect(group_post.group_info_visible_to?(member)).to be true
+    end
+
+    it "管理者なら true" do
+      admin_user = create(:user, :admin)
+      expect(group_post.group_info_visible_to?(admin_user)).to be true
+    end
+
+    it "グループに入っていない人なら false" do
+      expect(group_post.group_info_visible_to?(outsider)).to be false
+    end
+
+    it "グループを退会した本人なら false" do
+      membership = create(:group_membership, user: leaver, group: group)
+      leaver_post = create(:post, user: leaver, group: group)
+      membership.destroy
+      leaver.reload
+      expect(leaver_post.group_info_visible_to?(leaver)).to be false
+    end
+
+    it "未ログイン（nil）なら、グループ投稿は false" do
+      expect(group_post.group_info_visible_to?(nil)).to be false
+    end
+  end
+
+  describe "#editable_by?" do
+    include_context "グループ投稿のデータ"
+    let(:leaver) { create(:user) }
+    
+    it "全体公開なら true" do
+      expect(public_post.editable_by?(nil)).to be true
+    end
+
+    it "グループの参加者なら true" do
+      expect(group_post.editable_by?(member)).to be true
+    end
+
+    it "グループに入っていない人なら false" do
+      expect(group_post.editable_by?(outsider)).to be false
+    end
+
+    it "グループを退会した本人なら false" do
+      membership = create(:group_membership, user: leaver, group: group)
+      leaver_post = create(:post, user: leaver, group: group)
+      membership.destroy
+      leaver.reload
+      expect(leaver_post.editable_by?(leaver)).to be false
+    end
+
+    it "未ログインの人（nil）なら false" do
+      expect(group_post.editable_by?(nil)).to be false
+    end
+
+    it "グループに入っていない管理者なら false" do
+      admin_user = create(:user, :admin)
+      expect(group_post.editable_by?(admin_user)).to be false
+    end
+  end
+
 end

@@ -92,6 +92,20 @@ class Post < ApplicationRecord
     visible_to(user).or(where(user_id: user.id))
   end
 
+  def group_info_visible_to?(user)
+    return true if group_id.nil?
+    return false if user.nil?
+
+    user.is_admin? || user.group_ids.include?(group_id)
+  end
+
+  def editable_by?(user)
+    return true if group_id.nil?
+    return false if user.nil?
+
+    user.group_ids.include?(group_id)
+  end
+
   private
 
   def time_tag_records

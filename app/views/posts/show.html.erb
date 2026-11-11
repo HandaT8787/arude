@@ -1,4 +1,5 @@
 <div class="container py-4">
+  <% group_info_visible = @post.group_info_visible_to?(current_user) %>
   <div class="row justify-content-center">
     <div class="col-md-7">
 
@@ -51,7 +52,9 @@
             <%= link_to name, user_path(@post.user), class: "arude-link-accent" %>
           </div>
           <div>
-            <%= link_to @post.group.name, group_path(@post.group), class: "badge rounded-pill badge-group text-decoration-none" %>
+            <% if group_info_visible %>
+              <%= link_to @post.group.name, group_path(@post.group), class: "badge rounded-pill badge-group text-decoration-none" %>
+            <% end %>
           </div>
         </div>
       <% end %>
@@ -74,9 +77,11 @@
       <!-- 投稿者であれば表示 -->
       <% if current_user == @post.user %>
         <div class="d-flex gap-2 mb-3">
-          <div>
-            <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm", data: { turbo: false } %>
-          </div>
+          <% if @post.editable_by?(current_user) %>
+            <div>
+              <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm", data: { turbo: false } %>
+            </div>
+          <% end %>
           <div>
             <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
           </div>
@@ -87,28 +92,33 @@
 
       <!-- ログイン済みであれば行ってみたい、行ってみた機能を表示 -->
       <div class="mb-3">
-        <div class="d-flex gap-2 mb-3 justify-content-around align-items-center">
-          
-          <%= render "bookmarks/button", post: @post %>
+        <% if group_info_visible %>
+          <div class="d-flex gap-2 mb-3 justify-content-around align-items-center">
+            
+            <%= render "bookmarks/button", post: @post %>
 
-          <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary btn-sm btn-compact" do %>
-            <i class="fa-solid fa-person-running"></i> 行ってみた
-          <% end %>
-          <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary btn-sm btn-mini" do %>
-            <i class="fa-solid fa-address-book"></i> 行ってみた一覧<br>(<%= @post.visits.count %>件)
-          <% end %>
-        </div>
+            <%= link_to new_post_visit_path(@post), class: "btn arude-btn-primary btn-sm btn-compact" do %>
+              <i class="fa-solid fa-person-running"></i> 行ってみた
+            <% end %>
+            <%= link_to post_visits_path(@post), class: "btn arude-btn-tertiary btn-sm btn-mini" do %>
+              <i class="fa-solid fa-address-book"></i> 行ってみた一覧<br>(<%= @post.visits.count %>件)
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
+      <% if group_info_visible %>
       <hr>
       
       <!-- コメント機能 -->
-      <h2 class="fs-5 mb-3">みんなのひとこと</h2>
-      <%= render "comments/form", post: @post %>
-      
-      <div id="comments_list">
-        <%= render partial: "comments/comment", collection: @post.comments.order(created_at: :desc), as: :comment, locals: { post: @post } %>
-      </div>
+        <h2 class="fs-5 mb-3">みんなのひとこと</h2>
+        <%= render "comments/form", post: @post %>
+        
+        <div id="comments_list">
+          <%= render partial: "comments/comment", collection: @post.comments.order(created_at: :desc), as: :comment, locals: { post: @post } %>
+        </div>
+
+      <% end %>
 
     </div>
   </div>
