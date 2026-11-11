@@ -86,6 +86,12 @@ class Post < ApplicationRecord
     where(group_id: nil).or (where(group_id: user.group_ids))
   end
 
+  def self.own_or_visible_to(user)
+    return visible_to(nil) if user.nil?
+
+    visible_to(user).or(where(user_id: user.id))
+  end
+
   private
 
   def time_tag_records

@@ -192,4 +192,40 @@ RSpec.describe Post, type: :model do
     end
   end
 
+  describe ".own_or_visible_to" do
+    include_context "グループ投稿のデータ"
+
+    let(:leaver) { create(:user) }
+
+    it "全体公開の投稿が含まれる" do
+      expect(Post.own_or_visible_to(outsider)).to include(public_post)
+    end
+
+    it "未所属の人には、他人のグループ投稿が含まれない" do
+      expect(Post.own_or_visible_to(outsider)).not_to include(group_post)
+    end
+
+    it "参加者のグループの投稿が含まれる" do
+      expect(Post.own_or_visible_to(member)).to include(group_post)
+    end
+
+    context "グループを退会した本人の時" do
+      it "自分の投稿は含まれるが、visible_toには含まれない" do
+        membership = create(:group_membership, user: leaver, group: group)
+        leaver_post = create(:post, user: leaver, group: group)
+        membership.destroy
+        leaver.reload
+
+        expect(Post.own_or_visible_to(leaver)).to include(leaver_post)
+        expect(Post.own_or_visible_to(leaver)).not_to include(group_post)
+        expect(Post.visible_to(leaver)).not_to include(leaver_post)
+      end
+    end
+
+    it "未ログイン(nil)なら全体公開のみ" do
+      expect(Post.own_or_visible_to(nil)).to include(public_post)
+      expect(Post.own_or_visible_to(nil)).not_to include(group_post)
+    end
+  end
+
 end
