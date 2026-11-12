@@ -192,4 +192,109 @@ RSpec.describe Post, type: :model do
     end
   end
 
+  describe ".own_or_visible_to" do
+    include_context "グループ投稿のデータ"
+
+    let(:leaver) { create(:user) }
+
+    it "全体公開の投稿が含まれる" do
+      expect(Post.own_or_visible_to(outsider)).to include(public_post)
+    end
+
+    it "未所属の人には、他人のグループ投稿が含まれない" do
+      expect(Post.own_or_visible_to(outsider)).not_to include(group_post)
+    end
+
+    it "参加者のグループの投稿が含まれる" do
+      expect(Post.own_or_visible_to(member)).to include(group_post)
+    end
+
+    context "グループを退会した本人の時" do
+      it "自分の投稿は含まれるが、visible_toには含まれない" do
+        membership = create(:group_membership, user: leaver, group: group)
+        leaver_post = create(:post, user: leaver, group: group)
+        membership.destroy
+        leaver.reload
+
+        expect(Post.own_or_visible_to(leaver)).to include(leaver_post)
+        expect(Post.own_or_visible_to(leaver)).not_to include(group_post)
+        expect(Post.visible_to(leaver)).not_to include(leaver_post)
+      end
+    end
+
+    it "未ログイン(nil)なら全体公開のみ" do
+      expect(Post.own_or_visible_to(nil)).to include(public_post)
+      expect(Post.own_or_visible_to(nil)).not_to include(group_post)
+    end
+  end
+
+  describe "#group_info_visible_to?" do
+    include_context "グループ投稿のデータ"
+    let(:leaver) { create(:user) }
+
+    it "全体公開の投稿なら、誰にでも true" do
+      expect(public_post.group_info_visible_to?(outsider)).to be true
+      expect(public_post.group_info_visible_to?(nil)).to be true
+    end
+
+    it "グループの参加者なら true" do
+      expect(group_post.group_info_visible_to?(member)).to be true
+    end
+
+    it "管理者なら true" do
+      admin_user = create(:user, :admin)
+      expect(group_post.group_info_visible_to?(admin_user)).to be true
+    end
+
+    it "グループに入っていない人なら false" do
+      expect(group_post.group_info_visible_to?(outsider)).to be false
+    end
+
+    it "グループを退会した本人なら false" do
+      membership = create(:group_membership, user: leaver, group: group)
+      leaver_post = create(:post, user: leaver, group: group)
+      membership.destroy
+      leaver.reload
+      expect(leaver_post.group_info_visible_to?(leaver)).to be false
+    end
+
+    it "未ログイン（nil）なら、グループ投稿は false" do
+      expect(group_post.group_info_visible_to?(nil)).to be false
+    end
+  end
+
+  describe "#editable_by?" do
+    include_context "グループ投稿のデータ"
+    let(:leaver) { create(:user) }
+    
+    it "全体公開なら true" do
+      expect(public_post.editable_by?(nil)).to be true
+    end
+
+    it "グループの参加者なら true" do
+      expect(group_post.editable_by?(member)).to be true
+    end
+
+    it "グループに入っていない人なら false" do
+      expect(group_post.editable_by?(outsider)).to be false
+    end
+
+    it "グループを退会した本人なら false" do
+      membership = create(:group_membership, user: leaver, group: group)
+      leaver_post = create(:post, user: leaver, group: group)
+      membership.destroy
+      leaver.reload
+      expect(leaver_post.editable_by?(leaver)).to be false
+    end
+
+    it "未ログインの人（nil）なら false" do
+      expect(group_post.editable_by?(nil)).to be false
+    end
+
+    it "グループに入っていない管理者なら false" do
+      admin_user = create(:user, :admin)
+      expect(group_post.editable_by?(admin_user)).to be false
+    end
+  end
+
 end
