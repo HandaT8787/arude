@@ -34,28 +34,37 @@
         </div>
       </div>
 
+      <!-- タイトル、投稿日時 -->
       <h1 class="fs-3 mb-1"><%= @post.title %></h1>
       <p class="text-muted small"><i class="fa-regular fa-clock me-1"></i><%= @post.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+
+      <!-- 投稿カテゴリー、混雑情報・料金は記入があれば表示 -->
       <p class="text-muted small mb-2">
         <%= @post.category %>
         <% if @post.congestion.present? %>・<%= @post.congestion %><% end %>
         <% if @post.price.present? %>・<%= number_to_currency(@post.price, precision: 0) %><% end %>
       </p>
+
+      <!-- 近所歴バッチ -->
       <% if badge = @post.local_badge %>
         <div class="mb-2">
           <span class="badge rounded-pill badge-local"><%= badge %></span>
         </div>
       <% end %>
+
       <% if name = @post.author_name %>
         <div class="d-flex align-items-center gap-3 mb-2">
           <div>
             <%= link_to name, user_path(@post.user), class: "arude-link-accent" %>
           </div>
-          <div>
-            <% if group_info_visible %>
+          
+          <!-- 参加中のグループ投稿であればグループ名表示 -->
+          <% if group_info_visible %>
+            <div>
               <%= link_to @post.group.name, group_path(@post.group), class: "badge rounded-pill badge-group text-decoration-none" %>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
+
         </div>
       <% end %>
       
@@ -77,11 +86,14 @@
       <!-- 投稿者であれば表示 -->
       <% if current_user == @post.user %>
         <div class="d-flex gap-2 mb-3">
+
+          <!-- グループから退会するとグループ投稿を編集できなくするための条件 -->
           <% if @post.editable_by?(current_user) %>
             <div>
               <%= link_to "編集する", edit_post_path(@post), class: "btn btn-secondary btn-sm", data: { turbo: false } %>
             </div>
           <% end %>
+
           <div>
             <%= button_to "削除する", post_path(@post), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "削除しますか？" } %>
           </div>

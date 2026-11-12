@@ -40,7 +40,7 @@ class Post < ApplicationRecord
 
   TIME_TAGS = %w[朝 昼 夕方 夜].freeze
 
-  # 地元歴
+  # 近所歴
   def local_badge
     return nil if local_years_at_post.nil?
     "近所歴#{Residence.years_to_str(local_years_at_post)}"
@@ -64,11 +64,13 @@ class Post < ApplicationRecord
     tags.where(tag_type: "time").pluck(:name)
   end
 
+  # サムネイル調整用
   def thumbnail(width, height)
     return nil unless photos.attached?
     photos.first.variant(resize_to_limit: [width, height]).processed
   end
 
+  # 投稿のユーザー名表示
   def author_name
     return nil if group.nil?
 
@@ -79,6 +81,7 @@ class Post < ApplicationRecord
     end
   end
 
+  # グループ投稿の表示条件
   def self.visible_to(user)
     return where(group_id: nil) if user.nil?
     return all if user.is_admin?
@@ -86,28 +89,34 @@ class Post < ApplicationRecord
     where(group_id: nil).or (where(group_id: user.group_ids))
   end
 
+  # グループ投稿の投稿者の表示条件（グループ退会後でも自身の投稿は見える）
   def self.own_or_visible_to(user)
     return visible_to(nil) if user.nil?
 
     visible_to(user).or(where(user_id: user.id))
   end
 
+  # グループ名、コメントの表示条件（グループに関する情報の漏出を防ぐ）
   def group_info_visible_to?(user)
-    return true if group_id.nil?
-    return false if user.nil?
+    return true if group_id.nil? # 全体投稿
+    return false if user.nil? # 未ログイン
 
+    # 管理者もしくは参加中のグループであれば表示
     user.is_admin? || user.group_ids.include?(group_id)
   end
 
+  # 編集可能条件(退会したグループの編集は不可とする)
   def editable_by?(user)
-    return true if group_id.nil?
-    return false if user.nil?
+    return true if group_id.nil? # 全体投稿
+    return false if user.nil? # 未ログイン
 
+    # 参加中のグループであれば編集可能
     user.group_ids.include?(group_id)
   end
 
   private
 
+  
   def time_tag_records
     Array(@time_tag_names).map do |name|
       Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "time" }
