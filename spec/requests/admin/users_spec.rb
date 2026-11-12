@@ -60,7 +60,7 @@ RSpec.describe "Admin::Users", type: :request do
 
   describe "PATCH /admin/users/:id" do
     let(:target_user) { create(:user) }
-    
+
     context "管理者の時" do
       before { sign_in(admin) }
 

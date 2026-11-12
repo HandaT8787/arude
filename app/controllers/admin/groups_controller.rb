@@ -2,7 +2,7 @@ class Admin::GroupsController < ApplicationController
   include AdminAuthorization
 
   before_action :set_group, only: %i[show edit update destroy]
-  
+
   def index
     @groups = Group.all.order(created_at: :desc).page(params[:page]).per(10)
   end

@@ -25,7 +25,7 @@ locations = [
   { prefecture: "愛知県", city: "名古屋市", lat: 35.170915, lng: 136.881537 },
   { prefecture: "北海道", city: "札幌市", lat: 43.062096, lng: 141.354376 },
   { prefecture: "福岡県", city: "福岡市", lat: 33.590355, lng: 130.401716 },
-  { prefecture: "滋賀県", city: "大津市", lat: 35.004531, lng: 135.868590 },
+  { prefecture: "滋賀県", city: "大津市", lat: 35.004531, lng: 135.868590 }
 ]
 
 10.times do |i|
@@ -48,7 +48,7 @@ post_samples = [
   { title: "小さな神社", description: "静かで落ち着いた雰囲気があります", category: "神社・歴史" },
   { title: "写真映えする公園", description: "花や木々が美しく写真を撮るのにおすすめです", category: "写真スポット" },
   { title: "地元で人気の自然スポット", description: "自然の中でリフレッシュできる場所です", category: "自然" },
-  { title: "眺めの良い高台", description: "街並みを見渡せる隠れたスポットです", category: "景色" },
+  { title: "眺めの良い高台", description: "街並みを見渡せる隠れたスポットです", category: "景色" }
 ]
 
 

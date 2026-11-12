@@ -18,6 +18,5 @@ FactoryBot.define do
     trait :guest do
       is_guest { true }
     end
-
   end
 end

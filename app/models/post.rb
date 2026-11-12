@@ -67,7 +67,7 @@ class Post < ApplicationRecord
   # サムネイル調整用
   def thumbnail(width, height)
     return nil unless photos.attached?
-    photos.first.variant(resize_to_limit: [width, height]).processed
+    photos.first.variant(resize_to_limit: [ width, height ]).processed
   end
 
   # 投稿のユーザー名表示
@@ -85,7 +85,7 @@ class Post < ApplicationRecord
   def self.visible_to(user)
     return where(group_id: nil) if user.nil?
     return all if user.is_admin?
-    
+
     where(group_id: nil).or (where(group_id: user.group_ids))
   end
 
@@ -116,7 +116,7 @@ class Post < ApplicationRecord
 
   private
 
-  
+
   def time_tag_records
     Array(@time_tag_names).map do |name|
       Tag.find_or_create_by(name: name) { |tag| tag.tag_type = "time" }

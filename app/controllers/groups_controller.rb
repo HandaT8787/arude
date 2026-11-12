@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     if @group.save
-      @group.group_memberships.create!(user: current_user, role:"owner")
+      @group.group_memberships.create!(user: current_user, role: "owner")
       redirect_to group_path(@group), notice: "グループを作成しました"
     else
       render :new, status: :unprocessable_entity

@@ -33,7 +33,7 @@ class VisitsController < ApplicationController
   def visit_params
     params.require(:visit).permit(
       :impression, :visited_at, photos: [],
-      ratings_attributes: [:category, :score]
+      ratings_attributes: [ :category, :score ]
     )
   end
 

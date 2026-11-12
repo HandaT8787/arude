@@ -68,16 +68,16 @@ RSpec.describe Post, type: :model do
 
   describe "座標からの地名取得" do
     after do
-      [[21.03, 105.85], [10.0, 100.0], [20.0, 110.0]].each do |q|
+      [ [ 21.03, 105.85 ], [ 10.0, 100.0 ], [ 20.0, 110.0 ] ].each do |q|
         Geocoder::Lookup::Test.delete_stub(q)
       end
     end
     it "先頭に日本以外の結果が来たなら日本の結果を採用" do
       Geocoder::Lookup::Test.add_stub(
-        [21.03, 105.85], 
+        [ 21.03, 105.85 ],
         [
-          {'coordinates' => [21.03, 105.85], 'state' => 'Hà Nội', 'city' => 'Phúc Thịnh', 'country_code' => 'VN'},
-          {'coordinates' => [21.03, 105.85], 'state' => '大阪府', 'city' => '大阪市', 'country_code' => 'JP'}
+          { 'coordinates' => [ 21.03, 105.85 ], 'state' => 'Hà Nội', 'city' => 'Phúc Thịnh', 'country_code' => 'VN' },
+          { 'coordinates' => [ 21.03, 105.85 ], 'state' => '大阪府', 'city' => '大阪市', 'country_code' => 'JP' }
         ]
       )
       post = create(:post, latitude: 21.03, longitude: 105.85)
@@ -87,10 +87,10 @@ RSpec.describe Post, type: :model do
 
     it "cityが空なら次の結果を採用" do
       Geocoder::Lookup::Test.add_stub(
-        [10.0, 100.0], 
+        [ 10.0, 100.0 ],
         [
-          {'coordinates' => [10.0, 100.0], 'state' => '福岡県', 'city' => nil, 'country_code' => 'JP'},
-          {'coordinates' => [10.0, 100.0], 'state' => '大阪府', 'city' => '大阪市', 'country_code' => 'JP'}
+          { 'coordinates' => [ 10.0, 100.0 ], 'state' => '福岡県', 'city' => nil, 'country_code' => 'JP' },
+          { 'coordinates' => [ 10.0, 100.0 ], 'state' => '大阪府', 'city' => '大阪市', 'country_code' => 'JP' }
         ]
       )
       post = create(:post, latitude: 10.0, longitude: 100.0)
@@ -100,9 +100,9 @@ RSpec.describe Post, type: :model do
 
     it "日本の結果がない時は指定値のまま" do
       Geocoder::Lookup::Test.add_stub(
-        [20.0, 110.0], 
+        [ 20.0, 110.0 ],
         [
-          {'coordinates' => [20.0, 110.0], 'state' => 'Hà Nội', 'city' => 'Phúc Thịnh', 'country_code' => 'VN'}
+          { 'coordinates' => [ 20.0, 110.0 ], 'state' => 'Hà Nội', 'city' => 'Phúc Thịnh', 'country_code' => 'VN' }
         ]
       )
       post = create(:post, prefecture: "東京都", city: "江東区", latitude: 20.0, longitude: 110.0)
@@ -266,7 +266,7 @@ RSpec.describe Post, type: :model do
   describe "#editable_by?" do
     include_context "グループ投稿のデータ"
     let(:leaver) { create(:user) }
-    
+
     it "全体公開なら true" do
       expect(public_post.editable_by?(nil)).to be true
     end
@@ -296,5 +296,4 @@ RSpec.describe Post, type: :model do
       expect(group_post.editable_by?(admin_user)).to be false
     end
   end
-
 end
