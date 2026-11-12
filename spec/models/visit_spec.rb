@@ -27,7 +27,7 @@ RSpec.describe Visit, type: :model do
       )
       visit.save
       expect(visit.ratings.size).to eq(1)
-      expect(visit.ratings.map(&:category)).to eq(["景色"])
+      expect(visit.ratings.map(&:category)).to eq([ "景色" ])
     end
   end
 end

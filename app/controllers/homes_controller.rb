@@ -5,12 +5,12 @@ class HomesController < ApplicationController
 
     if my_residence = current_user.current_residence
       nearby_posts = visible_posts.where.not(latitude: nil, longitude: nil)
-        .near([my_residence.latitude, my_residence.longitude], 10)
+        .near([ my_residence.latitude, my_residence.longitude ], 10)
         .to_a
-      
+
       if nearby_posts.size < 3
         nearby_posts = visible_posts.where.not(latitude: nil, longitude: nil)
-        .near([my_residence.latitude, my_residence.longitude], 20)
+        .near([ my_residence.latitude, my_residence.longitude ], 20)
         .to_a
       end
 

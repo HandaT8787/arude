@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  allow_unauthenticated_access only: [:new, :create]
+  allow_unauthenticated_access only: [ :new, :create ]
 
   before_action :require_user!, only: %i[edit update destroy]
-  
+
   def new
     @user = User.new
   end

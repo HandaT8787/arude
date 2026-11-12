@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
       expect(user.residences.count).to eq(1)
       expect(user.current_residence.ended_on).to be_nil
     end
-    
+
     it "別日に変更すると、前居住地の終了日が開始日の前日になる" do
       previous = create(:residence, user: user, started_on: Date.new(2020, 4, 1))
       user.move_to!(prefecture: "愛知県", city: "名古屋市", started_on: Date.new(2026, 9, 4))

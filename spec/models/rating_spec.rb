@@ -28,14 +28,14 @@ RSpec.describe Rating, type: :model do
       expect(rating.errors[:score]).to be_present
     end
 
-    [1, 5].each do |score|
+    [ 1, 5 ].each do |score|
       it "#{score}は有効" do
         rating = build(:rating, score: score)
         expect(rating).to be_valid
       end
     end
 
-    [0, 6].each do |score|
+    [ 0, 6 ].each do |score|
       it "#{score}は無効" do
         rating = build(:rating, score: score)
         expect(rating).to be_invalid
