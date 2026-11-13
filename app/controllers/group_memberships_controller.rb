@@ -36,14 +36,22 @@ class GroupMembershipsController < ApplicationController
     new_owner_membership = @group.group_memberships.find(params[:id])
     current_owner_membership = @group.group_memberships.find_by(role: "owner")
 
-    new_owner_membership.role = "owner"
-    current_owner_membership.role = "member"
-
-    if new_owner_membership.save && current_owner_membership.save
-      redirect_to @group, notice: "オーナーを譲渡しました"
-    else
-      redirect_to @group, alert: "オーナー譲渡に失敗しました"
+    # 自分自身に譲渡するとオーナーが不在になるため
+    if new_owner_membership == current_owner_membership
+      redirect_to @group, alert: "自分に譲渡することはできません"
+      return
     end
+
+    new_owner_membership.role = "owner"
+    current_owner_membership&.role = "member"
+
+    ActiveRecord::Base.transaction do
+      new_owner_membership.save!
+      current_owner_membership&.save!
+    end
+    redirect_to @group, notice: "オーナーを譲渡しました"
+  rescue ActiveRecord::RecordInvalid
+    redirect_to @group, alert: "オーナー譲渡に失敗しました"
   end
 
   private

@@ -5,6 +5,9 @@ RSpec.describe "GroupMemberships", type: :request do
   let(:group) { create(:group) }
   let!(:owner) { create(:user) }
   let!(:owner_membership) { create(:group_membership, :owner, user: owner, group: group) }
+  let!(:admin) { create(:user, :admin) }
+  let(:other_group) { create(:group) }
+  let(:other_membership) { create(:group_membership, user: user, group: other_group) }
 
   describe "POST /groups/:group_id/group_memberships" do
     context "ログイン中の一般ユーザーの時" do
@@ -71,7 +74,6 @@ RSpec.describe "GroupMemberships", type: :request do
     end
 
     context "管理者の時" do
-      let!(:admin) { create(:user, :admin) }
       before { sign_in(admin) }
 
       it "他人を退会させられる" do
@@ -94,6 +96,13 @@ RSpec.describe "GroupMemberships", type: :request do
         expect(new_owner_membership.reload.role).to eq("owner")
         expect(owner_membership.reload.role).to eq("member")
       end
+
+      it "自分自身には譲渡できない" do
+        patch group_group_membership_path(group, owner_membership)
+        expect(response).to redirect_to(group_path(group))
+        expect(owner_membership.reload.role).to eq("owner")
+        expect(flash[:alert]).to be_present
+      end
     end
 
     context "オーナーでないメンバーの時" do
@@ -104,6 +113,16 @@ RSpec.describe "GroupMemberships", type: :request do
         expect(response).to redirect_to(group_path(group))
         expect(new_owner_membership.reload.role).to eq("member")
         expect(owner_membership.reload.role).to eq("owner")
+      end
+    end
+
+    context "管理者の時" do
+      it "現オーナーがいないグループでも、管理者がオーナーを指名できる" do
+        sign_in(admin)
+        patch group_group_membership_path(other_group, other_membership)
+        expect(response).to redirect_to(group_path(other_group))
+        expect(other_membership.reload.role).to eq("owner")
+        expect(other_group.group_memberships.where(role: "owner").count).to eq(1)
       end
     end
   end
