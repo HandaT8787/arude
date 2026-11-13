@@ -23,6 +23,27 @@ RSpec.describe "Admin::GroupMemberships", type: :request do
         patch admin_group_group_membership_path(group, new_membership)
         expect(old_owner_membership.reload.role).to eq("member")
       end
+
+      it "退会済みのメンバーは指名できない" do
+        withdrawn_user = create(:user, :withdrawn)
+        withdrawn_membership = create(:group_membership, user: withdrawn_user, group: group)
+        patch admin_group_group_membership_path(group, withdrawn_membership)
+        expect(withdrawn_membership.reload.role).to eq("member")
+        expect(old_owner_membership.reload.role).to eq("owner")
+      end
+
+      context "今のオーナーが退会していないとき" do
+        let!(:other_group) { create(:group) }
+        let!(:other_owner_membership) { create(:group_membership, :owner, user: create(:user), group: other_group) }
+        let!(:other_member_membership) { create(:group_membership, user: create(:user), group: other_group) }
+
+        it "指名できない" do
+          patch admin_group_group_membership_path(other_group, other_member_membership)
+          expect(response).to redirect_to(admin_groups_path)
+          expect(other_member_membership.reload.role).to eq("member")
+          expect(other_owner_membership.reload.role).to eq("owner")
+        end
+      end
     end
 
     context "一般ユーザーの時" do
