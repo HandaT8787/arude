@@ -1,9 +1,20 @@
 class PostsController < ApplicationController
+  # 後ろのチェックで @post を使用するため、 set_postから実行する
   before_action :set_post, only: %i[show edit update destroy]
+
+  # 本人の投稿のみを編集、更新、削除できる
   before_action :require_owner!, only: %i[edit update destroy]
+
+  # 退会済みのグループ投稿は本人でも編集できない
+  # グループIDが更新されて、意図せず全体公開になってしまうため
   before_action :require_editable!, only: %i[edit update]
+
+  # ゲストユーザーは投稿できない
   before_action :require_user!, only: %i[create]
 
+  # 全体投稿と参加しているグループ投稿を表示
+  # 退会済みのグループ投稿は表示しない
+  # own_or_visible_to を使うと、退会した本人にだけ旧グループ投稿が一覧に出るため、使わない
   def index
     @posts = Post.visible_to(current_user).includes(:user).order(created_at: :desc).page(params[:page]).per(12)
   end
@@ -50,6 +61,9 @@ class PostsController < ApplicationController
 
   private
 
+  # 全体投稿、参加中のグループ投稿、本人の投稿（退会済みのグループ投稿を含む）が対象
+  # 退会した本人が自分の退会済みグループ投稿を開く・削除するため
+  # 編集は require_editable! で止める
   def set_post
     @post = Post.own_or_visible_to(current_user).find(params[:id])
   end
