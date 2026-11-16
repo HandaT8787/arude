@@ -73,12 +73,54 @@ RSpec.describe "GroupMemberships", type: :request do
       end
     end
 
+    context "オーナー本人の時" do
+      before { sign_in(owner) }
+
+      it "オーナーのまま退会できない" do
+        expect { delete group_group_membership_path(group, owner_membership) }.not_to change(GroupMembership, :count)
+        expect(response).to redirect_to(group_path(group))
+        expect(flash[:alert]).to be_present
+      end
+
+      it "譲渡して member になれば、退会できる" do
+        owner_membership.update!(role: "member")
+        expect { delete group_group_membership_path(group, owner_membership) }.to change(GroupMembership, :count).by(-1)
+      end
+    end
+
+    context "唯一のメンバーのオーナーの時" do
+      let!(:solo_group) { create(:group) }
+      let!(:solo_owner) { create(:user) }
+      let!(:solo_membership) { create(:group_membership, :owner, user: solo_owner, group: solo_group) }
+
+      it "退会するとグループが削除される" do
+        sign_in(solo_owner)
+        expect { delete group_group_membership_path(solo_group, solo_membership) }
+        .to change(Group, :count).by(-1)
+        .and change(GroupMembership, :count).by(-1)
+        expect(response).to redirect_to(groups_path)
+      end
+
+      it "管理者はそのオーナーの参加を削除できない" do
+        sign_in(admin)
+        delete group_group_membership_path(solo_group, solo_membership)
+        expect(response).to redirect_to(group_path(solo_group))
+        expect(flash[:alert]).to be_present
+        expect(Group.exists?(solo_group.id)).to be true
+        expect(GroupMembership.exists?(solo_membership.id)).to be true
+      end
+    end
+
     context "管理者の時" do
       before { sign_in(admin) }
 
       it "他人を退会させられる" do
         expect { delete group_group_membership_path(group, membership) }.to change(GroupMembership, :count).by(-1)
         expect(response).to redirect_to(group_path(group))
+      end
+
+      it "オーナーの参加を削除できない" do
+        expect { delete group_group_membership_path(group, owner_membership) }.not_to change(GroupMembership, :count)
       end
     end
   end
