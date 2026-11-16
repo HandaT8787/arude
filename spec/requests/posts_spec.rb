@@ -90,4 +90,24 @@ RSpec.describe "Posts", type: :request do
       end
     end
   end
+
+  describe "PATCH /posts/:id" do
+    context "投稿者本人の時" do
+      let(:user) { create(:user) }
+      let!(:target_post) { create(:post, user: user, group: nil, title: "更新前") }
+      before { sign_in(user) }
+
+      it "photos を送らなくても、更新できる" do
+        patch post_path(target_post), params: { post: { title: "更新後" } }
+        expect(response).to redirect_to(post_path(target_post))
+        expect(target_post.reload.title).to eq("更新後")
+      end
+
+      it "photos が空（フォームの通常の送信）でも、更新できる" do
+        patch post_path(target_post), params: { post: { title: "更新後", photos: [ "" ] } }
+        expect(response).to redirect_to(post_path(target_post))
+        expect(target_post.reload.title).to eq("更新後")
+      end
+    end
+  end
 end
