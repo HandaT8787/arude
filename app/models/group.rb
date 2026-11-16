@@ -12,4 +12,9 @@ class Group < ApplicationRecord
   def owner
     group_memberships.joins(:user).find_by(role: "owner", users: { status: "active" })&.user
   end
+
+  # 退会時にグループを削除するかの判断に使う
+  def solo_member?
+    group_memberships.count == 1
+  end
 end

@@ -23,4 +23,19 @@ RSpec.describe GroupMembership, type: :model do
       expect(other.errors[:role]).to be_present
     end
   end
+
+  describe "#owner?" do
+    let(:user) { create(:user) }
+    let(:group) { create(:group) }
+
+    it "オーナーなら true" do
+      user_membership = create(:group_membership, :owner, user: user, group: group)
+      expect(user_membership.owner?).to be true
+    end
+
+    it "member なら false" do
+      user_membership = create(:group_membership, user: user, group: group)
+      expect(user_membership.owner?).to be false
+    end
+  end
 end
