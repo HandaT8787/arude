@@ -43,7 +43,9 @@ class PostsController < ApplicationController
 
   def update
     post_attrs = post_params
-    if post_attrs[:photos].reject(&:blank?).empty?
+    # 空の photos を更新の対象から外す
+    # 写真を選び直さなかったとき、既にある写真が消えないようにするため
+    if Array(post_attrs[:photos]).reject(&:blank?).empty?
       post_attrs.delete(:photos)
     end
     if @post.update(post_attrs)
