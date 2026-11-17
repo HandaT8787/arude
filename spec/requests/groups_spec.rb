@@ -33,11 +33,27 @@ RSpec.describe "Groups", type: :request do
 
     context "他にメンバーがいるオーナーの時" do
       it "退会するボタンが出ず、譲渡の案内が出る" do
+        other_group = create(:group)
+        owner = create(:user)
+        create(:group_membership, :owner, user: owner, group: other_group)
+        create(:group_membership, user: member, group: other_group)
+        sign_in(owner)
+        get group_path(other_group)
+        expect(response.body).not_to include("退会する")
+        expect(response.body).to include("オーナーを譲渡してから")
       end
     end
 
     context "唯一のメンバーのオーナーの時" do
       it "確認付きの退会するボタンが出る" do
+        other_group = create(:group)
+        owner = create(:user)
+        create(:group_membership, :owner, user: owner, group: other_group)
+        sign_in(owner)
+        get group_path(other_group)
+        expect(response.body).to include("退会する")
+        expect(response.body).not_to include("オーナーを譲渡してから")
+        expect(response.body).to include("あなたが最後のメンバーです")
       end
     end
   end
