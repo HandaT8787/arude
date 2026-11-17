@@ -159,12 +159,20 @@ RSpec.describe "GroupMemberships", type: :request do
     end
 
     context "管理者の時" do
+      before { sign_in(admin) }
+
       it "現オーナーがいないグループでも、管理者がオーナーを指名できる" do
-        sign_in(admin)
         patch group_group_membership_path(other_group, other_membership)
         expect(response).to redirect_to(group_path(other_group))
         expect(other_membership.reload.role).to eq("owner")
         expect(other_group.group_memberships.where(role: "owner").count).to eq(1)
+      end
+
+      it "現オーナーがいるグループでも、管理者がオーナーを譲渡できる" do
+        patch group_group_membership_path(group, new_owner_membership)
+        expect(response).to redirect_to(group_path(group))
+        expect(new_owner_membership.reload.role).to eq("owner")
+        expect(owner_membership.reload.role).to eq("member")
       end
     end
   end

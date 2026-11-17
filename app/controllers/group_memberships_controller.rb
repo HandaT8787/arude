@@ -71,6 +71,7 @@ class GroupMembershipsController < ApplicationController
     @group = Group.find(params[:group_id])
   end
 
+  # オーナーのほか、管理者もオーナーを譲渡できる（運営の権限として、意図した仕様）
   def require_group_owner!
     redirect_to @group, alert: "この操作はグループオーナーのみ行えます" unless @group.owner == current_user || current_user.is_admin?
   end
