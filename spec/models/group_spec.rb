@@ -36,4 +36,19 @@ RSpec.describe Group, type: :model do
       expect(group.errors[:name]).to be_present
     end
   end
+
+  describe "#solo_member?" do
+    let(:group) { create(:group) }
+    let!(:owner) { create(:user) }
+    let!(:owner_membership) { create(:group_membership, :owner, user: owner, group: group) }
+
+    it "メンバーが1人だけなら true" do
+      expect(group.solo_member?).to be true
+    end
+
+    it "メンバーが2人以上なら false" do
+      create(:group_membership, user: create(:user), group: group)
+      expect(group.solo_member?).to be false
+    end
+  end
 end

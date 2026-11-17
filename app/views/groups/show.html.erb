@@ -15,11 +15,24 @@
 
       <!-- ログイン済みで参加・退会ボタン表示 -->
       <% if @my_membership.present? %>
-        <div class="text-end mb-3">
-          <%= button_to group_group_membership_path(@group, @my_membership), method: :delete, class: "btn btn-danger btn-sm" do %>
-            <i class="fa-solid fa-users-slash"></i> 退会する
-          <% end %>
-        </div>
+        <% if @my_membership.member? %>
+          <%# member：退会するボタン %>
+          <div class="text-end mb-3">
+            <%= button_to group_group_membership_path(@group, @my_membership), method: :delete, class: "btn btn-danger btn-sm" do %>
+              <i class="fa-solid fa-users-slash"></i> 退会する
+            <% end %>
+          </div>
+        <% elsif @group.solo_member? %>
+          <%# 唯一のメンバーのオーナー：確認ダイアログ付きの退会するボタン %>
+          <div class="text-end mb-3">
+            <%= button_to group_group_membership_path(@group, @my_membership), method: :delete, class: "btn btn-danger btn-sm", data: { turbo_confirm: "あなたが最後のメンバーです。\n退会するとグループが削除され、グループの投稿は全体投稿になります。\nよろしいですか？" } do %>
+              <i class="fa-solid fa-users-slash"></i> 退会する
+            <% end %>
+          </div>
+        <% else %>
+          <%# 他にメンバーがいるオーナー：ボタンは出さず、案内の文章 %>
+          <p class="text-muted small mt-2">オーナーを譲渡してから退会してください</p>
+        <% end %>
       <% else %>
         <div class="text-end mb-3">
           <%= button_to group_group_memberships_path(@group), method: :post, class: "btn arude-btn-secondary btn-sm" do %>

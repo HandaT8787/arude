@@ -25,7 +25,18 @@ class GroupMembershipsController < ApplicationController
   end
 
   # グループ退会
+  # オーナー不在のグループができるのを防ぐため
+  # 唯一のメンバーのオーナーが自分で退会するときはグループごと削除する
   def destroy
+    if @group_membership.owner?
+      if @group_membership.user == current_user && @group.solo_member?
+        @group.destroy
+        redirect_to groups_path, notice: "グループを削除しました（投稿は全体投稿になりました）"
+        return
+      end
+      redirect_to @group, alert: "オーナーを譲渡してから退会してください"
+      return
+    end
     @group_membership.destroy
     redirect_to @group, notice: "グループを退会しました"
   end
@@ -60,6 +71,7 @@ class GroupMembershipsController < ApplicationController
     @group = Group.find(params[:group_id])
   end
 
+  # オーナーのほか、管理者もオーナーを譲渡できる（運営の権限として、意図した仕様）
   def require_group_owner!
     redirect_to @group, alert: "この操作はグループオーナーのみ行えます" unless @group.owner == current_user || current_user.is_admin?
   end
